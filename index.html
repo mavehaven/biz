@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Business Plan Generator - Get Your Plan in Minutes</title>
+    <title>Business Plan Generator - Input Field Alignment</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
@@ -1055,6 +1055,87 @@
         display: flex;
     }
 }
+
+/* NEW: Subtle Tooltip Styles */
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .tooltip-container {
+            position: relative;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .tooltip-icon {
+            color: #dc143c;
+            font-size: 14px;
+            opacity: 0.7;
+            transition: all 0.2s ease;
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .tooltip-icon:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        .tooltip-text {
+            visibility: hidden;
+            width: 240px;
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            text-align: left;
+            border-radius: 4px;
+            padding: 12px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 13px;
+            font-weight: 300;
+            line-height: 1.5;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #1a1a1a transparent transparent transparent;
+        }
+        
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 0.95;
+        }
+        
+        @media (max-width: 768px) {
+            .tooltip-text {
+                width: 200px;
+                left: 0;
+                transform: translateX(0);
+            }
+            
+            .tooltip-text::after {
+                left: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1391,13 +1472,25 @@
             <div class="modal-step active" id="step-1">
                 <form class="modal-form">
                     <div class="form-group">
-                        <label for="businessName">Business Name *</label>
+                        <label for="businessName">
+                            Business Name 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">The official name of your business as registered</span>
+                            </div>
+                        </label>
                         <input type="text" id="businessName" placeholder="Enter your business name" required>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="businessType">Business Type *</label>
+                            <label for="businessType">
+                                Business Type 
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Select the category that best describes your business</span>
+                                </div>
+                            </label>
                             <select id="businessType" required>
                                 <option value="">Select...</option>
                                 <option value="Retail">Retail</option>
@@ -1411,18 +1504,36 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="location">Location</label>
-                            <input type="text" id="location" placeholder="City, Province">
+                            <label for="location">
+                                Location 
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">City and province where your business is located</span>
+                                </div>
+                            </label>
+                            <input type="text" id="location" placeholder="City, Province" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="missionStatement">Mission Statement *</label>
+                        <label for="missionStatement">
+                            Mission Statement 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Describe your business's purpose and core values in 1-2 sentences</span>
+                            </div>
+                        </label>
                         <textarea id="missionStatement" required placeholder="What is your business's mission and core purpose?"></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label for="products">Products & Services *</label>
+                        <label for="products">
+                            Products & Services 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">List all products/services you offer, with key features</span>
+                            </div>
+                        </label>
                         <textarea id="products" required placeholder="Describe what you sell or the services you provide"></textarea>
                     </div>
 
@@ -1436,46 +1547,116 @@
             <div class="modal-step" id="step-2">
                 <form class="modal-form">
                     <div class="form-group">
-                        <label for="targetMarket">Target Market *</label>
+                        <label for="targetMarket">
+                            Target Market 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Describe your ideal customers (demographics, interests, etc.)</span>
+                            </div>
+                        </label>
                         <textarea id="targetMarket" required placeholder="Who are your ideal customers?"></textarea>
                     </div>
+                    
+                    <div class="form-group">
+                        <label for="marketSize">
+                            Market Size (R) 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Estimated total market value for your industry in South Africa</span>
+                            </div>
+                        </label>
+                        <input type="number" id="marketSize" min="0" step="1000" placeholder="Total market size" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="marketShare">
+                            Target Market Share (%) 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Percentage of the market you aim to capture in the first year</span>
+                            </div>
+                        </label>
+                        <input type="number" id="marketShare" min="0" max="100" step="1" placeholder="Target market share" required>
+                    </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="monthlyRevenue">Monthly Revenue Target (R)</label>
-                            <input type="number" id="monthlyRevenue" min="0" step="1000" placeholder="Estimated monthly revenue">
+                            <label for="monthlyRevenue">
+                                Monthly Revenue Target (R) 
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Projected monthly sales revenue after 6-12 months of operation</span>
+                                </div>
+                            </label>
+                            <input type="number" id="monthlyRevenue" min="0" step="1000" placeholder="Estimated monthly revenue" required>
                         </div>
                         <div class="form-group">
-                            <label for="monthlyExpenses">Monthly Expenses (R)</label>
-                            <input type="number" id="monthlyExpenses" min="0" step="1000" placeholder="Estimated monthly expenses">
+                            <label for="monthlyExpenses">
+                                Monthly Expenses (R) 
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Total monthly operating costs (rent, salaries, materials, etc.)</span>
+                                </div>
+                            </label>
+                            <input type="number" id="monthlyExpenses" min="0" step="1000" placeholder="Estimated monthly expenses" required>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="startupCost">Startup Costs (R)</label>
-                            <input type="number" id="startupCost" min="0" step="5000" placeholder="Total startup costs">
+                            <label for="startupCost">
+                                Startup Costs (R) 
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">One-time costs to launch your business (equipment, licenses, etc.)</span>
+                                </div>
+                            </label>
+                            <input type="number" id="startupCost" min="0" step="5000" placeholder="Total startup costs" required>
                         </div>
                         <div class="form-group">
-                            <label for="fundingNeeded">Funding Needed (R)</label>
-                            <input type="number" id="fundingNeeded" min="0" step="5000" placeholder="Funding required">
+                            <label for="fundingNeeded">
+                                Funding Needed (R) 
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Total funding required to start and operate until profitable</span>
+                                </div>
+                            </label>
+                            <input type="number" id="fundingNeeded" min="0" step="5000" placeholder="Funding required" required>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="marketSize">Market Size (R)</label>
-                            <input type="number" id="marketSize" min="0" step="100000" placeholder="Total market size">
+                            <label for="growthRate">
+                                Growth Rate (%) 
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Expected annual revenue growth percentage</span>
+                                </div>
+                            </label>
+                            <input type="number" id="growthRate" min="0" max="100" step="1" placeholder="Annual growth rate" required>
                         </div>
                         <div class="form-group">
-                            <label for="growthRate">Growth Rate (%)</label>
-                            <input type="number" id="growthRate" min="0" max="100" step="1" placeholder="Annual growth rate">
+                            <label for="competition">
+                                Competitors
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">List your main competitors and their strengths</span>
+                                </div>
+                            </label>
+                            <input type="text" id="competition" placeholder="Main competitors">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="competition">Competitive Advantage</label>
-                        <textarea id="competition" placeholder="What makes your business unique?"></textarea>
+                        <label for="competitiveAdvantage">
+                            Competitive Advantage 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">What makes your business unique? Why will customers choose you?</span>
+                            </div>
+                        </label>
+                        <textarea id="competitiveAdvantage" required placeholder="What makes your business unique?"></textarea>
                     </div>
 
                     <div class="form-navigation">
@@ -1489,18 +1670,59 @@
             <div class="modal-step" id="step-3">
                 <form class="modal-form">
                     <div class="form-group">
-                        <label for="marketingStrategy">Marketing Strategy</label>
-                        <textarea id="marketingStrategy" placeholder="How will you attract and retain customers?"></textarea>
+                        <label for="marketingStrategy">
+                            Marketing Strategy 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">How you'll reach customers (online, events, partnerships, etc.)</span>
+                            </div>
+                        </label>
+                        <textarea id="marketingStrategy" required placeholder="How will you attract and retain customers?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="managementTeam">
+                            Management Team
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Key team members and their relevant experience</span>
+                            </div>
+                        </label>
+                        <textarea id="managementTeam" placeholder="Key team members and their expertise"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="businessGoals">
+                            Business Goals 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Specific, measurable goals for 1 year and 3-5 years</span>
+                            </div>
+                        </label>
+                        <textarea id="businessGoals" required placeholder="Short-term and long-term business goals"></textarea>
                     </div>
 
-                    <div class="form-group">
-                        <label for="contactEmail">Your Email *</label>
-                        <input type="email" id="contactEmail" required placeholder="Enter your email">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="contactPhone">Phone Number</label>
-                        <input type="tel" id="contactPhone" placeholder="Enter your phone number">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contactEmail">
+                                Your Email 
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">We'll send your business plan to this address</span>
+                                </div>
+                            </label>
+                            <input type="email" id="contactEmail" required placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactPhone">
+                                Phone Number
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Optional contact for any follow-up questions</span>
+                                </div>
+                            </label>
+                            <input type="tel" id="contactPhone" placeholder="Enter your phone number">
+                        </div>
                     </div>
 
                     <div class="form-price">R200</div>
@@ -1540,6 +1762,7 @@
             </div>
         </div>
     </div>
+
 
     <script>
         // Mobile menu toggle
@@ -1682,9 +1905,13 @@
                 startupCost: document.getElementById('startupCost').value,
                 fundingNeeded: document.getElementById('fundingNeeded').value,
                 marketSize: document.getElementById('marketSize').value,
+                marketShare: document.getElementById('marketShare').value,
                 growthRate: document.getElementById('growthRate').value,
                 competition: document.getElementById('competition').value,
+                competitiveAdvantage: document.getElementById('competitiveAdvantage').value,
                 marketingStrategy: document.getElementById('marketingStrategy').value,
+                managementTeam: document.getElementById('managementTeam').value,
+                businessGoals: document.getElementById('businessGoals').value,
                 contactEmail: document.getElementById('contactEmail').value,
                 contactPhone: document.getElementById('contactPhone').value
             };
@@ -1738,561 +1965,308 @@
             });
         });
         
-        // Business Plan PDF Generation - Improved Text Spacing
-function generateBusinessPlanPDF(data) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
-    let yPosition = 20;
-    const lineHeight = 8; // Increased line height for better spacing
-    const sectionSpacing = 20; // Space between sections
-    const pageHeight = doc.internal.pageSize.height;
-    const pageWidth = doc.internal.pageSize.width;
-    const margin = 20;
-    const textWidth = pageWidth - (margin * 2);
-    
-    function checkNewPage(requiredSpace = 30) {
-        if (yPosition > pageHeight - requiredSpace) {
-            doc.addPage();
-            yPosition = 30; // Start further down on new pages
-            return true;
-        }
-        return false;
-    }
-    
-    function addSection(title, content, fontSize = 11) {
-        checkNewPage(40);
-        
-        // Section title
-        doc.setFontSize(14);
-        doc.setFont(undefined, 'bold');
-        doc.text(title, margin, yPosition);
-        yPosition += 15; // More space after title
-        
-        if (content) {
-            doc.setFontSize(fontSize);
-            doc.setFont(undefined, 'normal');
-            const splitContent = doc.splitTextToSize(content, textWidth);
+        // Business Plan PDF Generation - Enhanced Field Correspondence
+        function generateBusinessPlanPDF(data) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
             
-            splitContent.forEach(line => {
-                checkNewPage(20);
-                doc.text(line, margin, yPosition);
-                yPosition += lineHeight; // Consistent line spacing
-            });
+            let yPosition = 20;
+            const lineHeight = 8;
+            const sectionSpacing = 20;
+            const pageHeight = doc.internal.pageSize.height;
+            const pageWidth = doc.internal.pageSize.width;
+            const margin = 20;
+            const textWidth = pageWidth - (margin * 2);
             
-            yPosition += sectionSpacing; // Space after section
-        }
-    }
-    
-    function addFinancialTable(title, rows) {
-        checkNewPage(60);
-        
-        // Table title
-        doc.setFontSize(14);
-        doc.setFont(undefined, 'bold');
-        doc.text(title, margin, yPosition);
-        yPosition += 20; // More space after table title
-        
-        const colWidth = (textWidth - 20) / Math.max(rows[0].length, 4); // Dynamic column width
-        const startX = margin;
-        const rowHeight = 12; // Increased row height
-        
-        rows.forEach((row, index) => {
-            checkNewPage(25);
-            
-            if (index === 0) {
-                // Header row
-                doc.setFontSize(10);
-                doc.setFont(undefined, 'bold');
-                doc.setFillColor(240, 240, 240); // Light gray background
-                doc.rect(startX - 2, yPosition - 8, textWidth + 4, rowHeight, 'F');
-            } else {
-                doc.setFontSize(10);
-                doc.setFont(undefined, 'normal');
+            function checkNewPage(requiredSpace = 30) {
+                if (yPosition > pageHeight - requiredSpace) {
+                    doc.addPage();
+                    yPosition = 30;
+                    return true;
+                }
+                return false;
             }
             
-            row.forEach((cell, cellIndex) => {
-                const xPos = startX + (cellIndex * colWidth);
-                const cellText = cell.toString();
+            function addSection(title, content, fontSize = 11) {
+                checkNewPage(40);
                 
-                // Ensure text fits in column
-                const splitCell = doc.splitTextToSize(cellText, colWidth - 5);
-                doc.text(splitCell[0], xPos + 2, yPosition);
+                doc.setFontSize(14);
+                doc.setFont(undefined, 'bold');
+                doc.text(title, margin, yPosition);
+                yPosition += 15;
+                
+                if (content) {
+                    doc.setFontSize(fontSize);
+                    doc.setFont(undefined, 'normal');
+                    const splitContent = doc.splitTextToSize(content, textWidth);
+                    
+                    splitContent.forEach(line => {
+                        checkNewPage(20);
+                        doc.text(line, margin, yPosition);
+                        yPosition += lineHeight;
+                    });
+                    
+                    yPosition += sectionSpacing;
+                }
+            }
+            
+            function addFinancialTable(title, rows) {
+                checkNewPage(60);
+                
+                doc.setFontSize(14);
+                doc.setFont(undefined, 'bold');
+                doc.text(title, margin, yPosition);
+                yPosition += 20;
+                
+                const colWidth = (textWidth - 20) / Math.max(rows[0].length, 4);
+                const startX = margin;
+                const rowHeight = 12;
+                
+                rows.forEach((row, index) => {
+                    checkNewPage(25);
+                    
+                    if (index === 0) {
+                        doc.setFontSize(10);
+                        doc.setFont(undefined, 'bold');
+                        doc.setFillColor(240, 240, 240);
+                        doc.rect(startX - 2, yPosition - 8, textWidth + 4, rowHeight, 'F');
+                    } else {
+                        doc.setFontSize(10);
+                        doc.setFont(undefined, 'normal');
+                    }
+                    
+                    row.forEach((cell, cellIndex) => {
+                        const xPos = startX + (cellIndex * colWidth);
+                        const cellText = cell.toString();
+                        
+                        const splitCell = doc.splitTextToSize(cellText, colWidth - 5);
+                        doc.text(splitCell[0], xPos + 2, yPosition);
+                    });
+                    
+                    yPosition += rowHeight;
+                });
+                
+                yPosition += sectionSpacing;
+            }
+            
+            function addBulletPoints(points, indent = 25) {
+                points.forEach(point => {
+                    checkNewPage(15);
+                    doc.text('•', indent, yPosition);
+                    const splitPoint = doc.splitTextToSize(point, textWidth - indent - 10);
+                    splitPoint.forEach((line, index) => {
+                        if (index > 0) {
+                            checkNewPage(15);
+                        }
+                        doc.text(line, indent + 8, yPosition);
+                        if (index < splitPoint.length - 1) {
+                            yPosition += lineHeight;
+                        }
+                    });
+                    yPosition += lineHeight + 2;
+                });
+            }
+            
+            // Calculate financial projections
+            const monthlyRev = Number(data.monthlyRevenue) || 0;
+            const monthlyExp = Number(data.monthlyExpenses) || 0;
+            const growthRate = (Number(data.growthRate) || 10) / 100;
+            const marketSize = Number(data.marketSize) || 0;
+            const marketShare = (Number(data.marketShare) || 5) / 100;
+            
+            // Title Page
+            doc.setFontSize(28);
+            doc.setFont(undefined, 'bold');
+            doc.text('BUSINESS PLAN', pageWidth / 2, 60, { align: 'center' });
+            
+            doc.setFontSize(20);
+            doc.text(data.businessName || 'Your Business Name', pageWidth / 2, 85, { align: 'center' });
+            
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Business Type: ${data.businessType}`, pageWidth / 2, 110, { align: 'center' });
+            doc.text(`Location: ${data.location || 'South Africa'}`, pageWidth / 2, 125, { align: 'center' });
+            doc.text(`Date: ${new Date().toLocaleDateString()}`, pageWidth / 2, 140, { align: 'center' });
+            
+            // Confidentiality notice
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'italic');
+            doc.text('CONFIDENTIAL BUSINESS PLAN', pageWidth / 2, 220, { align: 'center' });
+            doc.text('This document contains confidential and proprietary information.', pageWidth / 2, 235, { align: 'center' });
+            
+            doc.addPage();
+            yPosition = 30;
+            
+            // Table of Contents
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('TABLE OF CONTENTS', margin, yPosition);
+            yPosition += 25;
+            
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'normal');
+            const tocItems = [
+                '1. Executive Summary',
+                '2. Business Description', 
+                '3. Market Analysis',
+                '4. Products & Services',
+                '5. Marketing & Sales Strategy',
+                '6. Management Team',
+                '7. Financial Projections',
+                '8. Risk Analysis',
+                '9. Funding Requirements',
+                '10. Appendices'
+            ];
+            
+            tocItems.forEach(item => {
+                doc.text(item, margin + 5, yPosition);
+                yPosition += 12;
             });
             
-            yPosition += rowHeight;
-        });
-        
-        yPosition += sectionSpacing; // Space after table
-    }
-    
-    function addBulletPoints(points, indent = 25) {
-        points.forEach(point => {
-            checkNewPage(15);
-            doc.text('•', indent, yPosition);
-            const splitPoint = doc.splitTextToSize(point, textWidth - indent - 10);
-            splitPoint.forEach((line, index) => {
-                if (index > 0) {
-                    checkNewPage(15);
-                }
-                doc.text(line, indent + 8, yPosition);
-                if (index < splitPoint.length - 1) {
-                    yPosition += lineHeight;
-                }
-            });
-            yPosition += lineHeight + 2; // Extra space between bullet points
-        });
-    }
-    
-    // Calculate financial projections
-    const monthlyRev = Number(data.monthlyRevenue) || 0;
-    const monthlyExp = Number(data.monthlyExpenses) || 0;
-    const growthRate = (Number(data.growthRate) || 10) / 100;
-    
-    // Title Page
-    doc.setFontSize(28);
-    doc.setFont(undefined, 'bold');
-    doc.text('BUSINESS PLAN', pageWidth / 2, 60, { align: 'center' });
-    
-    doc.setFontSize(20);
-    doc.text(data.businessName || 'Your Business Name', pageWidth / 2, 85, { align: 'center' });
-    
-    doc.setFontSize(14);
-    doc.setFont(undefined, 'normal');
-    doc.text(`Business Type: ${data.businessType}`, pageWidth / 2, 110, { align: 'center' });
-    doc.text(`Location: ${data.location || 'South Africa'}`, pageWidth / 2, 125, { align: 'center' });
-    doc.text(`Date: ${new Date().toLocaleDateString()}`, pageWidth / 2, 140, { align: 'center' });
-    
-    // Confidentiality notice
-    doc.setFontSize(10);
-    doc.setFont(undefined, 'italic');
-    doc.text('CONFIDENTIAL BUSINESS PLAN', pageWidth / 2, 220, { align: 'center' });
-    doc.text('This document contains confidential and proprietary information.', pageWidth / 2, 235, { align: 'center' });
-    
-    doc.addPage();
-    yPosition = 30;
-    
-    // Table of Contents
-    doc.setFontSize(18);
-    doc.setFont(undefined, 'bold');
-    doc.text('TABLE OF CONTENTS', margin, yPosition);
-    yPosition += 25;
-    
-    doc.setFontSize(12);
-    doc.setFont(undefined, 'normal');
-    const tocItems = [
-        '1. Executive Summary',
-        '2. Business Description', 
-        '3. Market Analysis',
-        '4. Products & Services',
-        '5. Marketing & Sales Strategy',
-        '6. Management Team',
-        '7. Financial Projections',
-        '8. Risk Analysis',
-        '9. Funding Requirements',
-        '10. Appendices'
-    ];
-    
-    tocItems.forEach(item => {
-        doc.text(item, margin + 5, yPosition);
-        yPosition += 12; // Consistent spacing
-    });
-    
-    doc.addPage();
-    yPosition = 30;
-    
-    // 1. Executive Summary
-    doc.setFontSize(18);
-    doc.setFont(undefined, 'bold');
-    doc.text('1. EXECUTIVE SUMMARY', margin, yPosition);
-    yPosition += 20;
-    
-    doc.setFontSize(12);
-    doc.setFont(undefined, 'normal');
-    
-    const businessOverview = `${data.businessName} is a ${data.businessType.toLowerCase()} business located in ${data.location || 'South Africa'}.`;
-    const splitOverview = doc.splitTextToSize(businessOverview, textWidth);
-    splitOverview.forEach(line => {
-        doc.text(line, margin, yPosition);
-        yPosition += lineHeight;
-    });
-    yPosition += 10;
-    
-    // Mission section
-    doc.setFontSize(11);
-    doc.setFont(undefined, 'bold');
-    doc.text('Mission:', margin, yPosition);
-    yPosition += lineHeight;
-    
-    doc.setFont(undefined, 'normal');
-    const splitMission = doc.splitTextToSize(data.missionStatement || 'To be defined', textWidth);
-    splitMission.forEach(line => {
-        doc.text(line, margin, yPosition);
-        yPosition += lineHeight;
-    });
-    yPosition += 12;
-    
-    // Key Financial Highlights
-    doc.setFont(undefined, 'bold');
-    doc.text('Key Financial Highlights:', margin, yPosition);
-    yPosition += lineHeight + 3;
-    
-    doc.setFont(undefined, 'normal');
-    const financialHighlights = [
-        `Monthly Revenue Target: R${monthlyRev.toLocaleString()}`,
-        `Monthly Operating Expenses: R${monthlyExp.toLocaleString()}`,
-        `Net Monthly Profit: R${(monthlyRev - monthlyExp).toLocaleString()}`,
-        `Funding Required: R${(Number(data.fundingNeeded) || 0).toLocaleString()}`,
-        `Market Size: R${(Number(data.marketSize) || 0).toLocaleString()}`
-    ];
-    
-    addBulletPoints(financialHighlights);
-    yPosition += 10;
-    
-    // Market Opportunity
-    doc.setFont(undefined, 'bold');
-    doc.text('Market Opportunity:', margin, yPosition);
-    yPosition += lineHeight + 3;
-    
-    doc.setFont(undefined, 'normal');
-    const marketOpportunity = `We are targeting a R${(Number(data.marketSize) || 0).toLocaleString()} market with plans to capture ${data.marketShare || 5}% market share within 3 years, representing a potential revenue opportunity of R${((Number(data.marketSize) || 0) * ((Number(data.marketShare) || 5) / 100)).toLocaleString()}.`;
-    const splitMarketOpp = doc.splitTextToSize(marketOpportunity, textWidth);
-    splitMarketOpp.forEach(line => {
-        checkNewPage();
-        doc.text(line, margin, yPosition);
-        yPosition += lineHeight;
-    });
-    
-    yPosition += sectionSpacing;
-    
-    // 2. Business Description
-    addSection('2. BUSINESS DESCRIPTION', '');
-    
-    doc.setFontSize(11);
-    doc.setFont(undefined, 'normal');
-    
-    const businessDetails = [
-        `Company Name: ${data.businessName}`,
-        `Business Type: ${data.businessType}`,
-        `Location: ${data.location || 'South Africa'}`,
-        `Target Market: ${data.targetMarket}`
-    ];
-    
-    businessDetails.forEach(detail => {
-        checkNewPage();
-        doc.text(detail, margin, yPosition);
-        yPosition += lineHeight + 2;
-    });
-    
-    yPosition += 10;
-    
-    // Mission Statement subsection
-    doc.setFont(undefined, 'bold');
-    doc.text('Mission Statement:', margin, yPosition);
-    yPosition += lineHeight + 3;
-    
-    doc.setFont(undefined, 'normal');
-    const splitMissionDetail = doc.splitTextToSize(data.missionStatement || 'To be defined', textWidth);
-    splitMissionDetail.forEach(line => {
-        checkNewPage();
-        doc.text(line, margin, yPosition);
-        yPosition += lineHeight;
-    });
-    
-    yPosition += 15;
-    
-    // Products & Services Overview
-    doc.setFont(undefined, 'bold');
-    doc.text('Products & Services Overview:', margin, yPosition);
-    yPosition += lineHeight + 3;
-    
-    doc.setFont(undefined, 'normal');
-    const splitProducts = doc.splitTextToSize(data.products || 'To be defined', textWidth);
-    splitProducts.forEach(line => {
-        checkNewPage();
-        doc.text(line, margin, yPosition);
-        yPosition += lineHeight;
-    });
-    
-    yPosition += sectionSpacing;
-    
-    if (data.competition) {
-        doc.setFont(undefined, 'bold');
-        doc.text('Competitive Advantage:', margin, yPosition);
-        yPosition += lineHeight + 3;
-        
-        doc.setFont(undefined, 'normal');
-        const splitCompetition = doc.splitTextToSize(data.competition, textWidth);
-        splitCompetition.forEach(line => {
-            checkNewPage();
-            doc.text(line, margin, yPosition);
-            yPosition += lineHeight;
-        });
-        yPosition += sectionSpacing;
-    }
-    
-    // 3. Market Analysis
-    doc.addPage();
-    yPosition = 30;
-    
-    addSection('3. MARKET ANALYSIS', '');
-    
-    doc.setFont(undefined, 'bold');
-    doc.text('Target Market:', margin, yPosition);
-    yPosition += lineHeight + 3;
-    
-    doc.setFont(undefined, 'normal');
-    const splitTarget = doc.splitTextToSize(data.targetMarket || 'To be defined', textWidth);
-    splitTarget.forEach(line => {
-        doc.text(line, margin, yPosition);
-        yPosition += lineHeight;
-    });
-    yPosition += 12;
-    
-    doc.setFont(undefined, 'bold');
-    doc.text('Market Size & Opportunity:', margin, yPosition);
-    yPosition += lineHeight + 3;
-    
-    doc.setFont(undefined, 'normal');
-    const marketData = [
-        `Total Addressable Market: R${(Number(data.marketSize) || 0).toLocaleString()}`,
-        `Target Market Share: ${data.marketShare || 5}%`,
-        `Projected Market Value: R${((Number(data.marketSize) || 0) * ((Number(data.marketShare) || 5) / 100)).toLocaleString()}`,
-        `Expected Growth Rate: ${data.growthRate || 10}% annually`
-    ];
-    
-    addBulletPoints(marketData);
-    
-    doc.setFont(undefined, 'bold');
-    doc.text('Market Trends:', margin, yPosition);
-    yPosition += lineHeight + 3;
-    
-    doc.setFont(undefined, 'normal');
-    const marketTrends = `The ${data.businessType.toLowerCase()} industry in South Africa is experiencing steady growth, driven by increasing consumer demand and digital transformation. Our target demographic shows strong purchasing power and growing awareness of quality products/services.`;
-    const splitTrends = doc.splitTextToSize(marketTrends, textWidth);
-    splitTrends.forEach(line => {
-        checkNewPage();
-        doc.text(line, margin, yPosition);
-        yPosition += lineHeight;
-    });
-    
-    yPosition += sectionSpacing;
-    
-    // 4. Products & Services (Detailed)
-    addSection('4. PRODUCTS & SERVICES', data.products);
-    
-    // 5. Marketing & Sales Strategy
-    if (data.marketingStrategy) {
-        addSection('5. MARKETING & SALES STRATEGY', data.marketingStrategy);
-    }
-    
-    // 7. Financial Projections
-    doc.addPage();
-    yPosition = 30;
-    
-    doc.setFontSize(18);
-    doc.setFont(undefined, 'bold');
-    doc.text('7. FINANCIAL PROJECTIONS', margin, yPosition);
-    yPosition += 25;
-    
-    // Startup Costs Table
-    const startupCosts = [
-        ['Startup Cost Breakdown', 'Amount (ZAR)'],
-        ['Initial Investment', `R${(Number(data.startupCost) || 0).toLocaleString()}`],
-        ['Equipment & Setup', `R${(Number(data.equipmentCost) || 0).toLocaleString()}`],
-        ['Initial Inventory', `R${(Number(data.initialInventory) || 0).toLocaleString()}`],
-        ['Working Capital (3 months)', `R${(monthlyExp * 3).toLocaleString()}`],
-        ['TOTAL STARTUP COSTS', `R${((Number(data.startupCost) || 0) + (Number(data.equipmentCost) || 0) + (Number(data.initialInventory) || 0) + (monthlyExp * 3)).toLocaleString()}`]
-    ];
-    
-    addFinancialTable('STARTUP COSTS', startupCosts);
-    
-    // Monthly Operating Expenses
-    const monthlyExpenses = [
-        ['Monthly Operating Expenses', 'Amount (ZAR)'],
-        ['Rent & Utilities', `R${Math.round(monthlyExp * 0.2).toLocaleString()}`],
-        ['Marketing & Advertising', `R${Math.round(monthlyExp * 0.15).toLocaleString()}`],
-        ['Insurance & Legal', `R${Math.round(monthlyExp * 0.05).toLocaleString()}`],
-        ['Other Operating Expenses', `R${Math.round(monthlyExp * 0.6).toLocaleString()}`],
-        ['TOTAL MONTHLY EXPENSES', `R${monthlyExp.toLocaleString()}`]
-    ];
-    
-    addFinancialTable('MONTHLY OPERATING EXPENSES', monthlyExpenses);
-    
-    // 3-Year Revenue Projections
-    const year1Revenue = monthlyRev * 12;
-    const year2Revenue = year1Revenue * (1 + growthRate);
-    const year3Revenue = year2Revenue * (1 + growthRate);
-    
-    const year1Expenses = monthlyExp * 12;
-    const year2Expenses = year1Expenses * 1.1;
-    const year3Expenses = year2Expenses * 1.1;
-    
-    const revenueProjections = [
-        ['3-Year Financial Projections', 'Year 1', 'Year 2', 'Year 3'],
-        ['Revenue', `R${year1Revenue.toLocaleString()}`, `R${year2Revenue.toLocaleString()}`, `R${year3Revenue.toLocaleString()}`],
-        ['Operating Expenses', `R${year1Expenses.toLocaleString()}`, `R${year2Expenses.toLocaleString()}`, `R${year3Expenses.toLocaleString()}`],
-        ['Gross Profit', `R${(year1Revenue - year1Expenses).toLocaleString()}`, `R${(year2Revenue - year2Expenses).toLocaleString()}`, `R${(year3Revenue - year3Expenses).toLocaleString()}`],
-        ['Profit Margin %', `${((year1Revenue - year1Expenses) / year1Revenue * 100).toFixed(1)}%`, `${((year2Revenue - year2Expenses) / year2Revenue * 100).toFixed(1)}%`, `${((year3Revenue - year3Expenses) / year3Revenue * 100).toFixed(1)}%`]
-    ];
-    
-    addFinancialTable('REVENUE PROJECTIONS', revenueProjections);
-    
-    // Break-even Analysis
-    checkNewPage(50);
-    doc.setFontSize(14);
-    doc.setFont(undefined, 'bold');
-    doc.text('Break-even Analysis', margin, yPosition);
-    yPosition += 20;
-    
-    doc.setFontSize(11);
-    doc.setFont(undefined, 'normal');
-    
-    const breakEvenDetails = [
-        `Monthly Fixed Costs: R${monthlyExp.toLocaleString()}`,
-        `Monthly Revenue Target: R${monthlyRev.toLocaleString()}`,
-        `Break-even Point: ${Math.ceil(monthlyExp / (monthlyRev || 1))} months to recover initial investment`,
-        `Monthly Profit at Target: R${(monthlyRev - monthlyExp).toLocaleString()}`
-    ];
-    
-    addBulletPoints(breakEvenDetails);
-    
-    const breakEvenNote = `The business will reach profitability when monthly revenue consistently exceeds R${monthlyExp.toLocaleString()}.`;
-    const splitBreakEvenNote = doc.splitTextToSize(breakEvenNote, textWidth);
-    splitBreakEvenNote.forEach(line => {
-        checkNewPage();
-        doc.text(line, margin, yPosition);
-        yPosition += lineHeight;
-    });
-    
-    yPosition += sectionSpacing;
-    
-    // 8. Risk Analysis
-    doc.addPage();
-    yPosition = 30;
-    
-    addSection('8. RISK ANALYSIS', '');
-    
-    const riskCategories = [
-        {
-            title: 'Market Risks:',
-            risks: [
-                'Economic downturns affecting consumer spending',
-                'New competitors entering the market', 
-                'Changes in consumer preferences'
-            ]
-        },
-        {
-            title: 'Operational Risks:',
-            risks: [
-                'Key personnel leaving the company',
-                'Supply chain disruptions',
-                'Technology failures or cyber security threats'
-            ]
-        },
-        {
-            title: 'Financial Risks:',
-            risks: [
-                'Cash flow shortages',
-                'Inability to secure additional funding',
-                'Currency fluctuations (if applicable)'
-            ]
-        },
-        {
-            title: 'Regulatory Risks:',
-            risks: [
-                'Changes in government regulations',
-                'Compliance requirements',
-                'Tax law changes'
-            ]
-        }
-    ];
-    
-    riskCategories.forEach(category => {
-        doc.setFont(undefined, 'bold');
-        doc.text(category.title, margin, yPosition);
-        yPosition += lineHeight + 3;
-        
-        doc.setFont(undefined, 'normal');
-        addBulletPoints(category.risks);
-        yPosition += 8;
-    });
-    
-    // 9. Funding Requirements
-    doc.addPage();
-    yPosition = 30;
-    
-    addSection('9. FUNDING REQUIREMENTS', '');
-    
-    doc.setFont(undefined, 'bold');
-    doc.text(`Total Funding Required: R${(Number(data.fundingNeeded) || 0).toLocaleString()}`, margin, yPosition);
-    yPosition += lineHeight + 8;
-    
-    doc.text('Use of Funds:', margin, yPosition);
-    yPosition += lineHeight + 3;
-    
-    doc.setFont(undefined, 'normal');
-    const fundingUseText = data.fundingUse || 'Funding will be allocated across startup costs, working capital, and growth investments.';
-    const splitFundingUse = doc.splitTextToSize(fundingUseText, textWidth);
-    splitFundingUse.forEach(line => {
-        checkNewPage();
-        doc.text(line, margin, yPosition);
-        yPosition += lineHeight;
-    });
-    
-    yPosition += 12;
-    
-    doc.setFont(undefined, 'bold');
-    doc.text('Return on Investment:', margin, yPosition);
-    yPosition += lineHeight + 3;
-    
-    doc.setFont(undefined, 'normal');
-    const roiData = [
-        `Year 1 ROI: ${((year1Revenue - year1Expenses) / (Number(data.fundingNeeded) || 1) * 100).toFixed(1)}%`,
-        `Year 3 ROI: ${((year3Revenue - year3Expenses) / (Number(data.fundingNeeded) || 1) * 100).toFixed(1)}%`,
-        `Payback Period: ${Math.ceil((Number(data.fundingNeeded) || 0) / ((year1Revenue - year1Expenses) / 12))} months`
-    ];
-    
-    addBulletPoints(roiData);
-    
-    // 10. Appendices
-    addSection('10. APPENDICES', '');
-    
-    const appendixItems = [
-        'Market research data',
-        'Financial model assumptions', 
-        'Legal documents and permits',
-        'Management team resumes',
-        'Letters of intent from key customers'
-    ];
-    
-    addBulletPoints(appendixItems);
-    
-    // Footer on each page
-    const pageCount = doc.internal.getNumberOfPages();
-    for (let i = 1; i <= pageCount; i++) {
-        doc.setPage(i);
-        doc.setFontSize(8);
-        doc.setFont(undefined, 'normal');
-        doc.text(`${data.businessName} - Business Plan`, margin, pageHeight - 15);
-        doc.text(`Page ${i} of ${pageCount}`, pageWidth - 50, pageHeight - 15);
-        doc.text('CONFIDENTIAL', pageWidth / 2, pageHeight - 15, { align: 'center' });
-    }
-    
-    // Save the PDF
-    const fileName = `${(data.businessName || 'Business_Plan').replace(/[^a-z0-9]/gi, '_')}_Business_Plan.pdf`;
-    doc.save(fileName);
-    
-    // Set up the download button if it exists
-    const downloadBtn = document.getElementById('download-btn');
-    if (downloadBtn) {
-        downloadBtn.addEventListener('click', function() {
+            doc.addPage();
+            yPosition = 30;
+            
+            // 1. Executive Summary
+            addSection('1. EXECUTIVE SUMMARY', 
+                `${data.businessName} is a ${data.businessType.toLowerCase()} business located in ${data.location || 'South Africa'}. 
+                Our mission: "${data.missionStatement || 'To be defined'}". 
+                We offer: ${data.products || 'Products/services to be defined'}.
+                We are seeking R${(Number(data.fundingNeeded) || 0).toLocaleString()} in funding to achieve our business goals.`);
+            
+            // Key Financial Highlights
+            doc.setFont(undefined, 'bold');
+            doc.text('Key Financial Highlights:', margin, yPosition);
+            yPosition += lineHeight + 3;
+            
+            doc.setFont(undefined, 'normal');
+            const financialHighlights = [
+                `Monthly Revenue Target: R${monthlyRev.toLocaleString()}`,
+                `Monthly Operating Expenses: R${monthlyExp.toLocaleString()}`,
+                `Net Monthly Profit: R${(monthlyRev - monthlyExp).toLocaleString()}`,
+                `Funding Required: R${(Number(data.fundingNeeded) || 0).toLocaleString()}`,
+                `Market Opportunity: R${(marketSize * marketShare).toLocaleString()}`
+            ];
+            
+            addBulletPoints(financialHighlights);
+            yPosition += 10;
+            
+            // 2. Business Description
+            addSection('2. BUSINESS DESCRIPTION', 
+                `${data.businessName} specializes in ${data.products || 'products/services'}. 
+                Our competitive advantage: ${data.competitiveAdvantage || 'To be defined'}.`);
+            
+            // 3. Market Analysis
+            doc.addPage();
+            yPosition = 30;
+            
+            addSection('3. MARKET ANALYSIS', 
+                `Our target market: ${data.targetMarket || 'To be defined'}. 
+                Market size: R${marketSize.toLocaleString()} with ${(marketShare * 100).toFixed(1)}% target share. 
+                Annual growth rate: ${(growthRate * 100).toFixed(1)}%.`);
+            
+            // 4. Products & Services
+            addSection('4. PRODUCTS & SERVICES', data.products);
+            
+            // 5. Marketing & Sales Strategy
+            addSection('5. MARKETING & SALES STRATEGY', data.marketingStrategy);
+            
+            // 6. Management Team
+            if (data.managementTeam) {
+                addSection('6. MANAGEMENT TEAM', data.managementTeam);
+            }
+            
+            // 7. Financial Projections
+            doc.addPage();
+            yPosition = 30;
+            
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('7. FINANCIAL PROJECTIONS', margin, yPosition);
+            yPosition += 25;
+            
+            // Startup Costs Table
+            const startupCosts = [
+                ['Funding Requirement', 'Amount (ZAR)'],
+                ['One-time Startup Costs', `R${(Number(data.startupCost) || 0).toLocaleString()}`],
+                ['Working Capital (3 months)', `R${(monthlyExp * 3).toLocaleString()}`],
+                ['Total Funding Required', `R${(Number(data.fundingNeeded) || 0).toLocaleString()}`]
+            ];
+            
+            addFinancialTable('STARTUP COSTS', startupCosts);
+            
+            // Monthly Operating Expenses
+            const monthlyExpenses = [
+                ['Monthly Operating Expenses', 'Amount (ZAR)'],
+                ['Rent & Utilities', `R${Math.round(monthlyExp * 0.2).toLocaleString()}`],
+                ['Marketing & Advertising', `R${Math.round(monthlyExp * 0.15).toLocaleString()}`],
+                ['Insurance & Legal', `R${Math.round(monthlyExp * 0.05).toLocaleString()}`],
+                ['Other Operating Expenses', `R${Math.round(monthlyExp * 0.6).toLocaleString()}`],
+                ['TOTAL MONTHLY EXPENSES', `R${monthlyExp.toLocaleString()}`]
+            ];
+            
+            addFinancialTable('MONTHLY OPERATING EXPENSES', monthlyExpenses);
+            
+            // 3-Year Revenue Projections
+            const year1Revenue = monthlyRev * 12;
+            const year2Revenue = year1Revenue * (1 + growthRate);
+            const year3Revenue = year2Revenue * (1 + growthRate);
+            
+            const year1Expenses = monthlyExp * 12;
+            const year2Expenses = year1Expenses * 1.1;
+            const year3Expenses = year2Expenses * 1.1;
+            
+            const revenueProjections = [
+                ['3-Year Financial Projections', 'Year 1', 'Year 2', 'Year 3'],
+                ['Revenue', `R${year1Revenue.toLocaleString()}`, `R${year2Revenue.toLocaleString()}`, `R${year3Revenue.toLocaleString()}`],
+                ['Operating Expenses', `R${year1Expenses.toLocaleString()}`, `R${year2Expenses.toLocaleString()}`, `R${year3Expenses.toLocaleString()}`],
+                ['Gross Profit', `R${(year1Revenue - year1Expenses).toLocaleString()}`, `R${(year2Revenue - year2Expenses).toLocaleString()}`, `R${(year3Revenue - year3Expenses).toLocaleString()}`],
+                ['Profit Margin %', `${((year1Revenue - year1Expenses) / year1Revenue * 100).toFixed(1)}%`, `${((year2Revenue - year2Expenses) / year2Revenue * 100).toFixed(1)}%`, `${((year3Revenue - year3Expenses) / year3Revenue * 100).toFixed(1)}%`]
+            ];
+            
+            addFinancialTable('REVENUE PROJECTIONS', revenueProjections);
+            
+            // 8. Risk Analysis
+            doc.addPage();
+            yPosition = 30;
+            
+            addSection('8. RISK ANALYSIS', 
+                `Competition: ${data.competition || 'To be defined'}. 
+                Market risks: Economic downturns, changing consumer preferences. 
+                Mitigation strategies: Diversification, continuous market research.`);
+            
+            // 9. Funding Requirements
+            addSection('9. FUNDING REQUIREMENTS', 
+                `Funding required: R${(Number(data.fundingNeeded) || 0).toLocaleString()}. 
+                Use of funds: Startup costs, working capital, marketing initiatives.`);
+            
+            // 10. Business Goals
+            addSection('10. BUSINESS GOALS', data.businessGoals);
+            
+            // Footer on each page
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setFont(undefined, 'normal');
+                doc.text(`${data.businessName} - Business Plan`, margin, pageHeight - 15);
+                doc.text(`Page ${i} of ${pageCount}`, pageWidth - 50, pageHeight - 15);
+                doc.text('CONFIDENTIAL', pageWidth / 2, pageHeight - 15, { align: 'center' });
+            }
+            
+            // Save the PDF
+            const fileName = `${(data.businessName || 'Business_Plan').replace(/[^a-z0-9]/gi, '_')}_Business_Plan.pdf`;
             doc.save(fileName);
-        });
-    }
-    
-    return doc; // Return the document object for further use if needed
-}
+            
+            // Set up the download button if it exists
+            const downloadBtn = document.getElementById('download-btn');
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', function() {
+                    doc.save(fileName);
+                });
+            }
+            
+            return doc;
+        }
         
         // Add intersection observer for animations
         const observerOptions = {
@@ -2318,53 +2292,53 @@ function generateBusinessPlanPDF(data) {
         });
         
         // Add this script at the bottom of your existing JavaScript
-document.addEventListener('DOMContentLoaded', function() {
-    const table = document.querySelector('.comparison-table');
-    const mobileContainer = document.querySelector('.mobile-cards');
-    
-    if (table && mobileContainer) {
-        const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent);
-        const rows = Array.from(table.querySelectorAll('tbody tr'));
-        
-        rows.forEach(row => {
-            const cells = Array.from(row.querySelectorAll('td'));
-            const featureName = cells[0].textContent;
+        document.addEventListener('DOMContentLoaded', function() {
+            const table = document.querySelector('.comparison-table');
+            const mobileContainer = document.querySelector('.mobile-cards');
             
-            const card = document.createElement('div');
-            card.className = 'feature-card';
-            
-            const header = document.createElement('div');
-            header.className = 'feature-header';
-            header.textContent = featureName;
-            card.appendChild(header);
-            
-            // Create rows for each solution
-            for (let i = 1; i < cells.length; i++) {
-                const rowDiv = document.createElement('div');
-                rowDiv.className = 'feature-row';
+            if (table && mobileContainer) {
+                const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent);
+                const rows = Array.from(table.querySelectorAll('tbody tr'));
                 
-                // Highlight "Our Generator"
-                if (headers[i] === 'Our Generator') {
-                    rowDiv.classList.add('our-highlight');
-                }
-                
-                const nameSpan = document.createElement('span');
-                nameSpan.className = 'feature-name';
-                nameSpan.textContent = headers[i];
-                
-                const valueSpan = document.createElement('span');
-                valueSpan.className = 'feature-value';
-                valueSpan.innerHTML = cells[i].innerHTML;
-                
-                rowDiv.appendChild(nameSpan);
-                rowDiv.appendChild(valueSpan);
-                card.appendChild(rowDiv);
+                rows.forEach(row => {
+                    const cells = Array.from(row.querySelectorAll('td'));
+                    const featureName = cells[0].textContent;
+                    
+                    const card = document.createElement('div');
+                    card.className = 'feature-card';
+                    
+                    const header = document.createElement('div');
+                    header.className = 'feature-header';
+                    header.textContent = featureName;
+                    card.appendChild(header);
+                    
+                    // Create rows for each solution
+                    for (let i = 1; i < cells.length; i++) {
+                        const rowDiv = document.createElement('div');
+                        rowDiv.className = 'feature-row';
+                        
+                        // Highlight "Our Generator"
+                        if (headers[i] === 'Our Generator') {
+                            rowDiv.classList.add('our-highlight');
+                        }
+                        
+                        const nameSpan = document.createElement('span');
+                        nameSpan.className = 'feature-name';
+                        nameSpan.textContent = headers[i];
+                        
+                        const valueSpan = document.createElement('span');
+                        valueSpan.className = 'feature-value';
+                        valueSpan.innerHTML = cells[i].innerHTML;
+                        
+                        rowDiv.appendChild(nameSpan);
+                        rowDiv.appendChild(valueSpan);
+                        card.appendChild(rowDiv);
+                    }
+                    
+                    mobileContainer.appendChild(card);
+                });
             }
-            
-            mobileContainer.appendChild(card);
         });
-    }
-});
     </script>
 </body>
 </html>
