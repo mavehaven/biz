@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Business Plan Generator - Get Your Plan in Minutes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            overflow-x: hidden;
+            padding-top: 80px; /* Added for fixed header */
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(26, 26, 26, 0.95);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 20px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Fixed logo styles */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            /* Removed gradient background */
+            border-radius: 0; /* Removed border-radius */
+            overflow: hidden;
+        }
+
+        .logo-placeholder img {
+            width: 100%; /* Changed to 100% */
+            height: 100%; /* Changed to 100% */
+            object-fit: contain;
+            background: transparent; /* Ensure no background */
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 300;
+            transition: color 0.3s;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a:hover {
+            color: #dc143c;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #dc143c;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 3px;
+            font-weight: 300;
+            transition: all 0.3s;
+            margin-left: 15px;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            top: 80px;
+            right: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: calc(100vh - 80px);
+            background: rgba(26, 26, 26, 0.98);
+            z-index: 999;
+            transition: right 0.4s ease;
+            padding: 20px;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+        }
+
+        .mobile-nav-links li {
+            margin: 20px 0;
+        }
+
+        .mobile-nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            display: block;
+            padding: 10px;
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
+
+        .mobile-nav-links a:hover {
+            background: rgba(220, 20, 60, 0.2);
+        }
+
+        .mobile-cta {
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 3px;
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        /* Overlay for mobile menu */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(220, 20, 60, 0.05) 50%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(-100px); }
+            50% { transform: translateX(100px); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: -1px;
+            animation: slideUp 1s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero .subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            opacity: 0.8;
+            font-weight: 300;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .hero .stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin: 40px 0;
+            animation: slideUp 1s ease-out 0.4s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 200;
+            display: block;
+            color: #dc143c;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            font-weight: 300;
+        }
+
+        .cta-primary {
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            color: white;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 3px;
+            font-size: 1.2rem;
+            font-weight: 400;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 20px rgba(220, 20, 60, 0.3);
+            transition: all 0.3s ease;
+            animation: slideUp 1s ease-out 0.6s both;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(220, 20, 60, 0.4);
+            background: linear-gradient(135deg, #b91c3c 0%, #dc143c 100%);
+        }
+
+        .price-highlight {
+            font-size: 2rem;
+            margin: 20px 0;
+            font-weight: 300;
+            animation: slideUp 1s ease-out 0.8s both;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            opacity: 0.6;
+            font-size: 1.5rem;
+            color: #c0c0c0;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: #fafafa;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+            font-weight: 300;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 60px;
+            font-weight: 300;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px;
+            border-radius: 2px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: all 0.3s ease;
+            border-top: 3px solid #dc143c;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: #c0c0c0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin: 0 auto 20px;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+            font-weight: 400;
+        }
+
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* Competitive Analysis */
+        .comparison {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 40px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .comparison-table th {
+            background: #1a1a1a;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-weight: 400;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .comparison-table td {
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+            font-weight: 300;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #fafafa;
+        }
+
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .our-column {
+            background: #dc143c !important;
+            color: white !important;
+            font-weight: 400 !important;
+        }
+
+        .checkmark {
+            color: #1a1a1a;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .crossmark {
+            color: #dc143c;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .partial {
+            color: #c0c0c0;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 80px 0;
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .benefits .section-title {
+            color: white;
+        }
+
+        .benefits .section-subtitle {
+            color: #c0c0c0;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .benefit-number {
+            font-size: 3rem;
+            font-weight: 200;
+            margin-bottom: 10px;
+            color: #dc143c;
+        }
+
+        .benefit-text {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: #c0c0c0;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 0;
+            background: #fafafa;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .testimonial {
+            background: white;
+            padding: 30px;
+            border-radius: 2px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            position: relative;
+            border-left: 4px solid #dc143c;
+        }
+
+        .testimonial::before {
+            content: '"';
+            font-size: 3rem;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: #dc143c;
+            opacity: 0.2;
+            font-weight: 300;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #333;
+            font-weight: 300;
+        }
+
+        .testimonial-author {
+            font-weight: 400;
+            color: #1a1a1a;
+        }
+
+        .testimonial-role {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+
+        /* CTA Section */
+        .final-cta {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .urgency {
+            background: #dc143c;
+            color: white;
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 2px;
+            font-weight: 400;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo-placeholder {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .hero .stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .comparison-table {
+                font-size: 0.8rem;
+            }
+            
+            .comparison-table th,
+            .comparison-table td {
+                padding: 10px 8px;
+            }
+            
+            .features-grid,
+            .benefits-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Floating elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            opacity: 0.05;
+            animation: floatRandom 20s ease-in-out infinite;
+            color: #dc143c;
+            font-size: 2rem;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 20%;
+            right: 10%;
+            animation-delay: 7s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 14s;
+        }
+
+        @keyframes floatRandom {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(15px) rotate(240deg); }
+        }
+
+        /* New: Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 3px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #dc143c;
+        }
+
+        .modal h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+
+        .modal p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo-placeholder">
+                <img src="//b9fe070413d9eb020045866da2feb86e.cdn.bubble.io/f1750341223817x792480728047750900/retteyfdye.svg" alt="BizPlanPro Logo">
+            </div>
+        </div>
+        
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#comparison">Comparison</a></li>
+                <li><a href="#benefits">Benefits</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#get-started" class="nav-cta">Get Started</a></li>
+            </ul>
+            
+            <button class="hamburger">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <ul class="mobile-nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#comparison">Comparison</a></li>
+            <li><a href="#benefits">Benefits</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#get-started" class="mobile-cta">Get Started</a></li>
+        </ul>
+    </div>
+    
+    <!-- Overlay for mobile menu -->
+    <div class="overlay"></div>
+
+    <!-- Floating Background Elements -->
+    <div class="floating-elements">
+        <div class="floating-element">📊</div>
+        <div class="floating-element">💼</div>
+        <div class="floating-element">🚀</div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Get Your Professional Business Plan in Minutes</h1>
+            <p class="subtitle">Stop spending weeks writing business plans. Our AI-powered generator creates comprehensive, investor-ready business plans tailored for South African businesses.</p>
+            
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">10K+</span>
+                    <span class="stat-label">Plans Generated</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">95%</span>
+                    <span class="stat-label">Success Rate</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">5 Min</span>
+                    <span class="stat-label">Average Time</span>
+                </div>
+            </div>
+
+            <div class="price-highlight">
+                <span class="original-price">R1,500</span> 
+                <strong>Only R200</strong>
+            </div>
+
+            <a href="#get-started" class="cta-primary">Generate My Business Plan Now</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose Our Business Plan Generator?</h2>
+            <p class="section-subtitle">Everything you need to create a professional, comprehensive business plan</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">SA Market Optimized</h3>
+                    <p class="feature-description">Specifically designed for South African businesses with local market insights, regulations, and industry standards.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Lightning Fast</h3>
+                    <p class="feature-description">Generate a complete 10-section business plan in under 5 minutes. No more weeks of research and writing.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Financial Projections</h3>
+                    <p class="feature-description">Automatic calculation of break-even analysis, 3-year projections, and ROI metrics that investors want to see.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3 class="feature-title">Professional Quality</h3>
+                    <p class="feature-description">Bank and investor-ready documents with professional formatting and comprehensive coverage.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3 class="feature-title">AI-Powered Insights</h3>
+                    <p class="feature-description">Smart recommendations based on your industry, target market, and business model for maximum success.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Secure & Confidential</h3>
+                    <p class="feature-description">Your business information is protected with enterprise-level security and complete confidentiality.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Competitive Analysis -->
+    <section class="comparison" id="comparison">
+        <div class="container">
+            <h2 class="section-title">How We Compare to Alternatives</h2>
+            <p class="section-subtitle">See why thousands choose our solution over expensive consultants and generic templates</p>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th class="our-column">Our Generator</th>
+                        <th>Business Consultant</th>
+                        <th>Generic AI Tools</th>
+                        <th>Canva Templates</th>
+                        <th>DIY Approach</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Time to Complete</strong></td>
+                        <td class="our-column">5 minutes</td>
+                        <td>2-4 weeks</td>
+                        <td>1-2 hours</td>
+                        <td>3-5 hours</td>
+                        <td>2-6 weeks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost</strong></td>
+                        <td class="our-column">R200</td>
+                        <td>R15,000 - R50,000</td>
+                        <td>R500 - R2,000</td>
+                        <td>R300 - R800</td>
+                        <td>Free (Time cost)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SA Market Focus</strong></td>
+                        <td class="our-column"><span class="checkmark">✓</span></td>
+                        <td><span class="checkmark">✓</span></td>
+                        <td><span class="crossmark">✗</span></td>
+                        <td><span class="crossmark">✗</span></td>
+                        <td><span class="partial">△</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Financial Projections</strong></td>
+                        <td class="our-column"><span class="checkmark">✓</span></td>
+                        <td><span class="checkmark">✓</span></td>
+                        <td><span class="partial">△</span></td>
+                        <td><span class="crossmark">✗</span></td>
+                        <td><span class="partial">△</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Professional Formatting</strong></td>
+                        <td class="our-column"><span class="checkmark">✓</span></td>
+                        <td><span class="checkmark">✓</span></td>
+                        <td><span class="partial">△</span></td>
+                        <td><span class="checkmark">✓</span></td>
+                        <td><span class="crossmark">✗</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Industry Customization</strong></td>
+                        <td class="our-column"><span class="checkmark">✓</span></td>
+                        <td><span class="checkmark">✓</span></td>
+                        <td><span class="partial">△</span></td>
+                        <td><span class="crossmark">✗</span></td>
+                        <td><span class="partial">△</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Instant Download</strong></td>
+                        <td class="our-column"><span class="checkmark">✓</span></td>
+                        <td><span class="crossmark">✗</span></td>
+                        <td><span class="checkmark">✓</span></td>
+                        <td><span class="checkmark">✓</span></td>
+                        <td><span class="checkmark">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Market Analysis</strong></td>
+                        <td class="our-column"><span class="checkmark">✓</span></td>
+                        <td><span class="checkmark">✓</span></td>
+                        <td><span class="partial">△</span></td>
+                        <td><span class="crossmark">✗</span></td>
+                        <td><span class="partial">△</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Risk Analysis</strong></td>
+                        <td class="our-column"><span class="checkmark">✓</span></td>
+                        <td><span class="checkmark">✓</span></td>
+                        <td><span class="crossmark">✗</span></td>
+                        <td><span class="crossmark">✗</span></td>
+                        <td><span class="partial">△</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Investor Ready</strong></td>
+                        <td class="our-column"><span class="checkmark">✓</span></td>
+                        <td><span class="checkmark">✓</span></td>
+                        <td><span class="partial">△</span></td>
+                        <td><span class="crossmark">✗</span></td>
+                        <td><span class="crossmark">✗</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits" id="benefits">
+        <div class="container">
+            <h2 class="section-title">The Numbers Don't Lie</h2>
+            <p class="section-subtitle">See the immediate impact on your business success</p>
+            
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-number">87%</div>
+                    <div class="benefit-text">Higher funding approval rate with professional business plans</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-number">156%</div>
+                    <div class="benefit-text">Faster business growth with proper planning</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-number">73%</div>
+                    <div class="benefit-text">Reduction in startup costs through better planning</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-number">92%</div>
+                    <div class="benefit-text">Customer satisfaction rate with our service</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Our Customers Say</h2>
+            <p class="section-subtitle">Join thousands of successful South African entrepreneurs</p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <p class="testimonial-text">This saved me weeks of work and thousands in consultant fees. Got approved for my business loan within 10 days!</p>
+                    <div class="testimonial-author">Sarah Mitchell</div>
+                    <div class="testimonial-role">Restaurant Owner, Cape Town</div>
+                </div>
+                
+                <div class="testimonial">
+                    <p class="testimonial-text">The financial projections were spot-on and helped me secure R500k in funding for my tech startup.</p>
+                    <div class="testimonial-author">Thabo Mthembu</div>
+                    <div class="testimonial-role">Tech Entrepreneur, Johannesburg</div>
+                </div>
+                
+                <div class="testimonial">
+                    <p class="testimonial-text">Professional quality that rivals what I paid R20k for with a consultant. Incredible value for money.</p>
+                    <div class="testimonial-author">Lisa van der Merwe</div>
+                    <div class="testimonial-role">Retail Business Owner, Durban</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta" id="get-started">
+        <div class="container">
+            <div class="urgency">⚡ Limited Time: 87% OFF Regular Price</div>
+            <h2 style="font-size: 2.5rem; margin-bottom: 20px; font-weight: 300;">Ready to Build Your Business Empire?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 30px; font-weight: 300;">Join 10,000+ South African entrepreneurs who've launched successful businesses with our plans</p>
+            
+            <div style="margin: 30px 0;">
+                <span style="font-size: 1.5rem; opacity: 0.6; text-decoration: line-through; color: #c0c0c0;">R1,500</span>
+                <span style="font-size: 3rem; margin-left: 20px; color: #dc143c; font-weight: 200;">R200</span>
+            </div>
+            
+            <a href="javascript:void(0)" class="cta-primary" style="font-size: 1.3rem; padding: 25px 50px;" onclick="showGeneratorModal()">
+                🚀 Generate My Business Plan Now
+            </a>
+            
+            <p style="margin-top: 20px; opacity: 0.7; font-weight: 300;">
+                ✓ 30-day money-back guarantee &nbsp;&nbsp;
+                ✓ Instant PDF download &nbsp;&nbsp;
+                ✓ Professional quality
+            </p>
+        </div>
+    </section>
+
+    <!-- Generator Modal -->
+    <div id="generator-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeGeneratorModal()">&times;</span>
+            <h2>Business Plan Generator</h2>
+            <p>This is where the generator would appear. In a real implementation, this would be a form to input business details and generate the plan.</p>
+            <p>For now, this is a placeholder to demonstrate the fixed functionality.</p>
+            <div style="margin-top: 30px;">
+                <div style="display: inline-block; width: 40px; height: 40px; border: 2px solid #c0c0c0; border-top: 2px solid #dc143c; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const mobileNav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.overlay');
+        
+        hamburger.addEventListener('click', () => {
+            mobileNav.classList.toggle('active');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : 'auto';
+        });
+        
+        overlay.addEventListener('click', () => {
+            mobileNav.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.mobile-nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+        
+        // Generator modal functions
+        function showGeneratorModal() {
+            document.getElementById('generator-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
+        }
+        
+        function closeGeneratorModal() {
+            document.getElementById('generator-modal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Re-enable scrolling
+        }
+        
+        // Close modal if clicking outside content
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('generator-modal');
+            if (e.target === modal) {
+                closeGeneratorModal();
+            }
+        });
+
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href') !== '#') {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all feature cards, testimonials, etc.
+        document.querySelectorAll('.feature-card, .testimonial, .benefit-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
