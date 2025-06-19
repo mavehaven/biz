@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Plan Generator with Payment</title>
+    <title>Professional Business Plan Generator - Get Your Plan in Minutes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
     <style>
         * {
             margin: 0;
@@ -912,84 +911,6 @@
             color: #27ae60;
         }
 
-        /* Payment section styles */
-        .payment-section {
-            display: none;
-            margin-top: 30px;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            border: 1px solid #eee;
-        }
-        
-        .payment-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .payment-header h3 {
-            font-size: 1.5rem;
-            color: #1a1a1a;
-            margin-bottom: 10px;
-        }
-        
-        .payment-header p {
-            color: #666;
-        }
-        
-        .payment-card {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-        
-        #card-frame {
-            height: 40px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .payment-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        
-        .payment-amount {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #1a1a1a;
-        }
-        
-        .payment-methods {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            justify-content: center;
-        }
-        
-        .payment-methods img {
-            height: 30px;
-        }
-        
-        .payment-security {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 15px;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .payment-security i {
-            color: #28a745;
-        }
-        
         /* Responsive Design */
         @media (max-width: 992px) {
             .nav-links {
@@ -1051,11 +972,6 @@
             .modal-content {
                 padding: 30px 20px;
             }
-            
-            .payment-info {
-                flex-direction: column;
-                gap: 10px;
-            }
         }
 
         @media (max-width: 480px) {
@@ -1077,122 +993,68 @@
             }
         }
         
-        /* Mobile cards container */
-        .mobile-cards {
-            display: none;
-            flex-direction: column;
-            gap: 15px;
-            padding: 20px;
-        }
+        /* Add these styles to your existing CSS */
 
-        /* Feature card styling */
-        .feature-card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-            overflow: hidden;
-        }
+/* Mobile cards container */
+.mobile-cards {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+}
 
-        .feature-header {
-            background: #1a1a1a;
-            color: white;
-            padding: 15px;
-            font-weight: 500;
-            font-size: 1.1rem;
-        }
+/* Feature card styling */
+.feature-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
 
-        .feature-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 15px;
-            border-bottom: 1px solid #f0f0f0;
-        }
+.feature-header {
+    background: #1a1a1a;
+    color: white;
+    padding: 15px;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
 
-        .feature-row:last-child {
-            border-bottom: none;
-        }
+.feature-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
 
-        .feature-name {
-            font-weight: 500;
-            color: #666;
-        }
+.feature-row:last-child {
+    border-bottom: none;
+}
 
-        .feature-value {
-            font-weight: 400;
-            text-align: right;
-        }
+.feature-name {
+    font-weight: 500;
+    color: #666;
+}
 
-        .our-highlight {
-            background-color: rgba(220, 20, 60, 0.08);
-            border-left: 4px solid #dc143c;
-        }
-        
-        /* NEW: Payment Popup Styles */
-        .payment-popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 3000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .payment-popup-content {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            position: relative;
-        }
-        
-        .close-payment-popup {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: #dc143c;
-            background: none;
-            border: none;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s;
-        }
-        
-        .close-payment-popup:hover {
-            background: #f8f8f8;
-            transform: rotate(90deg);
-        }
-        
-        /* MODIFIED: Payment Card Styles */
-        .payment-card {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        
-        #card-frame {
-            height: 50px; /* Increased height for better visibility */
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 10px;
-            margin-bottom: 20px; /* Added spacing */
-        }
-        
-        #pay-now-btn {
-            margin-top: 100px; /* Proper spacing above button */
-            width: 100%;
-        }
+.feature-value {
+    font-weight: 400;
+    text-align: right;
+}
+
+.our-highlight {
+    background-color: rgba(220, 20, 60, 0.08);
+    border-left: 4px solid #dc143c;
+}
+
+/* Update your existing media query */
+@media (max-width: 768px) {
+    .comparison-table {
+        display: none;
+    }
+    
+    .mobile-cards {
+        display: flex;
+    }
+}
     </style>
 </head>
 <body>
@@ -1623,7 +1485,7 @@
                 </form>
             </div>
             
-            <!-- Step 3: Final Details & Payment -->
+            <!-- Step 3: Final Details -->
             <div class="modal-step" id="step-3">
                 <form class="modal-form">
                     <div class="form-group">
@@ -1653,45 +1515,13 @@
                     
                     <div class="form-navigation">
                         <button type="button" class="modal-btn btn-outline prev-step"><i class="fas fa-arrow-left"></i> Previous</button>
-                        <button type="button" class="modal-btn" id="proceed-to-payment-btn">
-                            Proceed to Payment
+                        <button type="submit" class="modal-btn generate-btn">
+                            <span id="generate-text">Generate Business Plan</span>
+                            <span id="generate-loading" class="loading"></span>
                         </button>
                     </div>
                 </form>
-                
-                 <!-- Payment section -->
-    <!-- NEW: Payment Popup -->
-    <div class="payment-popup" id="payment-popup">
-        <div class="payment-popup-content">
-            <button class="close-payment-popup">&times;</button>
-            
-            <div class="payment-header">
-                <h3>Secure Payment</h3>
-                <p>Complete your payment to generate your business plan</p>
             </div>
-            
-            <div class="payment-info">
-                <div class="payment-amount">R200.00</div>
-                <div class="payment-methods">
-                    <img src="https://cdn.yoco.com/images/payment-methods/visa.svg" alt="Visa">
-                    <img src="https://cdn.yoco.com/images/payment-methods/mastercard.svg" alt="Mastercard">
-                    <img src="https://cdn.yoco.com/images/payment-methods/amex.svg" alt="American Express">
-                </div>
-            </div>
-            
-            <div class="payment-card">
-                <div id="card-frame"></div>
-                <button class="modal-btn" id="pay-now-btn">
-                    Pay R200 Now
-                </button>
-            </div>
-            
-            <div class="payment-security">
-                <i class="fas fa-lock"></i>
-                <span>Secure payment processing by Yoco</span>
-            </div>
-        </div>
-    </div>
             
             <!-- Success Message -->
             <div class="success-message" id="success-message">
@@ -1699,7 +1529,7 @@
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <h3>✅ Success!</h3>
-                <p>Your payment was successful and your business plan has been generated!</p>
+                <p>Your comprehensive business plan has been generated and downloaded!</p>
                 <p>The PDF contains all sections including financial projections, market analysis, and growth strategies.</p>
                 <button class="download-btn" id="download-btn">
                     <i class="fas fa-download"></i> Download Business Plan (PDF)
@@ -1827,76 +1657,18 @@
             });
         });
         
-        // Proceed to Payment button
-        document.getElementById('proceed-to-payment-btn').addEventListener('click', (e) => {
+        // Form submission
+        document.querySelector('.generate-btn').addEventListener('click', (e) => {
             e.preventDefault();
             
-            // Hide the form and show the payment section
-            document.querySelector('.modal-form').style.display = 'none';
-            document.getElementById('payment-section').style.display = 'block';
+            // Show loading state
+            const generateBtn = document.querySelector('.generate-btn');
+            const generateText = document.getElementById('generate-text');
+            const generateLoading = document.getElementById('generate-loading');
             
-            // Initialize Yoco payment
-            initializeYocoPayment();
-        });
-        
-        // Yoco Payment Integration
-        function initializeYocoPayment() {
-            const yoco = new window.YocoSDK({
-                publicKey: 'pk_test_ed3c54a6gOol69qa7f45' // Replace with your actual test public key
-            });
+            generateText.style.display = 'none';
+            generateLoading.style.display = 'inline-block';
             
-            const inline = yoco.inline({
-                layout: 'basic',
-                amountInCents: 20000, // R200
-                currency: 'ZAR'
-            });
-            
-            inline.mount('#card-frame');
-            
-            // Handle payment submission
-            document.getElementById('pay-now-btn').addEventListener('click', async function() {
-                const button = this;
-                const originalText = button.textContent;
-                
-                // Show loading state
-                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing Payment';
-                button.disabled = true;
-                
-                try {
-                    // Tokenize card details
-                    const result = await inline.createToken();
-                    
-                    if (result.error) {
-                        // Show error to user
-                        alert(`Error processing payment: ${result.error.message}`);
-                        button.textContent = originalText;
-                        button.disabled = false;
-                    } else {
-                        // In a real app, you would send the token to your server
-                        // Here we'll simulate a successful payment
-                        setTimeout(() => {
-                            // Process form data and generate PDF
-                            processFormAndGeneratePDF();
-                            
-                            // Hide payment section and show success
-                            document.getElementById('payment-section').style.display = 'none';
-                            successMessage.style.display = 'block';
-                            
-                            // Reset button
-                            button.textContent = originalText;
-                            button.disabled = false;
-                        }, 1500);
-                    }
-                } catch (error) {
-                    alert(`Error: ${error.message}`);
-                    button.textContent = originalText;
-                    button.disabled = false;
-                }
-            });
-        }
-        
-        // Process form and generate PDF
-        function processFormAndGeneratePDF() {
             // Collect form data
             const formData = {
                 businessName: document.getElementById('businessName').value,
@@ -1917,9 +1689,54 @@
                 contactPhone: document.getElementById('contactPhone').value
             };
             
-            // Generate PDF
-            generateBusinessPlanPDF(formData);
-        }
+            // Generate PDF after a short delay
+            setTimeout(() => {
+                generateBusinessPlanPDF(formData);
+                
+                // Hide the form and show success message
+                document.querySelector('.modal-form').style.display = 'none';
+                successMessage.style.display = 'block';
+                
+                // Reset the generate button
+                generateText.style.display = 'inline';
+                generateLoading.style.display = 'none';
+            }, 2000);
+        });
+        
+        // Download button
+        document.getElementById('download-btn').addEventListener('click', function() {
+            // In a real implementation, this would download the generated PDF
+            alert('Business plan downloaded successfully!');
+        });
+        
+        // Generate another plan button
+        document.getElementById('another-plan-btn').addEventListener('click', function() {
+            // Reset the form and show the first step
+            document.querySelectorAll('input, select, textarea').forEach(field => {
+                field.value = '';
+            });
+            
+            successMessage.style.display = 'none';
+            document.querySelector('.modal-form').style.display = 'block';
+            showStep(1);
+        });
+        
+        // Reset form when modal is opened
+        openModalButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Reset form steps
+                showStep(1);
+                
+                // Reset form fields
+                document.querySelectorAll('input, select, textarea').forEach(field => {
+                    field.value = '';
+                });
+                
+                // Hide success message and show form
+                successMessage.style.display = 'none';
+                document.querySelector('.modal-form').style.display = 'block';
+            });
+        });
         
         // Business Plan PDF Generation
         function generateBusinessPlanPDF(data) {
@@ -2266,49 +2083,13 @@ Based on our financial projections, investors can expect:
             
             // Save the PDF
             const fileName = `${data.businessName}_Business_Plan.pdf`;
+            doc.save(fileName);
             
             // Set up the download button
             document.getElementById('download-btn').addEventListener('click', function() {
                 doc.save(fileName);
             });
         }
-        
-        // Download button
-        document.getElementById('download-btn').addEventListener('click', function() {
-            // In a real implementation, this would download the generated PDF
-            alert('Business plan downloaded successfully!');
-        });
-        
-        // Generate another plan button
-        document.getElementById('another-plan-btn').addEventListener('click', function() {
-            // Reset the form and show the first step
-            document.querySelectorAll('input, select, textarea').forEach(field => {
-                field.value = '';
-            });
-            
-            successMessage.style.display = 'none';
-            document.querySelector('.modal-form').style.display = 'block';
-            document.getElementById('payment-section').style.display = 'none';
-            showStep(1);
-        });
-        
-        // Reset form when modal is opened
-        openModalButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Reset form steps
-                showStep(1);
-                
-                // Reset form fields
-                document.querySelectorAll('input, select, textarea').forEach(field => {
-                    field.value = '';
-                });
-                
-                // Hide success message and show form
-                successMessage.style.display = 'none';
-                document.querySelector('.modal-form').style.display = 'block';
-                document.getElementById('payment-section').style.display = 'none';
-            });
-        });
         
         // Add intersection observer for animations
         const observerOptions = {
@@ -2334,142 +2115,53 @@ Based on our financial projections, investors can expect:
         });
         
         // Add this script at the bottom of your existing JavaScript
-        document.addEventListener('DOMContentLoaded', function() {
-            const table = document.querySelector('.comparison-table');
-            const mobileContainer = document.querySelector('.mobile-cards');
+document.addEventListener('DOMContentLoaded', function() {
+    const table = document.querySelector('.comparison-table');
+    const mobileContainer = document.querySelector('.mobile-cards');
+    
+    if (table && mobileContainer) {
+        const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent);
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
+        
+        rows.forEach(row => {
+            const cells = Array.from(row.querySelectorAll('td'));
+            const featureName = cells[0].textContent;
             
-            if (table && mobileContainer) {
-                const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent);
-                const rows = Array.from(table.querySelectorAll('tbody tr'));
+            const card = document.createElement('div');
+            card.className = 'feature-card';
+            
+            const header = document.createElement('div');
+            header.className = 'feature-header';
+            header.textContent = featureName;
+            card.appendChild(header);
+            
+            // Create rows for each solution
+            for (let i = 1; i < cells.length; i++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'feature-row';
                 
-                rows.forEach(row => {
-                    const cells = Array.from(row.querySelectorAll('td'));
-                    const featureName = cells[0].textContent;
-                    
-                    const card = document.createElement('div');
-                    card.className = 'feature-card';
-                    
-                    const header = document.createElement('div');
-                    header.className = 'feature-header';
-                    header.textContent = featureName;
-                    card.appendChild(header);
-                    
-                    // Create rows for each solution
-                    for (let i = 1; i < cells.length; i++) {
-                        const rowDiv = document.createElement('div');
-                        rowDiv.className = 'feature-row';
-                        
-                        // Highlight "Our Generator"
-                        if (headers[i] === 'Our Generator') {
-                            rowDiv.classList.add('our-highlight');
-                        }
-                        
-                        const nameSpan = document.createElement('span');
-                        nameSpan.className = 'feature-name';
-                        nameSpan.textContent = headers[i];
-                        
-                        const valueSpan = document.createElement('span');
-                        valueSpan.className = 'feature-value';
-                        valueSpan.innerHTML = cells[i].innerHTML;
-                        
-                        rowDiv.appendChild(nameSpan);
-                        rowDiv.appendChild(valueSpan);
-                        card.appendChild(rowDiv);
-                    }
-                    
-                    mobileContainer.appendChild(card);
-                });
-            }
-        });
-        
-        // NEW: Payment Popup functionality
-        const paymentPopup = document.getElementById('payment-popup');
-        const closePaymentPopup = document.querySelector('.close-payment-popup');
-        
-        // Show payment popup
-        function showPaymentPopup() {
-            paymentPopup.style.display = 'flex';
-            initializeYocoPayment();
-        }
-        
-        // Close payment popup
-        closePaymentPopup.addEventListener('click', () => {
-            paymentPopup.style.display = 'none';
-        });
-        
-        // Close payment popup when clicking outside
-        window.addEventListener('click', (e) => {
-            if (e.target === paymentPopup) {
-                paymentPopup.style.display = 'none';
-            }
-        });
-        
-        // MODIFIED: Proceed to Payment button
-        document.getElementById('proceed-to-payment-btn').addEventListener('click', (e) => {
-            e.preventDefault();
-            // Hide the form and show the payment popup
-            modal.style.display = 'none';
-            showPaymentPopup();
-        });
-        
-        // MODIFIED: Yoco Payment Integration
-        function initializeYocoPayment() {
-            const yoco = new window.YocoSDK({
-                publicKey: 'pk_test_ed3c54a6gOol69qa7f45' // Replace with your actual test public key
-            });
-            
-            const inline = yoco.inline({
-                layout: 'basic',
-                amountInCents: 20000, // R200
-                currency: 'ZAR'
-            });
-            
-            inline.mount('#card-frame');
-            
-            // Handle payment submission
-            document.getElementById('pay-now-btn').addEventListener('click', async function() {
-                const button = this;
-                const originalText = button.textContent;
-                
-                // Show loading state
-                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing Payment';
-                button.disabled = true;
-                
-                try {
-                    // Tokenize card details
-                    const result = await inline.createToken();
-                    
-                    if (result.error) {
-                        // Show error to user
-                        alert(`Error processing payment: ${result.error.message}`);
-                        button.textContent = originalText;
-                        button.disabled = false;
-                    } else {
-                        // In a real app, you would send the token to your server
-                        // Here we'll simulate a successful payment
-                        setTimeout(() => {
-                            // Process form data and generate PDF
-                            processFormAndGeneratePDF();
-                            
-                            // Hide payment popup
-                            paymentPopup.style.display = 'none';
-                            
-                            // Show success message in original modal
-                            modal.style.display = 'flex';
-                            successMessage.style.display = 'block';
-                            
-                            // Reset button
-                            button.textContent = originalText;
-                            button.disabled = false;
-                        }, 1500);
-                    }
-                } catch (error) {
-                    alert(`Error: ${error.message}`);
-                    button.textContent = originalText;
-                    button.disabled = false;
+                // Highlight "Our Generator"
+                if (headers[i] === 'Our Generator') {
+                    rowDiv.classList.add('our-highlight');
                 }
-            });
-        }
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'feature-name';
+                nameSpan.textContent = headers[i];
+                
+                const valueSpan = document.createElement('span');
+                valueSpan.className = 'feature-value';
+                valueSpan.innerHTML = cells[i].innerHTML;
+                
+                rowDiv.appendChild(nameSpan);
+                rowDiv.appendChild(valueSpan);
+                card.appendChild(rowDiv);
+            }
+            
+            mobileContainer.appendChild(card);
+        });
+    }
+});
     </script>
 </body>
 </html>
