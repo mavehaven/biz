@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professional Business Plan Generator - Get Your Plan in Minutes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -47,16 +50,15 @@
             justify-content: center;
             width: 50px;
             height: 50px;
-            /* Removed gradient background */
-            border-radius: 0; /* Removed border-radius */
+            border-radius: 0;
             overflow: hidden;
         }
 
         .logo-placeholder img {
-            width: 100%; /* Changed to 100% */
-            height: 100%; /* Changed to 100% */
+            width: 100%;
+            height: 100%;
             object-fit: contain;
-            background: transparent; /* Ensure no background */
+            background: transparent;
         }
 
         .nav-links {
@@ -379,19 +381,26 @@
             font-weight: 300;
         }
 
-        /* Competitive Analysis */
+        /* Competitive Analysis - Responsive Table Fix */
         .comparison {
             padding: 80px 0;
             background: white;
         }
-
-        .comparison-table {
+        
+        /* Table container for responsive scrolling */
+        .table-responsive {
             width: 100%;
-            border-collapse: collapse;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
             margin-top: 40px;
             box-shadow: 0 2px 20px rgba(0,0,0,0.08);
             border-radius: 2px;
-            overflow: hidden;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            min-width: 800px; /* Minimum width for the table */
+            border-collapse: collapse;
         }
 
         .comparison-table th {
@@ -560,6 +569,198 @@
             50% { transform: scale(1.02); }
         }
 
+        /* Login/Signup Page Styles */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 80px);
+            padding: 40px 20px;
+            background: #fafafa;
+        }
+
+        .auth-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+        }
+
+        .auth-header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .auth-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            background: #f5f5f5;
+        }
+
+        .auth-tab.active {
+            background: white;
+            color: #dc143c;
+            border-bottom: 3px solid #dc143c;
+        }
+
+        .auth-content {
+            padding: 40px;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #dc143c;
+            outline: none;
+        }
+
+        .auth-btn {
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 20, 60, 0.3);
+        }
+
+        .auth-divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+            color: #777;
+        }
+
+        .auth-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #eee;
+            z-index: 1;
+        }
+
+        .auth-divider span {
+            background: white;
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .social-auth {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .social-btn.google {
+            color: #DB4437;
+        }
+
+        .social-btn.facebook {
+            color: #4267B2;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .auth-footer a {
+            color: #dc143c;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Auth Success Message */
+        .auth-success {
+            padding: 40px;
+            text-align: center;
+            display: none;
+        }
+
+        .auth-success-icon {
+            font-size: 4rem;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+
         /* Responsive Design */
         @media (max-width: 992px) {
             .nav-links {
@@ -594,15 +795,6 @@
                 gap: 20px;
             }
             
-            .comparison-table {
-                font-size: 0.8rem;
-            }
-            
-            .comparison-table th,
-            .comparison-table td {
-                padding: 10px 8px;
-            }
-            
             .features-grid,
             .benefits-grid,
             .testimonials-grid {
@@ -611,6 +803,70 @@
             
             .section-title {
                 font-size: 2rem;
+            }
+            
+            .auth-content {
+                padding: 25px;
+            }
+            
+            /* NEW: Responsive comparison table */
+            .comparison-table {
+                min-width: 100%;
+            }
+            
+            .comparison-table thead {
+                display: none;
+            }
+            
+            .comparison-table tr {
+                display: block;
+                margin-bottom: 20px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                background: #fafafa;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            }
+            
+            .comparison-table td {
+                display: block;
+                text-align: right;
+                padding: 15px;
+                border-bottom: 1px solid #f0f0f0;
+            }
+            
+            .comparison-table td:last-child {
+                border-bottom: none;
+            }
+            
+            .comparison-table td:before {
+                content: attr(data-label);
+                float: left;
+                font-weight: bold;
+                text-transform: uppercase;
+                font-size: 0.8rem;
+                color: #666;
+            }
+            
+            /* Highlight our column */
+            .comparison-table td.our-column {
+                background: rgba(220, 20, 60, 0.1);
+                color: #dc143c;
+                font-weight: 500;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 70px 0;
+            }
+            
+            .cta-primary {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+            }
+            
+            .feature-card {
+                padding: 30px 20px;
             }
         }
 
@@ -717,7 +973,7 @@
                 <li><a href="#comparison">Comparison</a></li>
                 <li><a href="#benefits">Benefits</a></li>
                 <li><a href="#testimonials">Testimonials</a></li>
-                <li><a href="#get-started" class="nav-cta">Get Started</a></li>
+                <li><a href="login.html" class="nav-cta">Get Started</a></li>
             </ul>
             
             <button class="hamburger">
@@ -733,7 +989,7 @@
             <li><a href="#comparison">Comparison</a></li>
             <li><a href="#benefits">Benefits</a></li>
             <li><a href="#testimonials">Testimonials</a></li>
-            <li><a href="#get-started" class="mobile-cta">Get Started</a></li>
+            <li><a href="login.html" class="mobile-cta">Get Started</a></li>
         </ul>
     </div>
     
@@ -773,7 +1029,7 @@
                 <strong>Only R200</strong>
             </div>
 
-            <a href="#get-started" class="cta-primary">Generate My Business Plan Now</a>
+            <a href="login.html" class="cta-primary">Generate My Business Plan Now</a>
         </div>
     </section>
 
@@ -829,100 +1085,103 @@
             <h2 class="section-title">How We Compare to Alternatives</h2>
             <p class="section-subtitle">See why thousands choose our solution over expensive consultants and generic templates</p>
             
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>Feature</th>
-                        <th class="our-column">Our Generator</th>
-                        <th>Business Consultant</th>
-                        <th>Generic AI Tools</th>
-                        <th>Canva Templates</th>
-                        <th>DIY Approach</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Time to Complete</strong></td>
-                        <td class="our-column">5 minutes</td>
-                        <td>2-4 weeks</td>
-                        <td>1-2 hours</td>
-                        <td>3-5 hours</td>
-                        <td>2-6 weeks</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Cost</strong></td>
-                        <td class="our-column">R200</td>
-                        <td>R15,000 - R50,000</td>
-                        <td>R500 - R2,000</td>
-                        <td>R300 - R800</td>
-                        <td>Free (Time cost)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>SA Market Focus</strong></td>
-                        <td class="our-column"><span class="checkmark">✓</span></td>
-                        <td><span class="checkmark">✓</span></td>
-                        <td><span class="crossmark">✗</span></td>
-                        <td><span class="crossmark">✗</span></td>
-                        <td><span class="partial">△</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Financial Projections</strong></td>
-                        <td class="our-column"><span class="checkmark">✓</span></td>
-                        <td><span class="checkmark">✓</span></td>
-                        <td><span class="partial">△</span></td>
-                        <td><span class="crossmark">✗</span></td>
-                        <td><span class="partial">△</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Professional Formatting</strong></td>
-                        <td class="our-column"><span class="checkmark">✓</span></td>
-                        <td><span class="checkmark">✓</span></td>
-                        <td><span class="partial">△</span></td>
-                        <td><span class="checkmark">✓</span></td>
-                        <td><span class="crossmark">✗</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Industry Customization</strong></td>
-                        <td class="our-column"><span class="checkmark">✓</span></td>
-                        <td><span class="checkmark">✓</span></td>
-                        <td><span class="partial">△</span></td>
-                        <td><span class="crossmark">✗</span></td>
-                        <td><span class="partial">△</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Instant Download</strong></td>
-                        <td class="our-column"><span class="checkmark">✓</span></td>
-                        <td><span class="crossmark">✗</span></td>
-                        <td><span class="checkmark">✓</span></td>
-                        <td><span class="checkmark">✓</span></td>
-                        <td><span class="checkmark">✓</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Market Analysis</strong></td>
-                        <td class="our-column"><span class="checkmark">✓</span></td>
-                        <td><span class="checkmark">✓</span></td>
-                        <td><span class="partial">△</span></td>
-                        <td><span class="crossmark">✗</span></td>
-                        <td><span class="partial">△</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Risk Analysis</strong></td>
-                        <td class="our-column"><span class="checkmark">✓</span></td>
-                        <td><span class="checkmark">✓</span></td>
-                        <td><span class="crossmark">✗</span></td>
-                        <td><span class="crossmark">✗</span></td>
-                        <td><span class="partial">△</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Investor Ready</strong></td>
-                        <td class="our-column"><span class="checkmark">✓</span></td>
-                        <td><span class="checkmark">✓</span></td>
-                        <td><span class="partial">△</span></td>
-                        <td><span class="crossmark">✗</span></td>
-                        <td><span class="crossmark">✗</span></td>
-                    </tr>
-                </tbody>
-            </table>
+            <!-- Responsive Table Container -->
+            <div class="table-responsive">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th class="our-column">Our Generator</th>
+                            <th>Business Consultant</th>
+                            <th>Generic AI Tools</th>
+                            <th>Canva Templates</th>
+                            <th>DIY Approach</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Feature"><strong>Time to Complete</strong></td>
+                            <td data-label="Our Generator" class="our-column">5 minutes</td>
+                            <td data-label="Business Consultant">2-4 weeks</td>
+                            <td data-label="Generic AI Tools">1-2 hours</td>
+                            <td data-label="Canva Templates">3-5 hours</td>
+                            <td data-label="DIY Approach">2-6 weeks</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>Cost</strong></td>
+                            <td data-label="Our Generator" class="our-column">R200</td>
+                            <td data-label="Business Consultant">R15,000 - R50,000</td>
+                            <td data-label="Generic AI Tools">R500 - R2,000</td>
+                            <td data-label="Canva Templates">R300 - R800</td>
+                            <td data-label="DIY Approach">Free (Time cost)</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>SA Market Focus</strong></td>
+                            <td data-label="Our Generator" class="our-column"><span class="checkmark">✓</span></td>
+                            <td data-label="Business Consultant"><span class="checkmark">✓</span></td>
+                            <td data-label="Generic AI Tools"><span class="crossmark">✗</span></td>
+                            <td data-label="Canva Templates"><span class="crossmark">✗</span></td>
+                            <td data-label="DIY Approach"><span class="partial">△</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>Financial Projections</strong></td>
+                            <td data-label="Our Generator" class="our-column"><span class="checkmark">✓</span></td>
+                            <td data-label="Business Consultant"><span class="checkmark">✓</span></td>
+                            <td data-label="Generic AI Tools"><span class="partial">△</span></td>
+                            <td data-label="Canva Templates"><span class="crossmark">✗</span></td>
+                            <td data-label="DIY Approach"><span class="partial">△</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>Professional Formatting</strong></td>
+                            <td data-label="Our Generator" class="our-column"><span class="checkmark">✓</span></td>
+                            <td data-label="Business Consultant"><span class="checkmark">✓</span></td>
+                            <td data-label="Generic AI Tools"><span class="partial">△</span></td>
+                            <td data-label="Canva Templates"><span class="checkmark">✓</span></td>
+                            <td data-label="DIY Approach"><span class="crossmark">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>Industry Customization</strong></td>
+                            <td data-label="Our Generator" class="our-column"><span class="checkmark">✓</span></td>
+                            <td data-label="Business Consultant"><span class="checkmark">✓</span></td>
+                            <td data-label="Generic AI Tools"><span class="partial">△</span></td>
+                            <td data-label="Canva Templates"><span class="crossmark">✗</span></td>
+                            <td data-label="DIY Approach"><span class="partial">△</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>Instant Download</strong></td>
+                            <td data-label="Our Generator" class="our-column"><span class="checkmark">✓</span></td>
+                            <td data-label="Business Consultant"><span class="crossmark">✗</span></td>
+                            <td data-label="Generic AI Tools"><span class="checkmark">✓</span></td>
+                            <td data-label="Canva Templates"><span class="checkmark">✓</span></td>
+                            <td data-label="DIY Approach"><span class="checkmark">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>Market Analysis</strong></td>
+                            <td data-label="Our Generator" class="our-column"><span class="checkmark">✓</span></td>
+                            <td data-label="Business Consultant"><span class="checkmark">✓</span></td>
+                            <td data-label="Generic AI Tools"><span class="partial">△</span></td>
+                            <td data-label="Canva Templates"><span class="crossmark">✗</span></td>
+                            <td data-label="DIY Approach"><span class="partial">△</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>Risk Analysis</strong></td>
+                            <td data-label="Our Generator" class="our-column"><span class="checkmark">✓</span></td>
+                            <td data-label="Business Consultant"><span class="checkmark">✓</span></td>
+                            <td data-label="Generic AI Tools"><span class="crossmark">✗</span></td>
+                            <td data-label="Canva Templates"><span class="crossmark">✗</span></td>
+                            <td data-label="DIY Approach"><span class="partial">△</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>Investor Ready</strong></td>
+                            <td data-label="Our Generator" class="our-column"><span class="checkmark">✓</span></td>
+                            <td data-label="Business Consultant"><span class="checkmark">✓</span></td>
+                            <td data-label="Generic AI Tools"><span class="partial">△</span></td>
+                            <td data-label="Canva Templates"><span class="crossmark">✗</span></td>
+                            <td data-label="DIY Approach"><span class="crossmark">✗</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
 
@@ -993,7 +1252,7 @@
                 <span style="font-size: 3rem; margin-left: 20px; color: #dc143c; font-weight: 200;">R200</span>
             </div>
             
-            <a href="javascript:void(0)" class="cta-primary" style="font-size: 1.3rem; padding: 25px 50px;" onclick="showGeneratorModal()">
+            <a href="login.html" class="cta-primary" style="font-size: 1.3rem; padding: 25px 50px;">
                 🚀 Generate My Business Plan Now
             </a>
             
@@ -1005,20 +1264,132 @@
         </div>
     </section>
 
-    <!-- Generator Modal -->
-    <div id="generator-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeGeneratorModal()">&times;</span>
-            <h2>Business Plan Generator</h2>
-            <p>This is where the generator would appear. In a real implementation, this would be a form to input business details and generate the plan.</p>
-            <p>For now, this is a placeholder to demonstrate the fixed functionality.</p>
-            <div style="margin-top: 30px;">
-                <div style="display: inline-block; width: 40px; height: 40px; border: 2px solid #c0c0c0; border-top: 2px solid #dc143c; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+    <!-- Login/Signup Page (hidden by default) -->
+    <section id="login-page" style="display: none;">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2>Welcome to BizPlanPro</h2>
+                    <p>Sign in or create an account to generate your business plan</p>
+                </div>
+                
+                <div class="auth-tabs">
+                    <div class="auth-tab active" data-tab="login">Login</div>
+                    <div class="auth-tab" data-tab="signup">Sign Up</div>
+                </div>
+                
+                <div class="auth-content">
+                    <!-- Login Form -->
+                    <form class="auth-form active" id="login-form">
+                        <div class="form-group">
+                            <label for="login-email">Email Address</label>
+                            <input type="email" id="login-email" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" placeholder="Enter your password" required>
+                        </div>
+                        
+                        <button type="submit" class="auth-btn">Login</button>
+                        
+                        <div class="auth-divider">
+                            <span>or continue with</span>
+                        </div>
+                        
+                        <div class="social-auth">
+                            <button type="button" class="social-btn google">
+                                <i class="fab fa-google"></i>
+                                Continue with Google
+                            </button>
+                            
+                            <button type="button" class="social-btn facebook">
+                                <i class="fab fa-facebook"></i>
+                                Continue with Facebook
+                            </button>
+                        </div>
+                        
+                        <div class="auth-footer">
+                            <p>Don't have an account? <a href="#" id="switch-to-signup">Sign up now</a></p>
+                        </div>
+                    </form>
+                    
+                    <!-- Signup Form -->
+                    <form class="auth-form" id="signup-form">
+                        <div class="form-group">
+                            <label for="signup-name">Full Name</label>
+                            <input type="text" id="signup-name" placeholder="Enter your full name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signup-email">Email Address</label>
+                            <input type="email" id="signup-email" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signup-password">Password</label>
+                            <input type="password" id="signup-password" placeholder="Create a password" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signup-confirm-password">Confirm Password</label>
+                            <input type="password" id="signup-confirm-password" placeholder="Confirm your password" required>
+                        </div>
+                        
+                        <button type="submit" class="auth-btn">Create Account</button>
+                        
+                        <div class="auth-divider">
+                            <span>or continue with</span>
+                        </div>
+                        
+                        <div class="social-auth">
+                            <button type="button" class="social-btn google">
+                                <i class="fab fa-google"></i>
+                                Continue with Google
+                            </button>
+                            
+                            <button type="button" class="social-btn facebook">
+                                <i class="fab fa-facebook"></i>
+                                Continue with Facebook
+                            </button>
+                        </div>
+                        
+                        <div class="auth-footer">
+                            <p>Already have an account? <a href="#" id="switch-to-login">Login here</a></p>
+                        </div>
+                    </form>
+                    
+                    <!-- Success Message -->
+                    <div class="auth-success" id="auth-success">
+                        <div class="auth-success-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h2>Account Created Successfully!</h2>
+                        <p>You can now generate your business plan</p>
+                        <button class="auth-btn" id="generate-plan-btn" style="margin-top: 20px;">
+                            Generate Business Plan
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDmZxNcTd8Fz2fQdLv6Qa9wjGXeR9s0XyZ",
+            authDomain: "bizplanpro-sa.firebaseapp.com",
+            projectId: "bizplanpro-sa",
+            storageBucket: "bizplanpro-sa.appspot.com",
+            messagingSenderId: "123456789012",
+            appId: "1:123456789012:web:abcdef1234567890"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
         // Mobile menu toggle
         const hamburger = document.querySelector('.hamburger');
         const mobileNav = document.querySelector('.mobile-nav');
@@ -1045,25 +1416,6 @@
             });
         });
         
-        // Generator modal functions
-        function showGeneratorModal() {
-            document.getElementById('generator-modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
-        }
-        
-        function closeGeneratorModal() {
-            document.getElementById('generator-modal').style.display = 'none';
-            document.body.style.overflow = 'auto'; // Re-enable scrolling
-        }
-        
-        // Close modal if clicking outside content
-        window.addEventListener('click', (e) => {
-            const modal = document.getElementById('generator-modal');
-            if (e.target === modal) {
-                closeGeneratorModal();
-            }
-        });
-
         // Add smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1097,6 +1449,127 @@
             el.style.transform = 'translateY(30px)';
             el.style.transition = 'all 0.6s ease';
             observer.observe(el);
+        });
+
+        // Login/Signup Page Logic
+        // Show login page when URL has #login
+        if(window.location.hash === '#login') {
+            document.getElementById('login-page').style.display = 'block';
+            // Hide other sections
+            document.querySelectorAll('section:not(#login-page)').forEach(section => {
+                section.style.display = 'none';
+            });
+            // Hide header
+            document.querySelector('header').style.display = 'none';
+        }
+
+        // Tab switching
+        const tabs = document.querySelectorAll('.auth-tab');
+        const forms = document.querySelectorAll('.auth-form');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Hide all forms
+                forms.forEach(form => form.classList.remove('active'));
+                
+                // Show form corresponding to clicked tab
+                const formId = `${tab.dataset.tab}-form`;
+                document.getElementById(formId).classList.add('active');
+            });
+        });
+        
+        // Switch between login and signup forms
+        document.getElementById('switch-to-signup').addEventListener('click', (e) => {
+            e.preventDefault();
+            tabs[1].click();
+        });
+        
+        document.getElementById('switch-to-login').addEventListener('click', (e) => {
+            e.preventDefault();
+            tabs[0].click();
+        });
+        
+        // Form submission handlers
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            // Firebase login
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Successfully logged in - redirect to generator.html
+                    window.location.href = 'generator.html';
+                })
+                .catch((error) => {
+                    alert(`Login failed: ${error.message}`);
+                });
+        });
+        
+        document.getElementById('signup-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm-password').value;
+            
+            if(password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Firebase signup
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Set user display name
+                    userCredential.user.updateProfile({
+                        displayName: name
+                    }).catch(error => console.error("Error updating profile", error));
+                    
+                    // Show success message
+                    forms.forEach(form => form.style.display = 'none');
+                    document.getElementById('auth-success').style.display = 'block';
+                })
+                .catch((error) => {
+                    alert(`Signup failed: ${error.message}`);
+                });
+        });
+        
+        // Google login
+        document.querySelector('.social-btn.google').addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    // Redirect to generator.html
+                    window.location.href = 'generator.html';
+                })
+                .catch((error) => {
+                    alert(`Google login failed: ${error.message}`);
+                });
+        });
+        
+        // Facebook login
+        document.querySelector('.social-btn.facebook').addEventListener('click', () => {
+            const provider = new firebase.auth.FacebookAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    // Redirect to generator.html
+                    window.location.href = 'generator.html';
+                })
+                .catch((error) => {
+                    alert(`Facebook login failed: ${error.message}`);
+                });
+        });
+        
+        // Generate plan button after signup
+        document.getElementById('generate-plan-btn').addEventListener('click', () => {
+            // Redirect to generator page
+            window.location.href = 'generator.html';
         });
     </script>
 </body>
