@@ -1738,358 +1738,561 @@
             });
         });
         
-        // Business Plan PDF Generation
-        function generateBusinessPlanPDF(data) {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+        // Business Plan PDF Generation - Improved Text Spacing
+function generateBusinessPlanPDF(data) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    let yPosition = 20;
+    const lineHeight = 8; // Increased line height for better spacing
+    const sectionSpacing = 20; // Space between sections
+    const pageHeight = doc.internal.pageSize.height;
+    const pageWidth = doc.internal.pageSize.width;
+    const margin = 20;
+    const textWidth = pageWidth - (margin * 2);
+    
+    function checkNewPage(requiredSpace = 30) {
+        if (yPosition > pageHeight - requiredSpace) {
+            doc.addPage();
+            yPosition = 30; // Start further down on new pages
+            return true;
+        }
+        return false;
+    }
+    
+    function addSection(title, content, fontSize = 11) {
+        checkNewPage(40);
+        
+        // Section title
+        doc.setFontSize(14);
+        doc.setFont(undefined, 'bold');
+        doc.text(title, margin, yPosition);
+        yPosition += 15; // More space after title
+        
+        if (content) {
+            doc.setFontSize(fontSize);
+            doc.setFont(undefined, 'normal');
+            const splitContent = doc.splitTextToSize(content, textWidth);
             
-            let yPosition = 20;
-            const lineHeight = 10;
-            const pageHeight = doc.internal.pageSize.height;
-            const pageWidth = doc.internal.pageSize.width;
+            splitContent.forEach(line => {
+                checkNewPage(20);
+                doc.text(line, margin, yPosition);
+                yPosition += lineHeight; // Consistent line spacing
+            });
             
-            function checkNewPage() {
-                if (yPosition > pageHeight - 40) {
-                    doc.addPage();
-                    yPosition = 20;
-                }
-            }
+            yPosition += sectionSpacing; // Space after section
+        }
+    }
+    
+    function addFinancialTable(title, rows) {
+        checkNewPage(60);
+        
+        // Table title
+        doc.setFontSize(14);
+        doc.setFont(undefined, 'bold');
+        doc.text(title, margin, yPosition);
+        yPosition += 20; // More space after table title
+        
+        const colWidth = (textWidth - 20) / Math.max(rows[0].length, 4); // Dynamic column width
+        const startX = margin;
+        const rowHeight = 12; // Increased row height
+        
+        rows.forEach((row, index) => {
+            checkNewPage(25);
             
-            function addSection(title, content, fontSize = 12) {
-                checkNewPage();
-                doc.setFontSize(14);
-                doc.setFont(undefined, 'bold');
-                doc.text(title, 20, yPosition);
-                yPosition += 10;
-                
-                if (content) {
-                    doc.setFontSize(fontSize);
-                    doc.setFont(undefined, 'normal');
-                    const splitContent = doc.splitTextToSize(content, 170);
-                    doc.text(splitContent, 20, yPosition);
-                    yPosition += splitContent.length * 6 + 15;
-                }
-            }
-            
-            function addFinancialTable(title, rows) {
-                checkNewPage();
-                
-                doc.setFontSize(14);
-                doc.setFont(undefined, 'bold');
-                doc.text(title, 20, yPosition);
-                yPosition += 15;
-                
-                // Table headers
+            if (index === 0) {
+                // Header row
                 doc.setFontSize(10);
                 doc.setFont(undefined, 'bold');
-                const colWidth = 45;
-                const startX = 20;
-                
-                rows.forEach((row, index) => {
-                    if (yPosition > pageHeight - 20) {
-                        doc.addPage();
-                        yPosition = 20;
-                    }
-                    
-                    if (index === 0) {
-                        doc.setFont(undefined, 'bold');
-                    } else {
-                        doc.setFont(undefined, 'normal');
-                    }
-                    
-                    row.forEach((cell, cellIndex) => {
-                        const xPos = startX + (cellIndex * colWidth);
-                        doc.text(cell.toString(), xPos, yPosition);
-                    });
-                    yPosition += 8;
-                });
-                yPosition += 10;
-            }
-            
-            // Calculate financial projections
-            const monthlyRev = Number(data.monthlyRevenue) || 0;
-            const monthlyExp = Number(data.monthlyExpenses) || 0;
-            const growthRate = (Number(data.growthRate) || 10) / 100;
-            
-            // Title Page
-            doc.setFontSize(24);
-            doc.setFont(undefined, 'bold');
-            doc.text('BUSINESS PLAN', 105, 50, { align: 'center' });
-            
-            doc.setFontSize(18);
-            doc.text(data.businessName || 'Your Business Name', 105, 70, { align: 'center' });
-            
-            doc.setFontSize(12);
-            doc.setFont(undefined, 'normal');
-            doc.text(`Business Type: ${data.businessType}`, 105, 90, { align: 'center' });
-            doc.text(`Location: ${data.location || 'South Africa'}`, 105, 105, { align: 'center' });
-            doc.text(`Date: ${new Date().toLocaleDateString()}`, 105, 120, { align: 'center' });
-            
-            // Add confidentiality notice
-            doc.setFontSize(10);
-            doc.text('CONFIDENTIAL BUSINESS PLAN', 105, 200, { align: 'center' });
-            doc.text('This document contains confidential and proprietary information.', 105, 210, { align: 'center' });
-            
-            doc.addPage();
-            yPosition = 20;
-            
-            // Table of Contents
-            doc.setFontSize(16);
-            doc.setFont(undefined, 'bold');
-            doc.text('TABLE OF CONTENTS', 20, yPosition);
-            yPosition += 20;
-            
-            doc.setFontSize(12);
-            doc.setFont(undefined, 'normal');
-            const tocItems = [
-                '1. Executive Summary',
-                '2. Business Description',
-                '3. Market Analysis',
-                '4. Products & Services',
-                '5. Marketing & Sales Strategy',
-                '6. Management Team',
-                '7. Financial Projections',
-                '8. Risk Analysis',
-                '9. Funding Requirements',
-                '10. Appendices'
-            ];
-            
-            tocItems.forEach(item => {
-                doc.text(item, 25, yPosition);
-                yPosition += 8;
-            });
-            
-            doc.addPage();
-            yPosition = 20;
-            
-            // 1. Executive Summary
-            doc.setFontSize(16);
-            doc.setFont(undefined, 'bold');
-            doc.text('1. EXECUTIVE SUMMARY', 20, yPosition);
-            yPosition += 15;
-            
-            const execSummary = `${data.businessName} is a ${data.businessType.toLowerCase()} business located in ${data.location || 'South Africa'}. 
-
-Mission: ${data.missionStatement}
-
-We target ${data.targetMarket} and offer ${data.products}.
-
-Key Financial Highlights:
-• Monthly Revenue Target: R${monthlyRev.toLocaleString()}
-• Monthly Operating Expenses: R${monthlyExp.toLocaleString()}
-• Net Monthly Profit: R${(monthlyRev - monthlyExp).toLocaleString()}
-• Funding Required: R${(Number(data.fundingNeeded) || 0).toLocaleString()}
-• Break-even: ${monthlyRev > monthlyExp ? Math.ceil(monthlyExp / monthlyRev) : 'N/A'} months
-
-Market Opportunity: We are targeting a R${(Number(data.marketSize) || 0).toLocaleString()} market with plans to capture ${data.marketShare || 5}% market share within 3 years.`;
-            
-            doc.setFontSize(11);
-            doc.setFont(undefined, 'normal');
-            const splitExecSummary = doc.splitTextToSize(execSummary, 170);
-            doc.text(splitExecSummary, 20, yPosition);
-            yPosition += splitExecSummary.length * 5 + 20;
-            
-            // 2. Business Description
-            addSection('2. BUSINESS DESCRIPTION', '');
-            doc.text(`Company Name: ${data.businessName}`, 20, yPosition);
-            yPosition += 7;
-            doc.text(`Business Type: ${data.businessType}`, 20, yPosition);
-            yPosition += 7;
-            doc.text(`Location: ${data.location || 'South Africa'}`, 20, yPosition);
-            yPosition += 15;
-            
-            addSection('Mission Statement', data.missionStatement);
-            addSection('Products & Services Overview', data.products);
-            
-            if (data.competition) {
-                addSection('Competitive Advantage', data.competition);
-            }
-            
-            // 3. Market Analysis
-            doc.addPage();
-            yPosition = 20;
-            
-            addSection('3. MARKET ANALYSIS', '');
-            
-            const marketAnalysis = `Target Market: ${data.targetMarket}
-
-Market Size & Opportunity:
-• Total Addressable Market: R${(Number(data.marketSize) || 0).toLocaleString()}
-• Target Market Share: ${data.marketShare || 5}%
-• Projected Market Value: R${((Number(data.marketSize) || 0) * ((Number(data.marketShare) || 5) / 100)).toLocaleString()}
-• Expected Growth Rate: ${data.growthRate || 10}% annually
-
-Market Trends:
-The ${data.businessType.toLowerCase()} industry in South Africa is experiencing steady growth, driven by increasing consumer demand and digital transformation. Our target demographic shows strong purchasing power and growing awareness of quality products/services.`;
-            
-            doc.setFontSize(11);
-            doc.setFont(undefined, 'normal');
-            const splitMarketAnalysis = doc.splitTextToSize(marketAnalysis, 170);
-            doc.text(splitMarketAnalysis, 20, yPosition);
-            yPosition += splitMarketAnalysis.length * 5 + 15;
-            
-            // 4. Products & Services (Detailed)
-            addSection('4. PRODUCTS & SERVICES', data.products);
-            
-            // 5. Marketing & Sales Strategy
-            if (data.marketingStrategy) {
-                addSection('5. MARKETING & SALES STRATEGY', data.marketingStrategy);
-            }
-            
-            // 7. Financial Projections
-            doc.addPage();
-            yPosition = 20;
-            
-            doc.setFontSize(16);
-            doc.setFont(undefined, 'bold');
-            doc.text('7. FINANCIAL PROJECTIONS', 20, yPosition);
-            yPosition += 20;
-            
-            // Startup Costs Table
-            const startupCosts = [
-                ['Startup Cost Breakdown', 'Amount (ZAR)'],
-                ['Initial Investment', (Number(data.startupCost) || 0).toLocaleString()],
-                ['Equipment & Setup', (Number(data.equipmentCost) || 0).toLocaleString()],
-                ['Initial Inventory', (Number(data.initialInventory) || 0).toLocaleString()],
-                ['Working Capital', (monthlyExp * 3).toLocaleString()],
-                ['TOTAL STARTUP COSTS', ((Number(data.startupCost) || 0) + (Number(data.equipmentCost) || 0) + (Number(data.initialInventory) || 0) + (monthlyExp * 3)).toLocaleString()]
-            ];
-            
-            addFinancialTable('STARTUP COSTS', startupCosts);
-            
-            // Monthly Operating Expenses
-            const monthlyExpenses = [
-                ['Monthly Operating Expenses', 'Amount (ZAR)'],
-                ['Rent & Utilities', Math.round(monthlyExp * 0.2).toLocaleString()],
-                ['Marketing & Advertising', Math.round(monthlyExp * 0.15).toLocaleString()],
-                ['Insurance & Legal', Math.round(monthlyExp * 0.05).toLocaleString()],
-                ['Other Operating Expenses', Math.round(monthlyExp * 0.6).toLocaleString()],
-                ['TOTAL MONTHLY EXPENSES', monthlyExp.toLocaleString()]
-            ];
-            
-            addFinancialTable('MONTHLY OPERATING EXPENSES', monthlyExpenses);
-            
-            // 3-Year Revenue Projections
-            const year1Revenue = monthlyRev * 12;
-            const year2Revenue = year1Revenue * (1 + growthRate);
-            const year3Revenue = year2Revenue * (1 + growthRate);
-            
-            const year1Expenses = monthlyExp * 12;
-            const year2Expenses = year1Expenses * 1.1; // 10% increase
-            const year3Expenses = year2Expenses * 1.1;
-            
-            const revenueProjections = [
-                ['3-Year Financial Projections', 'Year 1', 'Year 2', 'Year 3'],
-                ['Revenue', year1Revenue.toLocaleString(), year2Revenue.toLocaleString(), year3Revenue.toLocaleString()],
-                ['Operating Expenses', year1Expenses.toLocaleString(), year2Expenses.toLocaleString(), year3Expenses.toLocaleString()],
-                ['Gross Profit', (year1Revenue - year1Expenses).toLocaleString(), (year2Revenue - year2Expenses).toLocaleString(), (year3Revenue - year3Expenses).toLocaleString()],
-                ['Profit Margin %', `${((year1Revenue - year1Expenses) / year1Revenue * 100).toFixed(1)}%`, `${((year2Revenue - year2Expenses) / year2Revenue * 100).toFixed(1)}%`, `${((year3Revenue - year3Expenses) / year3Revenue * 100).toFixed(1)}%`]
-            ];
-            
-            addFinancialTable('REVENUE PROJECTIONS', revenueProjections);
-            
-            // Break-even Analysis
-            checkNewPage();
-            addSection('Break-even Analysis', '');
-            
-            const breakEvenUnits = monthlyExp / (monthlyRev / 100); // Assuming 100 units per month for base calculation
-            const breakEvenText = `Monthly Fixed Costs: R${monthlyExp.toLocaleString()}
-Monthly Revenue Target: R${monthlyRev.toLocaleString()}
-Break-even Point: ${Math.ceil(monthlyExp / (monthlyRev || 1))} months to recover initial investment
-Monthly Units to Break-even: Based on current pricing strategy
-
-The business will reach profitability when monthly revenue consistently exceeds R${monthlyExp.toLocaleString()}.`;
-            
-            doc.setFontSize(11);
-            doc.setFont(undefined, 'normal');
-            const splitBreakEven = doc.splitTextToSize(breakEvenText, 170);
-            doc.text(splitBreakEven, 20, yPosition);
-            yPosition += splitBreakEven.length * 5 + 15;
-            
-            // 8. Risk Analysis
-            doc.addPage();
-            yPosition = 20;
-            
-            addSection('8. RISK ANALYSIS', '');
-            
-            // Add standard risk analysis
-            const standardRisks = `Market Risks:
-• Economic downturns affecting consumer spending
-• New competitors entering the market
-• Changes in consumer preferences
-
-Operational Risks:
-• Key personnel leaving the company
-• Supply chain disruptions
-• Technology failures or cyber security threats
-
-Financial Risks:
-• Cash flow shortages
-• Inability to secure additional funding
-• Currency fluctuations (if applicable)
-
-Regulatory Risks:
-• Changes in government regulations
-• Compliance requirements
-• Tax law changes`;
-            
-            addSection('Standard Business Risks:', standardRisks);
-            
-            // 9. Funding Requirements
-            doc.addPage();
-            yPosition = 20;
-            
-            addSection('9. FUNDING REQUIREMENTS', '');
-            
-            const fundingBreakdown = `Total Funding Required: R${(Number(data.fundingNeeded) || 0).toLocaleString()}
-
-Use of Funds:
-${data.fundingUse || 'Funding will be allocated across startup costs, working capital, and growth investments.'}
-
-Return on Investment:
-Based on our financial projections, investors can expect:
-• Year 1 ROI: ${((year1Revenue - year1Expenses) / (Number(data.fundingNeeded) || 1) * 100).toFixed(1)}%
-• Year 3 ROI: ${((year3Revenue - year3Expenses) / (Number(data.fundingNeeded) || 1) * 100).toFixed(1)}%
-• Payback Period: ${Math.ceil((Number(data.fundingNeeded) || 0) / ((year1Revenue - year1Expenses) / 12))} months`;
-            
-            doc.setFontSize(11);
-            doc.setFont(undefined, 'normal');
-            const splitFunding = doc.splitTextToSize(fundingBreakdown, 170);
-            doc.text(splitFunding, 20, yPosition);
-            yPosition += splitFunding.length * 5 + 15;
-            
-            // 10. Appendices
-            addSection('10. APPENDICES', '');
-            doc.text('• Market research data', 25, yPosition);
-            yPosition += 7;
-            doc.text('• Financial model assumptions', 25, yPosition);
-            yPosition += 7;
-            doc.text('• Legal documents and permits', 25, yPosition);
-            yPosition += 7;
-            doc.text('• Management team resumes', 25, yPosition);
-            yPosition += 7;
-            doc.text('• Letters of intent from key customers', 25, yPosition);
-            
-            // Footer on each page
-            const pageCount = doc.internal.getNumberOfPages();
-            for (let i = 1; i <= pageCount; i++) {
-                doc.setPage(i);
-                doc.setFontSize(8);
+                doc.setFillColor(240, 240, 240); // Light gray background
+                doc.rect(startX - 2, yPosition - 8, textWidth + 4, rowHeight, 'F');
+            } else {
+                doc.setFontSize(10);
                 doc.setFont(undefined, 'normal');
-                doc.text(`${data.businessName} - Business Plan`, 20, pageHeight - 10);
-                doc.text(`Page ${i} of ${pageCount}`, pageWidth - 40, pageHeight - 10);
-                doc.text('CONFIDENTIAL', 105, pageHeight - 10, { align: 'center' });
             }
             
-            // Save the PDF
-            const fileName = `${data.businessName}_Business_Plan.pdf`;
-            doc.save(fileName);
-            
-            // Set up the download button
-            document.getElementById('download-btn').addEventListener('click', function() {
-                doc.save(fileName);
+            row.forEach((cell, cellIndex) => {
+                const xPos = startX + (cellIndex * colWidth);
+                const cellText = cell.toString();
+                
+                // Ensure text fits in column
+                const splitCell = doc.splitTextToSize(cellText, colWidth - 5);
+                doc.text(splitCell[0], xPos + 2, yPosition);
             });
+            
+            yPosition += rowHeight;
+        });
+        
+        yPosition += sectionSpacing; // Space after table
+    }
+    
+    function addBulletPoints(points, indent = 25) {
+        points.forEach(point => {
+            checkNewPage(15);
+            doc.text('•', indent, yPosition);
+            const splitPoint = doc.splitTextToSize(point, textWidth - indent - 10);
+            splitPoint.forEach((line, index) => {
+                if (index > 0) {
+                    checkNewPage(15);
+                }
+                doc.text(line, indent + 8, yPosition);
+                if (index < splitPoint.length - 1) {
+                    yPosition += lineHeight;
+                }
+            });
+            yPosition += lineHeight + 2; // Extra space between bullet points
+        });
+    }
+    
+    // Calculate financial projections
+    const monthlyRev = Number(data.monthlyRevenue) || 0;
+    const monthlyExp = Number(data.monthlyExpenses) || 0;
+    const growthRate = (Number(data.growthRate) || 10) / 100;
+    
+    // Title Page
+    doc.setFontSize(28);
+    doc.setFont(undefined, 'bold');
+    doc.text('BUSINESS PLAN', pageWidth / 2, 60, { align: 'center' });
+    
+    doc.setFontSize(20);
+    doc.text(data.businessName || 'Your Business Name', pageWidth / 2, 85, { align: 'center' });
+    
+    doc.setFontSize(14);
+    doc.setFont(undefined, 'normal');
+    doc.text(`Business Type: ${data.businessType}`, pageWidth / 2, 110, { align: 'center' });
+    doc.text(`Location: ${data.location || 'South Africa'}`, pageWidth / 2, 125, { align: 'center' });
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, pageWidth / 2, 140, { align: 'center' });
+    
+    // Confidentiality notice
+    doc.setFontSize(10);
+    doc.setFont(undefined, 'italic');
+    doc.text('CONFIDENTIAL BUSINESS PLAN', pageWidth / 2, 220, { align: 'center' });
+    doc.text('This document contains confidential and proprietary information.', pageWidth / 2, 235, { align: 'center' });
+    
+    doc.addPage();
+    yPosition = 30;
+    
+    // Table of Contents
+    doc.setFontSize(18);
+    doc.setFont(undefined, 'bold');
+    doc.text('TABLE OF CONTENTS', margin, yPosition);
+    yPosition += 25;
+    
+    doc.setFontSize(12);
+    doc.setFont(undefined, 'normal');
+    const tocItems = [
+        '1. Executive Summary',
+        '2. Business Description', 
+        '3. Market Analysis',
+        '4. Products & Services',
+        '5. Marketing & Sales Strategy',
+        '6. Management Team',
+        '7. Financial Projections',
+        '8. Risk Analysis',
+        '9. Funding Requirements',
+        '10. Appendices'
+    ];
+    
+    tocItems.forEach(item => {
+        doc.text(item, margin + 5, yPosition);
+        yPosition += 12; // Consistent spacing
+    });
+    
+    doc.addPage();
+    yPosition = 30;
+    
+    // 1. Executive Summary
+    doc.setFontSize(18);
+    doc.setFont(undefined, 'bold');
+    doc.text('1. EXECUTIVE SUMMARY', margin, yPosition);
+    yPosition += 20;
+    
+    doc.setFontSize(12);
+    doc.setFont(undefined, 'normal');
+    
+    const businessOverview = `${data.businessName} is a ${data.businessType.toLowerCase()} business located in ${data.location || 'South Africa'}.`;
+    const splitOverview = doc.splitTextToSize(businessOverview, textWidth);
+    splitOverview.forEach(line => {
+        doc.text(line, margin, yPosition);
+        yPosition += lineHeight;
+    });
+    yPosition += 10;
+    
+    // Mission section
+    doc.setFontSize(11);
+    doc.setFont(undefined, 'bold');
+    doc.text('Mission:', margin, yPosition);
+    yPosition += lineHeight;
+    
+    doc.setFont(undefined, 'normal');
+    const splitMission = doc.splitTextToSize(data.missionStatement || 'To be defined', textWidth);
+    splitMission.forEach(line => {
+        doc.text(line, margin, yPosition);
+        yPosition += lineHeight;
+    });
+    yPosition += 12;
+    
+    // Key Financial Highlights
+    doc.setFont(undefined, 'bold');
+    doc.text('Key Financial Highlights:', margin, yPosition);
+    yPosition += lineHeight + 3;
+    
+    doc.setFont(undefined, 'normal');
+    const financialHighlights = [
+        `Monthly Revenue Target: R${monthlyRev.toLocaleString()}`,
+        `Monthly Operating Expenses: R${monthlyExp.toLocaleString()}`,
+        `Net Monthly Profit: R${(monthlyRev - monthlyExp).toLocaleString()}`,
+        `Funding Required: R${(Number(data.fundingNeeded) || 0).toLocaleString()}`,
+        `Market Size: R${(Number(data.marketSize) || 0).toLocaleString()}`
+    ];
+    
+    addBulletPoints(financialHighlights);
+    yPosition += 10;
+    
+    // Market Opportunity
+    doc.setFont(undefined, 'bold');
+    doc.text('Market Opportunity:', margin, yPosition);
+    yPosition += lineHeight + 3;
+    
+    doc.setFont(undefined, 'normal');
+    const marketOpportunity = `We are targeting a R${(Number(data.marketSize) || 0).toLocaleString()} market with plans to capture ${data.marketShare || 5}% market share within 3 years, representing a potential revenue opportunity of R${((Number(data.marketSize) || 0) * ((Number(data.marketShare) || 5) / 100)).toLocaleString()}.`;
+    const splitMarketOpp = doc.splitTextToSize(marketOpportunity, textWidth);
+    splitMarketOpp.forEach(line => {
+        checkNewPage();
+        doc.text(line, margin, yPosition);
+        yPosition += lineHeight;
+    });
+    
+    yPosition += sectionSpacing;
+    
+    // 2. Business Description
+    addSection('2. BUSINESS DESCRIPTION', '');
+    
+    doc.setFontSize(11);
+    doc.setFont(undefined, 'normal');
+    
+    const businessDetails = [
+        `Company Name: ${data.businessName}`,
+        `Business Type: ${data.businessType}`,
+        `Location: ${data.location || 'South Africa'}`,
+        `Target Market: ${data.targetMarket}`
+    ];
+    
+    businessDetails.forEach(detail => {
+        checkNewPage();
+        doc.text(detail, margin, yPosition);
+        yPosition += lineHeight + 2;
+    });
+    
+    yPosition += 10;
+    
+    // Mission Statement subsection
+    doc.setFont(undefined, 'bold');
+    doc.text('Mission Statement:', margin, yPosition);
+    yPosition += lineHeight + 3;
+    
+    doc.setFont(undefined, 'normal');
+    const splitMissionDetail = doc.splitTextToSize(data.missionStatement || 'To be defined', textWidth);
+    splitMissionDetail.forEach(line => {
+        checkNewPage();
+        doc.text(line, margin, yPosition);
+        yPosition += lineHeight;
+    });
+    
+    yPosition += 15;
+    
+    // Products & Services Overview
+    doc.setFont(undefined, 'bold');
+    doc.text('Products & Services Overview:', margin, yPosition);
+    yPosition += lineHeight + 3;
+    
+    doc.setFont(undefined, 'normal');
+    const splitProducts = doc.splitTextToSize(data.products || 'To be defined', textWidth);
+    splitProducts.forEach(line => {
+        checkNewPage();
+        doc.text(line, margin, yPosition);
+        yPosition += lineHeight;
+    });
+    
+    yPosition += sectionSpacing;
+    
+    if (data.competition) {
+        doc.setFont(undefined, 'bold');
+        doc.text('Competitive Advantage:', margin, yPosition);
+        yPosition += lineHeight + 3;
+        
+        doc.setFont(undefined, 'normal');
+        const splitCompetition = doc.splitTextToSize(data.competition, textWidth);
+        splitCompetition.forEach(line => {
+            checkNewPage();
+            doc.text(line, margin, yPosition);
+            yPosition += lineHeight;
+        });
+        yPosition += sectionSpacing;
+    }
+    
+    // 3. Market Analysis
+    doc.addPage();
+    yPosition = 30;
+    
+    addSection('3. MARKET ANALYSIS', '');
+    
+    doc.setFont(undefined, 'bold');
+    doc.text('Target Market:', margin, yPosition);
+    yPosition += lineHeight + 3;
+    
+    doc.setFont(undefined, 'normal');
+    const splitTarget = doc.splitTextToSize(data.targetMarket || 'To be defined', textWidth);
+    splitTarget.forEach(line => {
+        doc.text(line, margin, yPosition);
+        yPosition += lineHeight;
+    });
+    yPosition += 12;
+    
+    doc.setFont(undefined, 'bold');
+    doc.text('Market Size & Opportunity:', margin, yPosition);
+    yPosition += lineHeight + 3;
+    
+    doc.setFont(undefined, 'normal');
+    const marketData = [
+        `Total Addressable Market: R${(Number(data.marketSize) || 0).toLocaleString()}`,
+        `Target Market Share: ${data.marketShare || 5}%`,
+        `Projected Market Value: R${((Number(data.marketSize) || 0) * ((Number(data.marketShare) || 5) / 100)).toLocaleString()}`,
+        `Expected Growth Rate: ${data.growthRate || 10}% annually`
+    ];
+    
+    addBulletPoints(marketData);
+    
+    doc.setFont(undefined, 'bold');
+    doc.text('Market Trends:', margin, yPosition);
+    yPosition += lineHeight + 3;
+    
+    doc.setFont(undefined, 'normal');
+    const marketTrends = `The ${data.businessType.toLowerCase()} industry in South Africa is experiencing steady growth, driven by increasing consumer demand and digital transformation. Our target demographic shows strong purchasing power and growing awareness of quality products/services.`;
+    const splitTrends = doc.splitTextToSize(marketTrends, textWidth);
+    splitTrends.forEach(line => {
+        checkNewPage();
+        doc.text(line, margin, yPosition);
+        yPosition += lineHeight;
+    });
+    
+    yPosition += sectionSpacing;
+    
+    // 4. Products & Services (Detailed)
+    addSection('4. PRODUCTS & SERVICES', data.products);
+    
+    // 5. Marketing & Sales Strategy
+    if (data.marketingStrategy) {
+        addSection('5. MARKETING & SALES STRATEGY', data.marketingStrategy);
+    }
+    
+    // 7. Financial Projections
+    doc.addPage();
+    yPosition = 30;
+    
+    doc.setFontSize(18);
+    doc.setFont(undefined, 'bold');
+    doc.text('7. FINANCIAL PROJECTIONS', margin, yPosition);
+    yPosition += 25;
+    
+    // Startup Costs Table
+    const startupCosts = [
+        ['Startup Cost Breakdown', 'Amount (ZAR)'],
+        ['Initial Investment', `R${(Number(data.startupCost) || 0).toLocaleString()}`],
+        ['Equipment & Setup', `R${(Number(data.equipmentCost) || 0).toLocaleString()}`],
+        ['Initial Inventory', `R${(Number(data.initialInventory) || 0).toLocaleString()}`],
+        ['Working Capital (3 months)', `R${(monthlyExp * 3).toLocaleString()}`],
+        ['TOTAL STARTUP COSTS', `R${((Number(data.startupCost) || 0) + (Number(data.equipmentCost) || 0) + (Number(data.initialInventory) || 0) + (monthlyExp * 3)).toLocaleString()}`]
+    ];
+    
+    addFinancialTable('STARTUP COSTS', startupCosts);
+    
+    // Monthly Operating Expenses
+    const monthlyExpenses = [
+        ['Monthly Operating Expenses', 'Amount (ZAR)'],
+        ['Rent & Utilities', `R${Math.round(monthlyExp * 0.2).toLocaleString()}`],
+        ['Marketing & Advertising', `R${Math.round(monthlyExp * 0.15).toLocaleString()}`],
+        ['Insurance & Legal', `R${Math.round(monthlyExp * 0.05).toLocaleString()}`],
+        ['Other Operating Expenses', `R${Math.round(monthlyExp * 0.6).toLocaleString()}`],
+        ['TOTAL MONTHLY EXPENSES', `R${monthlyExp.toLocaleString()}`]
+    ];
+    
+    addFinancialTable('MONTHLY OPERATING EXPENSES', monthlyExpenses);
+    
+    // 3-Year Revenue Projections
+    const year1Revenue = monthlyRev * 12;
+    const year2Revenue = year1Revenue * (1 + growthRate);
+    const year3Revenue = year2Revenue * (1 + growthRate);
+    
+    const year1Expenses = monthlyExp * 12;
+    const year2Expenses = year1Expenses * 1.1;
+    const year3Expenses = year2Expenses * 1.1;
+    
+    const revenueProjections = [
+        ['3-Year Financial Projections', 'Year 1', 'Year 2', 'Year 3'],
+        ['Revenue', `R${year1Revenue.toLocaleString()}`, `R${year2Revenue.toLocaleString()}`, `R${year3Revenue.toLocaleString()}`],
+        ['Operating Expenses', `R${year1Expenses.toLocaleString()}`, `R${year2Expenses.toLocaleString()}`, `R${year3Expenses.toLocaleString()}`],
+        ['Gross Profit', `R${(year1Revenue - year1Expenses).toLocaleString()}`, `R${(year2Revenue - year2Expenses).toLocaleString()}`, `R${(year3Revenue - year3Expenses).toLocaleString()}`],
+        ['Profit Margin %', `${((year1Revenue - year1Expenses) / year1Revenue * 100).toFixed(1)}%`, `${((year2Revenue - year2Expenses) / year2Revenue * 100).toFixed(1)}%`, `${((year3Revenue - year3Expenses) / year3Revenue * 100).toFixed(1)}%`]
+    ];
+    
+    addFinancialTable('REVENUE PROJECTIONS', revenueProjections);
+    
+    // Break-even Analysis
+    checkNewPage(50);
+    doc.setFontSize(14);
+    doc.setFont(undefined, 'bold');
+    doc.text('Break-even Analysis', margin, yPosition);
+    yPosition += 20;
+    
+    doc.setFontSize(11);
+    doc.setFont(undefined, 'normal');
+    
+    const breakEvenDetails = [
+        `Monthly Fixed Costs: R${monthlyExp.toLocaleString()}`,
+        `Monthly Revenue Target: R${monthlyRev.toLocaleString()}`,
+        `Break-even Point: ${Math.ceil(monthlyExp / (monthlyRev || 1))} months to recover initial investment`,
+        `Monthly Profit at Target: R${(monthlyRev - monthlyExp).toLocaleString()}`
+    ];
+    
+    addBulletPoints(breakEvenDetails);
+    
+    const breakEvenNote = `The business will reach profitability when monthly revenue consistently exceeds R${monthlyExp.toLocaleString()}.`;
+    const splitBreakEvenNote = doc.splitTextToSize(breakEvenNote, textWidth);
+    splitBreakEvenNote.forEach(line => {
+        checkNewPage();
+        doc.text(line, margin, yPosition);
+        yPosition += lineHeight;
+    });
+    
+    yPosition += sectionSpacing;
+    
+    // 8. Risk Analysis
+    doc.addPage();
+    yPosition = 30;
+    
+    addSection('8. RISK ANALYSIS', '');
+    
+    const riskCategories = [
+        {
+            title: 'Market Risks:',
+            risks: [
+                'Economic downturns affecting consumer spending',
+                'New competitors entering the market', 
+                'Changes in consumer preferences'
+            ]
+        },
+        {
+            title: 'Operational Risks:',
+            risks: [
+                'Key personnel leaving the company',
+                'Supply chain disruptions',
+                'Technology failures or cyber security threats'
+            ]
+        },
+        {
+            title: 'Financial Risks:',
+            risks: [
+                'Cash flow shortages',
+                'Inability to secure additional funding',
+                'Currency fluctuations (if applicable)'
+            ]
+        },
+        {
+            title: 'Regulatory Risks:',
+            risks: [
+                'Changes in government regulations',
+                'Compliance requirements',
+                'Tax law changes'
+            ]
         }
+    ];
+    
+    riskCategories.forEach(category => {
+        doc.setFont(undefined, 'bold');
+        doc.text(category.title, margin, yPosition);
+        yPosition += lineHeight + 3;
+        
+        doc.setFont(undefined, 'normal');
+        addBulletPoints(category.risks);
+        yPosition += 8;
+    });
+    
+    // 9. Funding Requirements
+    doc.addPage();
+    yPosition = 30;
+    
+    addSection('9. FUNDING REQUIREMENTS', '');
+    
+    doc.setFont(undefined, 'bold');
+    doc.text(`Total Funding Required: R${(Number(data.fundingNeeded) || 0).toLocaleString()}`, margin, yPosition);
+    yPosition += lineHeight + 8;
+    
+    doc.text('Use of Funds:', margin, yPosition);
+    yPosition += lineHeight + 3;
+    
+    doc.setFont(undefined, 'normal');
+    const fundingUseText = data.fundingUse || 'Funding will be allocated across startup costs, working capital, and growth investments.';
+    const splitFundingUse = doc.splitTextToSize(fundingUseText, textWidth);
+    splitFundingUse.forEach(line => {
+        checkNewPage();
+        doc.text(line, margin, yPosition);
+        yPosition += lineHeight;
+    });
+    
+    yPosition += 12;
+    
+    doc.setFont(undefined, 'bold');
+    doc.text('Return on Investment:', margin, yPosition);
+    yPosition += lineHeight + 3;
+    
+    doc.setFont(undefined, 'normal');
+    const roiData = [
+        `Year 1 ROI: ${((year1Revenue - year1Expenses) / (Number(data.fundingNeeded) || 1) * 100).toFixed(1)}%`,
+        `Year 3 ROI: ${((year3Revenue - year3Expenses) / (Number(data.fundingNeeded) || 1) * 100).toFixed(1)}%`,
+        `Payback Period: ${Math.ceil((Number(data.fundingNeeded) || 0) / ((year1Revenue - year1Expenses) / 12))} months`
+    ];
+    
+    addBulletPoints(roiData);
+    
+    // 10. Appendices
+    addSection('10. APPENDICES', '');
+    
+    const appendixItems = [
+        'Market research data',
+        'Financial model assumptions', 
+        'Legal documents and permits',
+        'Management team resumes',
+        'Letters of intent from key customers'
+    ];
+    
+    addBulletPoints(appendixItems);
+    
+    // Footer on each page
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFontSize(8);
+        doc.setFont(undefined, 'normal');
+        doc.text(`${data.businessName} - Business Plan`, margin, pageHeight - 15);
+        doc.text(`Page ${i} of ${pageCount}`, pageWidth - 50, pageHeight - 15);
+        doc.text('CONFIDENTIAL', pageWidth / 2, pageHeight - 15, { align: 'center' });
+    }
+    
+    // Save the PDF
+    const fileName = `${(data.businessName || 'Business_Plan').replace(/[^a-z0-9]/gi, '_')}_Business_Plan.pdf`;
+    doc.save(fileName);
+    
+    // Set up the download button if it exists
+    const downloadBtn = document.getElementById('download-btn');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', function() {
+            doc.save(fileName);
+        });
+    }
+    
+    return doc; // Return the document object for further use if needed
+}
         
         // Add intersection observer for animations
         const observerOptions = {
