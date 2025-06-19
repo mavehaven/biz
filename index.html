@@ -1449,6 +1449,7 @@
     </section>
     
     <!-- Business Plan Generator Modal -->
+      <!-- Business Plan Generator Modal -->
     <div class="modal" id="business-plan-modal">
         <div class="modal-content">
             <button class="close-modal">&times;</button>
@@ -1702,6 +1703,52 @@
                         <textarea id="businessGoals" required placeholder="Short-term and long-term business goals"></textarea>
                     </div>
 
+                    <h3 style="margin: 20px 0 15px; color: #1a1a1a; border-bottom: 1px solid #eee; padding-bottom: 10px;">SWOT Analysis</h3>
+                    
+                    <div class="form-group">
+                        <label for="strengths">
+                            Business Strengths 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Internal factors that give your business an advantage</span>
+                            </div>
+                        </label>
+                        <textarea id="strengths" placeholder="List your business strengths"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="weaknesses">
+                            Business Weaknesses 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Internal factors that place your business at a disadvantage</span>
+                            </div>
+                        </label>
+                        <textarea id="weaknesses" placeholder="List your business weaknesses"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="opportunities">
+                            Business Opportunities 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">External factors your business could exploit to its advantage</span>
+                            </div>
+                        </label>
+                        <textarea id="opportunities" placeholder="List potential opportunities for your business"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="threats">
+                            Business Threats 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">External factors that could cause trouble for your business</span>
+                            </div>
+                        </label>
+                        <textarea id="threats" placeholder="List potential threats to your business"></textarea>
+                    </div>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="contactEmail">
@@ -1729,7 +1776,7 @@
                     <ul class="form-features">
                         <li>Comprehensive 10-section business plan</li>
                         <li>Financial projections and break-even analysis</li>
-                        <li>Market analysis and competitive strategy</li>
+                        <li>SWOT analysis and competitive strategy</li>
                         <li>Professional PDF format</li>
                         <li>Instant download</li>
                         <li>Customized for South African market</li>
@@ -1752,7 +1799,7 @@
                 </div>
                 <h3>✅ Success!</h3>
                 <p>Your comprehensive business plan has been generated and downloaded!</p>
-                <p>The PDF contains all sections including financial projections, market analysis, and growth strategies.</p>
+                <p>The PDF contains all sections including financial projections, SWOT analysis, and growth strategies.</p>
                 <button class="download-btn" id="download-btn">
                     <i class="fas fa-download"></i> Download Business Plan (PDF)
                 </button>
@@ -1892,7 +1939,7 @@
             generateText.style.display = 'none';
             generateLoading.style.display = 'inline-block';
             
-            // Collect form data
+             // Collect form data
             const formData = {
                 businessName: document.getElementById('businessName').value,
                 businessType: document.getElementById('businessType').value,
@@ -1912,6 +1959,10 @@
                 marketingStrategy: document.getElementById('marketingStrategy').value,
                 managementTeam: document.getElementById('managementTeam').value,
                 businessGoals: document.getElementById('businessGoals').value,
+                strengths: document.getElementById('strengths').value,
+                weaknesses: document.getElementById('weaknesses').value,
+                opportunities: document.getElementById('opportunities').value,
+                threats: document.getElementById('threats').value,
                 contactEmail: document.getElementById('contactEmail').value,
                 contactPhone: document.getElementById('contactPhone').value
             };
@@ -2097,7 +2148,7 @@
             doc.addPage();
             yPosition = 30;
             
-            // Table of Contents
+            // Table of Contents (Updated to include SWOT)
             doc.setFontSize(18);
             doc.setFont(undefined, 'bold');
             doc.text('TABLE OF CONTENTS', margin, yPosition);
@@ -2109,13 +2160,14 @@
                 '1. Executive Summary',
                 '2. Business Description', 
                 '3. Market Analysis',
-                '4. Products & Services',
-                '5. Marketing & Sales Strategy',
-                '6. Management Team',
-                '7. Financial Projections',
-                '8. Risk Analysis',
-                '9. Funding Requirements',
-                '10. Appendices'
+                '4. SWOT Analysis',
+                '5. Products & Services',
+                '6. Marketing & Sales Strategy',
+                '7. Management Team',
+                '8. Financial Projections',
+                '9. Risk Analysis',
+                '10. Funding Requirements',
+                '11. Business Goals'
             ];
             
             tocItems.forEach(item => {
@@ -2164,24 +2216,83 @@
                 Market size: R${marketSize.toLocaleString()} with ${(marketShare * 100).toFixed(1)}% target share. 
                 Annual growth rate: ${(growthRate * 100).toFixed(1)}%.`);
             
-            // 4. Products & Services
-            addSection('4. PRODUCTS & SERVICES', data.products);
+            // 4. SWOT Analysis
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('4. SWOT ANALYSIS', margin, yPosition);
+            yPosition += 15;
             
-            // 5. Marketing & Sales Strategy
-            addSection('5. MARKETING & SALES STRATEGY', data.marketingStrategy);
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.text('Strengths:', margin, yPosition);
+            yPosition += lineHeight;
+            doc.setFont(undefined, 'normal');
+            const strengthsContent = data.strengths || 'To be defined';
+            const strengthsSplit = doc.splitTextToSize(strengthsContent, textWidth);
+            strengthsSplit.forEach(line => {
+                checkNewPage(20);
+                doc.text(line, margin, yPosition);
+                yPosition += lineHeight;
+            });
+            yPosition += 5;
             
-            // 6. Management Team
+            doc.setFont(undefined, 'bold');
+            doc.text('Weaknesses:', margin, yPosition);
+            yPosition += lineHeight;
+            doc.setFont(undefined, 'normal');
+            const weaknessesContent = data.weaknesses || 'To be defined';
+            const weaknessesSplit = doc.splitTextToSize(weaknessesContent, textWidth);
+            weaknessesSplit.forEach(line => {
+                checkNewPage(20);
+                doc.text(line, margin, yPosition);
+                yPosition += lineHeight;
+            });
+            yPosition += 5;
+            
+            doc.setFont(undefined, 'bold');
+            doc.text('Opportunities:', margin, yPosition);
+            yPosition += lineHeight;
+            doc.setFont(undefined, 'normal');
+            const opportunitiesContent = data.opportunities || 'To be defined';
+            const opportunitiesSplit = doc.splitTextToSize(opportunitiesContent, textWidth);
+            opportunitiesSplit.forEach(line => {
+                checkNewPage(20);
+                doc.text(line, margin, yPosition);
+                yPosition += lineHeight;
+            });
+            yPosition += 5;
+            
+            doc.setFont(undefined, 'bold');
+            doc.text('Threats:', margin, yPosition);
+            yPosition += lineHeight;
+            doc.setFont(undefined, 'normal');
+            const threatsContent = data.threats || 'To be defined';
+            const threatsSplit = doc.splitTextToSize(threatsContent, textWidth);
+            threatsSplit.forEach(line => {
+                checkNewPage(20);
+                doc.text(line, margin, yPosition);
+                yPosition += lineHeight;
+            });
+            yPosition += sectionSpacing;
+            
+            // 5. Products & Services
+            addSection('5. PRODUCTS & SERVICES', data.products);
+            
+            // 6. Marketing & Sales Strategy
+            addSection('6. MARKETING & SALES STRATEGY', data.marketingStrategy);
+            
+            // 7. Management Team
             if (data.managementTeam) {
-                addSection('6. MANAGEMENT TEAM', data.managementTeam);
+                addSection('7. MANAGEMENT TEAM', data.managementTeam);
             }
             
-            // 7. Financial Projections
+            // 8. Financial Projections
             doc.addPage();
             yPosition = 30;
             
             doc.setFontSize(18);
             doc.setFont(undefined, 'bold');
-            doc.text('7. FINANCIAL PROJECTIONS', margin, yPosition);
+            doc.text('8. FINANCIAL PROJECTIONS', margin, yPosition);
             yPosition += 25;
             
             // Startup Costs Table
@@ -2225,22 +2336,22 @@
             
             addFinancialTable('REVENUE PROJECTIONS', revenueProjections);
             
-            // 8. Risk Analysis
+            // 9. Risk Analysis
             doc.addPage();
             yPosition = 30;
             
-            addSection('8. RISK ANALYSIS', 
+            addSection('9. RISK ANALYSIS', 
                 `Competition: ${data.competition || 'To be defined'}. 
                 Market risks: Economic downturns, changing consumer preferences. 
                 Mitigation strategies: Diversification, continuous market research.`);
             
-            // 9. Funding Requirements
-            addSection('9. FUNDING REQUIREMENTS', 
+            // 10. Funding Requirements
+            addSection('10. FUNDING REQUIREMENTS', 
                 `Funding required: R${(Number(data.fundingNeeded) || 0).toLocaleString()}. 
                 Use of funds: Startup costs, working capital, marketing initiatives.`);
             
-            // 10. Business Goals
-            addSection('10. BUSINESS GOALS', data.businessGoals);
+            // 11. Business Goals
+            addSection('11. BUSINESS GOALS', data.businessGoals);
             
             // Footer on each page
             const pageCount = doc.internal.getNumberOfPages();
