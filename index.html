@@ -1136,6 +1136,77 @@
                 left: 20px;
             }
         }
+        
+        /* New financial section styles */
+        .financial-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #dc143c;
+        }
+        
+        .financial-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+        
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .timeline-item {
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            color: #dc143c;
+            margin-bottom: 5px;
+        }
+        
+        /* Legal structure field */
+        .legal-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .legal-option {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .legal-option.selected {
+            border-color: #dc143c;
+            background: rgba(220, 20, 60, 0.05);
+        }
+        
+        /* Capex planning */
+        .capex-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        
+        .remove-capex {
+            color: #dc143c;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -1420,6 +1491,13 @@
                     <div class="testimonial-author">Lisa van der Merwe</div>
                     <div class="testimonial-role">Retail Business Owner, Durban</div>
                 </div>
+                
+                <div class="testimonials-grid">
+                <div class="testimonial">
+                    <p class="testimonial-text">The cash flow projections and balance sheet helped me secure R750k in funding. The bank was impressed with the level of detail.</p>
+                    <div class="testimonial-author">David Johnson</div>
+                    <div class="testimonial-role">Manufacturing Business, Pretoria</div>
+                </div>
             </div>
         </div>
     </section>
@@ -1469,7 +1547,7 @@
                 <div class="step-dot" data-step="3"></div>
             </div>
             
-            <!-- Step 1: Business Information -->
+             <!-- Step 1: Business Information -->
             <div class="modal-step active" id="step-1">
                 <form class="modal-form">
                     <div class="form-group">
@@ -1477,7 +1555,7 @@
                             Business Name 
                             <div class="tooltip-container">
                                 <span class="tooltip-icon">?</span>
-                                <span class="tooltip-text">The official name of your business as registered</span>
+                                <span class="tooltip-text">The official name of your business</span>
                             </div>
                         </label>
                         <input type="text" id="businessName" placeholder="Enter your business name" required>
@@ -1489,7 +1567,7 @@
                                 Business Type 
                                 <div class="tooltip-container">
                                     <span class="tooltip-icon">?</span>
-                                    <span class="tooltip-text">Select the category that best describes your business</span>
+                                    <span class="tooltip-text">Select your primary business category</span>
                                 </div>
                             </label>
                             <select id="businessType" required>
@@ -1509,11 +1587,29 @@
                                 Location 
                                 <div class="tooltip-container">
                                     <span class="tooltip-icon">?</span>
-                                    <span class="tooltip-text">City and province where your business is located</span>
+                                    <span class="tooltip-text">City and province of operation</span>
                                 </div>
                             </label>
                             <input type="text" id="location" placeholder="City, Province" required>
                         </div>
+                    </div>
+
+                    <!-- Legal Structure -->
+                    <div class="form-group">
+                        <label>
+                            Legal Structure 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Select your business registration type</span>
+                            </div>
+                        </label>
+                        <div class="legal-options">
+                            <div class="legal-option" data-value="Pty Ltd">Pty Ltd</div>
+                            <div class="legal-option" data-value="CC">Close Corporation</div>
+                            <div class="legal-option" data-value="Sole Proprietor">Sole Proprietor</div>
+                            <div class="legal-option" data-value="Partnership">Partnership</div>
+                        </div>
+                        <input type="hidden" id="legalStructure" required>
                     </div>
 
                     <div class="form-group">
@@ -1521,10 +1617,10 @@
                             Mission Statement 
                             <div class="tooltip-container">
                                 <span class="tooltip-icon">?</span>
-                                <span class="tooltip-text">Describe your business's purpose and core values in 1-2 sentences</span>
+                                <span class="tooltip-text">Your business's purpose and values</span>
                             </div>
                         </label>
-                        <textarea id="missionStatement" required placeholder="What is your business's mission and core purpose?"></textarea>
+                        <textarea id="missionStatement" required placeholder="Describe your business mission"></textarea>
                     </div>
 
                     <div class="form-group">
@@ -1532,10 +1628,10 @@
                             Products & Services 
                             <div class="tooltip-container">
                                 <span class="tooltip-icon">?</span>
-                                <span class="tooltip-text">List all products/services you offer, with key features</span>
+                                <span class="tooltip-text">What you offer to customers</span>
                             </div>
                         </label>
-                        <textarea id="products" required placeholder="Describe what you sell or the services you provide"></textarea>
+                        <textarea id="products" required placeholder="Describe your products/services"></textarea>
                     </div>
 
                     <div class="form-navigation">
@@ -1552,10 +1648,10 @@
                             Target Market 
                             <div class="tooltip-container">
                                 <span class="tooltip-icon">?</span>
-                                <span class="tooltip-text">Describe your ideal customers (demographics, interests, etc.)</span>
+                                <span class="tooltip-text">Describe your ideal customers</span>
                             </div>
                         </label>
-                        <textarea id="targetMarket" required placeholder="Who are your ideal customers?"></textarea>
+                        <textarea id="targetMarket" required placeholder="Who are your customers?"></textarea>
                     </div>
                     
                     <div class="form-group">
@@ -1563,7 +1659,7 @@
                             Market Size (R) 
                             <div class="tooltip-container">
                                 <span class="tooltip-icon">?</span>
-                                <span class="tooltip-text">Estimated total market value for your industry in South Africa</span>
+                                <span class="tooltip-text">Total market value in South Africa</span>
                             </div>
                         </label>
                         <input type="number" id="marketSize" min="0" step="1000" placeholder="Total market size" required>
@@ -1574,7 +1670,7 @@
                             Target Market Share (%) 
                             <div class="tooltip-container">
                                 <span class="tooltip-icon">?</span>
-                                <span class="tooltip-text">Percentage of the market you aim to capture in the first year</span>
+                                <span class="tooltip-text">Percentage you aim to capture</span>
                             </div>
                         </label>
                         <input type="number" id="marketShare" min="0" max="100" step="1" placeholder="Target market share" required>
@@ -1586,7 +1682,7 @@
                                 Monthly Revenue Target (R) 
                                 <div class="tooltip-container">
                                     <span class="tooltip-icon">?</span>
-                                    <span class="tooltip-text">Projected monthly sales revenue after 6-12 months of operation</span>
+                                    <span class="tooltip-text">Projected monthly sales</span>
                                 </div>
                             </label>
                             <input type="number" id="monthlyRevenue" min="0" step="1000" placeholder="Estimated monthly revenue" required>
@@ -1596,7 +1692,7 @@
                                 Monthly Expenses (R) 
                                 <div class="tooltip-container">
                                     <span class="tooltip-icon">?</span>
-                                    <span class="tooltip-text">Total monthly operating costs (rent, salaries, materials, etc.)</span>
+                                    <span class="tooltip-text">Total monthly operating costs</span>
                                 </div>
                             </label>
                             <input type="number" id="monthlyExpenses" min="0" step="1000" placeholder="Estimated monthly expenses" required>
@@ -1609,7 +1705,7 @@
                                 Startup Costs (R) 
                                 <div class="tooltip-container">
                                     <span class="tooltip-icon">?</span>
-                                    <span class="tooltip-text">One-time costs to launch your business (equipment, licenses, etc.)</span>
+                                    <span class="tooltip-text">One-time costs to launch</span>
                                 </div>
                             </label>
                             <input type="number" id="startupCost" min="0" step="5000" placeholder="Total startup costs" required>
@@ -1619,7 +1715,7 @@
                                 Funding Needed (R) 
                                 <div class="tooltip-container">
                                     <span class="tooltip-icon">?</span>
-                                    <span class="tooltip-text">Total funding required to start and operate until profitable</span>
+                                    <span class="tooltip-text">Total funding required</span>
                                 </div>
                             </label>
                             <input type="number" id="fundingNeeded" min="0" step="5000" placeholder="Funding required" required>
@@ -1632,7 +1728,7 @@
                                 Growth Rate (%) 
                                 <div class="tooltip-container">
                                     <span class="tooltip-icon">?</span>
-                                    <span class="tooltip-text">Expected annual revenue growth percentage</span>
+                                    <span class="tooltip-text">Expected annual growth</span>
                                 </div>
                             </label>
                             <input type="number" id="growthRate" min="0" max="100" step="1" placeholder="Annual growth rate" required>
@@ -1642,11 +1738,41 @@
                                 Competitors
                                 <div class="tooltip-container">
                                     <span class="tooltip-icon">?</span>
-                                    <span class="tooltip-text">List your main competitors and their strengths</span>
+                                    <span class="tooltip-text">Main competitors</span>
                                 </div>
                             </label>
-                            <input type="text" id="competition" placeholder="Main competitors">
+                            <input type="text" id="competition" placeholder="Competitors in your market">
                         </div>
+                    </div>
+
+                    <!-- Capital Expenditure Plan -->
+                    <div class="financial-section">
+                        <div class="financial-title">Capital Expenditure Plan</div>
+                        <p>List your major equipment and asset purchases:</p>
+                        
+                        <div id="capex-container">
+                            <div class="capex-item">
+                                <input type="text" placeholder="Item (e.g. Delivery Van)" class="capex-item-name">
+                                <input type="number" placeholder="Cost (R)" min="0" class="capex-item-cost">
+                                <input type="text" placeholder="Timing (e.g. Month 3)" class="capex-item-timing">
+                                <span class="remove-capex"><i class="fas fa-times"></i></span>
+                            </div>
+                        </div>
+                        <button type="button" id="add-capex" class="modal-btn btn-outline" style="margin-top: 10px; width: auto;">
+                            <i class="fas fa-plus"></i> Add Item
+                        </button>
+                    </div>
+
+                    <!-- Debt Repayment Plan -->
+                    <div class="form-group">
+                        <label for="debtRepayment">
+                            Debt Repayment Plan (if applicable)
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">How you'll repay any business loans</span>
+                            </div>
+                        </label>
+                        <textarea id="debtRepayment" placeholder="E.g., 24 monthly installments at R5,000/month"></textarea>
                     </div>
 
                     <div class="form-group">
@@ -1654,10 +1780,10 @@
                             Competitive Advantage 
                             <div class="tooltip-container">
                                 <span class="tooltip-icon">?</span>
-                                <span class="tooltip-text">What makes your business unique? Why will customers choose you?</span>
+                                <span class="tooltip-text">What makes your business unique</span>
                             </div>
                         </label>
-                        <textarea id="competitiveAdvantage" required placeholder="What makes your business unique?"></textarea>
+                        <textarea id="competitiveAdvantage" required placeholder="Your competitive edge"></textarea>
                     </div>
 
                     <div class="form-navigation">
@@ -1675,10 +1801,10 @@
                             Marketing Strategy 
                             <div class="tooltip-container">
                                 <span class="tooltip-icon">?</span>
-                                <span class="tooltip-text">How you'll reach customers (online, events, partnerships, etc.)</span>
+                                <span class="tooltip-text">How you'll reach customers</span>
                             </div>
                         </label>
-                        <textarea id="marketingStrategy" required placeholder="How will you attract and retain customers?"></textarea>
+                        <textarea id="marketingStrategy" required placeholder="Your marketing approach"></textarea>
                     </div>
                     
                     <div class="form-group">
@@ -1686,10 +1812,10 @@
                             Management Team
                             <div class="tooltip-container">
                                 <span class="tooltip-icon">?</span>
-                                <span class="tooltip-text">Key team members and their relevant experience</span>
+                                <span class="tooltip-text">Key team members</span>
                             </div>
                         </label>
-                        <textarea id="managementTeam" placeholder="Key team members and their expertise"></textarea>
+                        <textarea id="managementTeam" placeholder="Team members and expertise"></textarea>
                     </div>
                     
                     <div class="form-group">
@@ -1697,10 +1823,10 @@
                             Business Goals 
                             <div class="tooltip-container">
                                 <span class="tooltip-icon">?</span>
-                                <span class="tooltip-text">Specific, measurable goals for 1 year and 3-5 years</span>
+                                <span class="tooltip-text">Short and long-term goals</span>
                             </div>
                         </label>
-                        <textarea id="businessGoals" required placeholder="Short-term and long-term business goals"></textarea>
+                        <textarea id="businessGoals" required placeholder="Your business objectives"></textarea>
                     </div>
 
                     <h3 style="margin: 20px 0 15px; color: #1a1a1a; border-bottom: 1px solid #eee; padding-bottom: 10px;">SWOT Analysis</h3>
@@ -1710,10 +1836,10 @@
                             Business Strengths 
                             <div class="tooltip-container">
                                 <span class="tooltip-icon">?</span>
-                                <span class="tooltip-text">Internal factors that give your business an advantage</span>
+                                <span class="tooltip-text">Internal advantages</span>
                             </div>
                         </label>
-                        <textarea id="strengths" placeholder="List your business strengths"></textarea>
+                        <textarea id="strengths" placeholder="List your strengths"></textarea>
                     </div>
                     
                     <div class="form-group">
@@ -1721,10 +1847,10 @@
                             Business Weaknesses 
                             <div class="tooltip-container">
                                 <span class="tooltip-icon">?</span>
-                                <span class="tooltip-text">Internal factors that place your business at a disadvantage</span>
+                                <span class="tooltip-text">Internal disadvantages</span>
                             </div>
                         </label>
-                        <textarea id="weaknesses" placeholder="List your business weaknesses"></textarea>
+                        <textarea id="weaknesses" placeholder="List your weaknesses"></textarea>
                     </div>
                     
                     <div class="form-group">
@@ -1732,10 +1858,10 @@
                             Business Opportunities 
                             <div class="tooltip-container">
                                 <span class="tooltip-icon">?</span>
-                                <span class="tooltip-text">External factors your business could exploit to its advantage</span>
+                                <span class="tooltip-text">External opportunities</span>
                             </div>
                         </label>
-                        <textarea id="opportunities" placeholder="List potential opportunities for your business"></textarea>
+                        <textarea id="opportunities" placeholder="Potential opportunities"></textarea>
                     </div>
                     
                     <div class="form-group">
@@ -1743,10 +1869,54 @@
                             Business Threats 
                             <div class="tooltip-container">
                                 <span class="tooltip-icon">?</span>
-                                <span class="tooltip-text">External factors that could cause trouble for your business</span>
+                                <span class="tooltip-text">External threats</span>
                             </div>
                         </label>
-                        <textarea id="threats" placeholder="List potential threats to your business"></textarea>
+                        <textarea id="threats" placeholder="Potential threats"></textarea>
+                    </div>
+
+                    <!-- Implementation Timeline -->
+                    <div class="financial-section">
+                        <div class="financial-title">Implementation Timeline</div>
+                        <p>Key milestones for launching and growing your business:</p>
+                        
+                        <div class="timeline-grid" id="timeline-container">
+                            <div class="timeline-item">
+                                <div class="timeline-date">Month 1</div>
+                                <div>Business registration & licensing</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">Month 2</div>
+                                <div>Setup premises & initial hiring</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">Month 3</div>
+                                <div>Launch marketing campaign</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">Month 6</div>
+                                <div>Reach break-even point</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 15px;">
+                            <textarea id="customTimeline" placeholder="Add your custom milestones (e.g., 'Month 4: Launch new product line')" style="width: 100%; min-height: 80px;"></textarea>
+                            <button type="button" id="add-timeline-item" class="modal-btn btn-outline" style="margin-top: 10px; width: auto;">
+                                <i class="fas fa-plus"></i> Add to Timeline
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Exit Strategy -->
+                    <div class="form-group">
+                        <label for="exitStrategy">
+                            Exit Strategy 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">How investors will realize returns</span>
+                            </div>
+                        </label>
+                        <textarea id="exitStrategy" placeholder="Acquisition, IPO, or ownership transition"></textarea>
                     </div>
 
                     <div class="form-row">
@@ -1755,7 +1925,7 @@
                                 Your Email 
                                 <div class="tooltip-container">
                                     <span class="tooltip-icon">?</span>
-                                    <span class="tooltip-text">We'll send your business plan to this address</span>
+                                    <span class="tooltip-text">For sending your business plan</span>
                                 </div>
                             </label>
                             <input type="email" id="contactEmail" required placeholder="Enter your email">
@@ -1765,7 +1935,7 @@
                                 Phone Number
                                 <div class="tooltip-container">
                                     <span class="tooltip-icon">?</span>
-                                    <span class="tooltip-text">Optional contact for any follow-up questions</span>
+                                    <span class="tooltip-text">Optional contact information</span>
                                 </div>
                             </label>
                             <input type="tel" id="contactPhone" placeholder="Enter your phone number">
@@ -1774,12 +1944,12 @@
 
                     <div class="form-price">R200</div>
                     <ul class="form-features">
-                        <li>Comprehensive 10-section business plan</li>
-                        <li>Financial projections and break-even analysis</li>
-                        <li>SWOT analysis and competitive strategy</li>
-                        <li>Professional PDF format</li>
+                        <li>Comprehensive 15-section business plan</li>
+                        <li>Full financial statements and projections</li>
+                        <li>Implementation timeline and exit strategy</li>
+                        <li>Professional PDF format with appendix</li>
                         <li>Instant download</li>
-                        <li>Customized for South African market</li>
+                        <li>SA market optimized</li>
                     </ul>
                     
                     <div class="form-navigation">
@@ -1939,11 +2109,12 @@
             generateText.style.display = 'none';
             generateLoading.style.display = 'inline-block';
             
-             // Collect form data
+            // Collect form data
             const formData = {
                 businessName: document.getElementById('businessName').value,
                 businessType: document.getElementById('businessType').value,
                 location: document.getElementById('location').value,
+                legalStructure: document.getElementById('legalStructure').value,
                 missionStatement: document.getElementById('missionStatement').value,
                 products: document.getElementById('products').value,
                 targetMarket: document.getElementById('targetMarket').value,
@@ -1963,9 +2134,32 @@
                 weaknesses: document.getElementById('weaknesses').value,
                 opportunities: document.getElementById('opportunities').value,
                 threats: document.getElementById('threats').value,
+                debtRepayment: document.getElementById('debtRepayment').value,
+                exitStrategy: document.getElementById('exitStrategy').value,
                 contactEmail: document.getElementById('contactEmail').value,
                 contactPhone: document.getElementById('contactPhone').value
             };
+            
+            // Collect capex items
+            formData.capexItems = [];
+            document.querySelectorAll('.capex-item').forEach(item => {
+                const name = item.querySelector('.capex-item-name').value;
+                const cost = item.querySelector('.capex-item-cost').value;
+                const timing = item.querySelector('.capex-item-timing').value;
+                if (name && cost && timing) {
+                    formData.capexItems.push({name, cost, timing});
+                }
+            });
+            
+            // Collect timeline items
+            formData.timelineItems = [];
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                const date = item.querySelector('.timeline-date').textContent;
+                const description = item.querySelector('div:nth-child(2)').textContent;
+                if (date && description) {
+                    formData.timelineItems.push({date, description});
+                }
+            });
             
             // Generate PDF after a short delay
             setTimeout(() => {
@@ -1994,6 +2188,48 @@
                 field.value = '';
             });
             
+            // Reset legal structure
+            document.querySelectorAll('.legal-option').forEach(opt => 
+                opt.classList.remove('selected'));
+            document.getElementById('legalStructure').value = '';
+            
+            // Reset capex items
+            document.getElementById('capex-container').innerHTML = `
+                <div class="capex-item">
+                    <input type="text" placeholder="Item (e.g. Delivery Van)" class="capex-item-name">
+                    <input type="number" placeholder="Cost (R)" min="0" class="capex-item-cost">
+                    <input type="text" placeholder="Timing (e.g. Month 3)" class="capex-item-timing">
+                    <span class="remove-capex"><i class="fas fa-times"></i></span>
+                </div>
+            `;
+            
+            // Reset timeline items
+            document.getElementById('timeline-container').innerHTML = `
+                <div class="timeline-item">
+                    <div class="timeline-date">Month 1</div>
+                    <div>Business registration & licensing</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Month 2</div>
+                    <div>Setup premises & initial hiring</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Month 3</div>
+                    <div>Launch marketing campaign</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Month 6</div>
+                    <div>Reach break-even point</div>
+                </div>
+            `;
+            
+            // Reattach event listeners
+            document.querySelectorAll('.remove-capex').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.capex-item').remove();
+                });
+            });
+            
             successMessage.style.display = 'none';
             document.querySelector('.modal-form').style.display = 'block';
             showStep(1);
@@ -2010,13 +2246,55 @@
                     field.value = '';
                 });
                 
+                // Reset legal structure
+                document.querySelectorAll('.legal-option').forEach(opt => 
+                    opt.classList.remove('selected'));
+                document.getElementById('legalStructure').value = '';
+                
+                // Reset capex items
+                document.getElementById('capex-container').innerHTML = `
+                    <div class="capex-item">
+                        <input type="text" placeholder="Item (e.g. Delivery Van)" class="capex-item-name">
+                        <input type="number" placeholder="Cost (R)" min="0" class="capex-item-cost">
+                        <input type="text" placeholder="Timing (e.g. Month 3)" class="capex-item-timing">
+                        <span class="remove-capex"><i class="fas fa-times"></i></span>
+                    </div>
+                `;
+                
+                // Reset timeline items
+                document.getElementById('timeline-container').innerHTML = `
+                    <div class="timeline-item">
+                        <div class="timeline-date">Month 1</div>
+                        <div>Business registration & licensing</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Month 2</div>
+                        <div>Setup premises & initial hiring</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Month 3</div>
+                        <div>Launch marketing campaign</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Month 6</div>
+                        <div>Reach break-even point</div>
+                    </div>
+                `;
+                
+                // Reattach event listeners
+                document.querySelectorAll('.remove-capex').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        this.closest('.capex-item').remove();
+                    });
+                });
+                
                 // Hide success message and show form
                 successMessage.style.display = 'none';
                 document.querySelector('.modal-form').style.display = 'block';
             });
         });
         
-        // Business Plan PDF Generation - Enhanced Field Correspondence
+        // Enhanced Business Plan PDF Generation
         function generateBusinessPlanPDF(data) {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
@@ -2128,14 +2406,14 @@
             // Title Page
             doc.setFontSize(28);
             doc.setFont(undefined, 'bold');
-            doc.text('BUSINESS PLAN', pageWidth / 2, 60, { align: 'center' });
+            doc.text('PROFESSIONAL BUSINESS PLAN', pageWidth / 2, 60, { align: 'center' });
             
             doc.setFontSize(20);
             doc.text(data.businessName || 'Your Business Name', pageWidth / 2, 85, { align: 'center' });
             
             doc.setFontSize(14);
             doc.setFont(undefined, 'normal');
-            doc.text(`Business Type: ${data.businessType}`, pageWidth / 2, 110, { align: 'center' });
+            doc.text(`Legal Structure: ${data.legalStructure || 'To be defined'}`, pageWidth / 2, 110, { align: 'center' });
             doc.text(`Location: ${data.location || 'South Africa'}`, pageWidth / 2, 125, { align: 'center' });
             doc.text(`Date: ${new Date().toLocaleDateString()}`, pageWidth / 2, 140, { align: 'center' });
             
@@ -2148,7 +2426,7 @@
             doc.addPage();
             yPosition = 30;
             
-            // Table of Contents (Updated to include SWOT)
+            // Table of Contents
             doc.setFontSize(18);
             doc.setFont(undefined, 'bold');
             doc.text('TABLE OF CONTENTS', margin, yPosition);
@@ -2160,14 +2438,18 @@
                 '1. Executive Summary',
                 '2. Business Description', 
                 '3. Market Analysis',
-                '4. SWOT Analysis',
-                '5. Products & Services',
-                '6. Marketing & Sales Strategy',
-                '7. Management Team',
-                '8. Financial Projections',
-                '9. Risk Analysis',
-                '10. Funding Requirements',
-                '11. Business Goals'
+                '4. Products & Services',
+                '5. Marketing & Sales Strategy',
+                '6. Management Team',
+                '7. Financial Projections',
+                '8. Cash Flow Forecast',
+                '9. Balance Sheet',
+                '10. Implementation Timeline',
+                '11. Risk Analysis',
+                '12. Funding Requirements',
+                '13. Exit Strategy',
+                '14. Business Goals',
+                '15. Appendix'
             ];
             
             tocItems.forEach(item => {
@@ -2180,7 +2462,7 @@
             
             // 1. Executive Summary
             addSection('1. EXECUTIVE SUMMARY', 
-                `${data.businessName} is a ${data.businessType.toLowerCase()} business located in ${data.location || 'South Africa'}. 
+                `${data.businessName} is a ${data.legalStructure || 'registered'} ${data.businessType.toLowerCase()} business located in ${data.location || 'South Africa'}. 
                 Our mission: "${data.missionStatement || 'To be defined'}". 
                 We offer: ${data.products || 'Products/services to be defined'}.
                 We are seeking R${(Number(data.fundingNeeded) || 0).toLocaleString()} in funding to achieve our business goals.`);
@@ -2216,83 +2498,24 @@
                 Market size: R${marketSize.toLocaleString()} with ${(marketShare * 100).toFixed(1)}% target share. 
                 Annual growth rate: ${(growthRate * 100).toFixed(1)}%.`);
             
-            // 4. SWOT Analysis
-            doc.setFontSize(14);
-            doc.setFont(undefined, 'bold');
-            doc.text('4. SWOT ANALYSIS', margin, yPosition);
-            yPosition += 15;
+            // 4. Products & Services
+            addSection('4. PRODUCTS & SERVICES', data.products);
             
-            doc.setFontSize(12);
-            doc.setFont(undefined, 'bold');
-            doc.text('Strengths:', margin, yPosition);
-            yPosition += lineHeight;
-            doc.setFont(undefined, 'normal');
-            const strengthsContent = data.strengths || 'To be defined';
-            const strengthsSplit = doc.splitTextToSize(strengthsContent, textWidth);
-            strengthsSplit.forEach(line => {
-                checkNewPage(20);
-                doc.text(line, margin, yPosition);
-                yPosition += lineHeight;
-            });
-            yPosition += 5;
+            // 5. Marketing & Sales Strategy
+            addSection('5. MARKETING & SALES STRATEGY', data.marketingStrategy);
             
-            doc.setFont(undefined, 'bold');
-            doc.text('Weaknesses:', margin, yPosition);
-            yPosition += lineHeight;
-            doc.setFont(undefined, 'normal');
-            const weaknessesContent = data.weaknesses || 'To be defined';
-            const weaknessesSplit = doc.splitTextToSize(weaknessesContent, textWidth);
-            weaknessesSplit.forEach(line => {
-                checkNewPage(20);
-                doc.text(line, margin, yPosition);
-                yPosition += lineHeight;
-            });
-            yPosition += 5;
-            
-            doc.setFont(undefined, 'bold');
-            doc.text('Opportunities:', margin, yPosition);
-            yPosition += lineHeight;
-            doc.setFont(undefined, 'normal');
-            const opportunitiesContent = data.opportunities || 'To be defined';
-            const opportunitiesSplit = doc.splitTextToSize(opportunitiesContent, textWidth);
-            opportunitiesSplit.forEach(line => {
-                checkNewPage(20);
-                doc.text(line, margin, yPosition);
-                yPosition += lineHeight;
-            });
-            yPosition += 5;
-            
-            doc.setFont(undefined, 'bold');
-            doc.text('Threats:', margin, yPosition);
-            yPosition += lineHeight;
-            doc.setFont(undefined, 'normal');
-            const threatsContent = data.threats || 'To be defined';
-            const threatsSplit = doc.splitTextToSize(threatsContent, textWidth);
-            threatsSplit.forEach(line => {
-                checkNewPage(20);
-                doc.text(line, margin, yPosition);
-                yPosition += lineHeight;
-            });
-            yPosition += sectionSpacing;
-            
-            // 5. Products & Services
-            addSection('5. PRODUCTS & SERVICES', data.products);
-            
-            // 6. Marketing & Sales Strategy
-            addSection('6. MARKETING & SALES STRATEGY', data.marketingStrategy);
-            
-            // 7. Management Team
+            // 6. Management Team
             if (data.managementTeam) {
-                addSection('7. MANAGEMENT TEAM', data.managementTeam);
+                addSection('6. MANAGEMENT TEAM', data.managementTeam);
             }
             
-            // 8. Financial Projections
+            // 7. Financial Projections
             doc.addPage();
             yPosition = 30;
             
             doc.setFontSize(18);
             doc.setFont(undefined, 'bold');
-            doc.text('8. FINANCIAL PROJECTIONS', margin, yPosition);
+            doc.text('7. FINANCIAL PROJECTIONS', margin, yPosition);
             yPosition += 25;
             
             // Startup Costs Table
@@ -2336,22 +2559,166 @@
             
             addFinancialTable('REVENUE PROJECTIONS', revenueProjections);
             
-            // 9. Risk Analysis
+            // 8. Cash Flow Forecast
             doc.addPage();
             yPosition = 30;
             
-            addSection('9. RISK ANALYSIS', 
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('8. CASH FLOW FORECAST (YEAR 1)', margin, yPosition);
+            yPosition += 20;
+            
+            // Generate monthly cash flow
+            const monthlyCashFlow = [['Month', 'Cash In', 'Cash Out', 'Net Cash Flow', 'Cumulative']];
+            let cumulativeCash = 0;
+            
+            for (let month = 1; month <= 12; month++) {
+                const cashIn = monthlyRev * (1 + (growthRate * month / 12));
+                const cashOut = monthlyExp * (1 + (0.05 * month / 12)); // 5% expense growth
+                const netCash = cashIn - cashOut;
+                cumulativeCash += netCash;
+                
+                monthlyCashFlow.push([
+                    `Month ${month}`,
+                    `R${Math.round(cashIn).toLocaleString()}`,
+                    `R${Math.round(cashOut).toLocaleString()}`,
+                    `R${Math.round(netCash).toLocaleString()}`,
+                    `R${Math.round(cumulativeCash).toLocaleString()}`
+                ]);
+            }
+            
+            addFinancialTable('MONTHLY CASH FLOW', monthlyCashFlow);
+            
+            // 9. Balance Sheet
+            doc.addPage();
+            yPosition = 30;
+            
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('9. BALANCE SHEET (YEAR 1)', margin, yPosition);
+            yPosition += 20;
+            
+            // Simplified balance sheet
+            const currentAssets = monthlyRev * 12 * 0.3; // 30% of annual revenue
+            const fixedAssets = Number(data.startupCost) || 0;
+            const totalAssets = currentAssets + fixedAssets;
+            
+            const currentLiabilities = monthlyExp * 12 * 0.2; // 20% of annual expenses
+            const longTermDebt = (Number(data.fundingNeeded) || 0) * 0.5; // 50% of funding as debt
+            const equity = totalAssets - currentLiabilities - longTermDebt;
+            
+            const balanceSheet = [
+                ['Assets', 'Amount (ZAR)'],
+                ['Current Assets', `R${Math.round(currentAssets).toLocaleString()}`],
+                ['Fixed Assets', `R${Math.round(fixedAssets).toLocaleString()}`],
+                ['Total Assets', `R${Math.round(totalAssets).toLocaleString()}`],
+                ['Liabilities', ''],
+                ['Current Liabilities', `R${Math.round(currentLiabilities).toLocaleString()}`],
+                ['Long-term Debt', `R${Math.round(longTermDebt).toLocaleString()}`],
+                ['Equity', `R${Math.round(equity).toLocaleString()}`],
+                ['Total Liabilities & Equity', `R${Math.round(totalAssets).toLocaleString()}`]
+            ];
+            
+            addFinancialTable('BALANCE SHEET', balanceSheet);
+            
+            // 10. Implementation Timeline
+            doc.addPage();
+            yPosition = 30;
+            
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('10. IMPLEMENTATION TIMELINE', margin, yPosition);
+            yPosition += 20;
+            
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            
+            // Add timeline items
+            data.timelineItems.forEach(item => {
+                checkNewPage(15);
+                doc.setFont(undefined, 'bold');
+                doc.text(`${item.date}:`, margin, yPosition);
+                doc.setFont(undefined, 'normal');
+                doc.text(item.description, margin + 30, yPosition);
+                yPosition += lineHeight + 5;
+            });
+            
+            yPosition += sectionSpacing;
+            
+            // 11. Risk Analysis
+            doc.addPage();
+            yPosition = 30;
+            
+            addSection('11. RISK ANALYSIS', 
                 `Competition: ${data.competition || 'To be defined'}. 
                 Market risks: Economic downturns, changing consumer preferences. 
                 Mitigation strategies: Diversification, continuous market research.`);
+                
+            // Risk Mitigation Table
+            const riskMitigation = [
+                ['Risk', 'Probability', 'Impact', 'Mitigation Strategy'],
+                ['Economic downturn', 'Medium', 'High', 'Diversify revenue streams, maintain cash reserves'],
+                ['New competitors', 'High', 'Medium', 'Continuous innovation, customer loyalty programs'],
+                ['Regulatory changes', 'Low', 'High', 'Regular legal reviews, industry association membership']
+            ];
             
-            // 10. Funding Requirements
-            addSection('10. FUNDING REQUIREMENTS', 
+            addFinancialTable('RISK MITIGATION PLAN', riskMitigation);
+            
+            // 12. Funding Requirements
+            addSection('12. FUNDING REQUIREMENTS', 
                 `Funding required: R${(Number(data.fundingNeeded) || 0).toLocaleString()}. 
-                Use of funds: Startup costs, working capital, marketing initiatives.`);
+                Use of funds: ${data.capexItems.length ? 'Capital expenditure, ' : ''}working capital, marketing initiatives.
+                ${data.debtRepayment ? 'Repayment plan: ' + data.debtRepayment : ''}`);
             
-            // 11. Business Goals
-            addSection('11. BUSINESS GOALS', data.businessGoals);
+            // 13. Exit Strategy
+            addSection('13. EXIT STRATEGY', 
+                data.exitStrategy || 'Potential acquisition by industry leader in 5-7 years. Alternatively, prepare for management buyout or IPO.');
+            
+            // 14. Business Goals
+            addSection('14. BUSINESS GOALS', data.businessGoals);
+            
+            // 15. Appendix
+            doc.addPage();
+            yPosition = 30;
+            
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('15. APPENDIX', margin, yPosition);
+            yPosition += 20;
+            
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            const appendixItems = [
+                'Market research data',
+                'Product specifications and images',
+                'Resumes of key team members',
+                'Legal documents and registrations',
+                'Detailed financial assumptions',
+                'Supplier agreements',
+                'Customer contracts',
+                'Capital expenditure details'
+            ];
+            
+            appendixItems.forEach(item => {
+                checkNewPage(15);
+                doc.text('• ' + item, margin, yPosition);
+                yPosition += lineHeight + 2;
+            });
+            
+            // Add capex items if any
+            if (data.capexItems.length > 0) {
+                yPosition += 10;
+                doc.setFont(undefined, 'bold');
+                doc.text('Capital Expenditure Details:', margin, yPosition);
+                yPosition += lineHeight;
+                
+                data.capexItems.forEach(item => {
+                    checkNewPage(15);
+                    doc.setFont(undefined, 'normal');
+                    doc.text(`- ${item.name}: R${item.cost} (${item.timing})`, margin, yPosition);
+                    yPosition += lineHeight;
+                });
+            }
             
             // Footer on each page
             const pageCount = doc.internal.getNumberOfPages();
