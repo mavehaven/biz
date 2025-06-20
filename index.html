@@ -59,63 +59,71 @@
             background: transparent;
         }
 
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-
-        .nav-links li {
-            margin: 0 15px;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 300;
-            transition: color 0.3s;
-            position: relative;
-            padding: 5px 0;
-        }
-
-        .nav-links a:hover {
-            color: #dc143c;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #dc143c;
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-       .nav-cta {
+        nav {
+    display: flex;
+    align-items: center; /* Aligns nav items vertically */
+}
+.nav-links {
+    display: flex;
+    align-items: center; /* Centers links vertically */
+    list-style: none;
+}
+.nav-links li {
+    margin: 0 15px;
+    display: flex;
+    align-items: center; /* Ensures each list item is vertically centered */
+}
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 300;
+    transition: color 0.3s;
+    position: relative;
+    padding: 12px 0; /* Match button height */
+    display: flex;
+    align-items: center; /* Center link text vertically */
+    height: auto; /* Remove fixed height */
+    line-height: 1; /* Normalize line height */
+}
+.nav-links a:hover {
+    color: #dc143c;
+}
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #dc143c;
+    transition: width 0.3s;
+}
+.nav-links a:hover::after {
+    width: 100%;
+}
+/* FIXED GET STARTED BUTTON */
+.nav-cta {
     background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
     color: white;
-    padding: 12px 30px; /* Increased padding for more space */
+    padding: 12px 12px;
     border-radius: 4px;
-    font-weight: 400; /* Slightly bolder */
+    font-weight: 400;
     transition: all 0.3s;
-    margin-left: 15px;
     text-decoration: none;
-    font-size: 1.05rem; /* Slightly larger font */
-    letter-spacing: 0.5px; /* Better letter spacing */
-    display: inline-block; /* Better control */
-    min-width: 130px; /* Minimum width for consistency */
-    text-align: center; /* Center text */
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+    min-width: 130px;
+    text-align: center;
+    display: flex; /* Changed from block to flex */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    box-shadow: 0 4px 10px rgba(220, 20, 60, 0.3);
+    line-height: 1; /* Normalize line height */
 }
-
 .nav-cta:hover {
-    transform: translateY(-3px); /* More pronounced hover effect */
-    box-shadow: 0 5px 15px rgba(220, 20, 60, 0.4); /* Enhanced shadow */
-    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(220, 20, 60, 0.4);
+    background: linear-gradient(135deg, #b91c3c 0%, #dc143c 100%);
 }
 
         .hamburger {
