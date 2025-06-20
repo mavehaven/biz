@@ -1221,6 +1221,320 @@
             color: #dc143c;
             cursor: pointer;
         }
+        
+ /* Chat Widget Positioning */
+.chat-widget {
+    position: fixed;
+    bottom: 20px;
+    left: 5px;
+    z-index: 2147483647;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+/* Chat Toggle */
+.chat-toggle {
+    background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: fixed;
+    z-index: 2;
+    right: 20px;
+    bottom: 100px;
+    animation: pulse 2s infinite;
+}
+
+/* Responsive design */
+@media (max-width: 900px) {
+    .position-indicator {
+        transform: scale(0.7);
+    }
+}
+
+@media (max-width: 768px) {
+    .position-indicator {
+        transform: scale(0.5);
+    }
+    
+    .final-cta {
+        padding-bottom: 120px; /* Add extra space at bottom */
+    }
+    
+    .cta-primary {
+        z-index: 100; /* Ensure button stays above other elements */
+        position: relative; /* Required for z-index to work */
+    }
+}
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(220, 20, 60, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(220, 20, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(220, 20, 60, 0); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 900px) {
+            .position-indicator {
+                transform: scale(0.7);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .position-indicator {
+                transform: scale(0.5);
+            }
+            
+            .chat-toggle {
+                left: 20px;
+                margin-left: 0;
+                margin-top: 0;
+                bottom: 20px;
+            }
+        }
+        
+       .chat-container {
+    width: 350px;
+    height: 500px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: all 0.4s ease;
+    position: fixed; /* Changed from relative */
+    bottom: 80px; /* Position from bottom instead of margin-top */
+    right: 20px; /* Position from right edge */
+    z-index: 9999; /* Much higher z-index */
+}
+
+.chat-container.open {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        /* Hide toggle when container is open */
+        .chat-container.open ~ .chat-toggle {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+        }
+        
+        @media (max-width: 768px) {
+    .chat-container {
+        width: calc(100vw - 40px); /* Full width minus margins */
+        height: 70vh; /* 70% of viewport height */
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+    }
+}
+
+.chat-toggle {
+    z-index: 9998; /* One less than container */
+}
+        
+        /* Chat header */
+        .chat-header {
+            background: #1a1a1a;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-title {
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        
+        /* Chat messages */
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 12px 15px;
+            border-radius: 18px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bot-message {
+            background: #e9ecef;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .user-message {
+            background: #dc143c;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        /* Input area */
+        .chat-input-area {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .chat-input:focus {
+            border-color: #dc143c;
+        }
+        
+        .send-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #dc143c;
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .send-btn:hover {
+            background: #b91c3c;
+            transform: scale(1.05);
+        }
+        
+        /* Form elements */
+        .form-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .form-option {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .form-option:hover {
+            border-color: #dc143c;
+            color: #dc143c;
+        }
+        
+        .form-option.selected {
+            background: #dc143c;
+            color: white;
+            border-color: #dc143c;
+        }
+        
+        .hourly-rate {
+            background: rgba(220, 20, 60, 0.1);
+            padding: 12px;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-weight: 500;
+            color: #dc143c;
+            text-align: center;
+            border: 1px dashed #dc143c;
+        }
+        
+        .date-time-inputs {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .date-time-inputs input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .submit-btn {
+            background: #dc143c;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: #b91c3c;
+            transform: translateY(-2px);
+        }
+        
+        .thank-you {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .thank-you i {
+            font-size: 3rem;
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+        
+        .thank-you h3 {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -1991,6 +2305,33 @@
                     Generate Another Plan
                 </button>
             </div>
+        </div>
+    </div>
+    
+  <!-- Chat Widget -->
+    <div class="chat-widget">
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-title">Book a Consultation</div>
+                <button class="close-chat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="chat-messages" id="chat-messages">
+                <!-- Messages will be added here dynamically -->
+            </div>
+            
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Type your message...">
+                <button class="send-btn" id="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="chat-toggle">
+            <i class="fas fa-comment"></i>
         </div>
     </div>
 
@@ -2829,6 +3170,304 @@
                     
                     mobileContainer.appendChild(card);
                 });
+            }
+        });
+        
+         // Chat widget functionality
+        const chatToggle = document.querySelector('.chat-toggle');
+        const chatContainer = document.querySelector('.chat-container');
+        const closeChat = document.querySelector('.close-chat');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        
+        let chatStep = 0;
+        let bookingData = {
+            name: '',
+            email: '',
+            phone: '',
+            service: '',
+            date: '',
+            time: '',
+            message: ''
+        };
+        
+        // Conversation flow steps
+        const conversationSteps = [
+            {
+                bot: "Hi there! 👋 I'm here to help you book a consultation with our team. Could you please tell me your name?",
+                inputType: 'text'
+            },
+            {
+                bot: "Nice to meet you, {name}! What's the best email to contact you?",
+                inputType: 'email'
+            },
+            {
+                bot: "Great! Could you also share your phone number?",
+                inputType: 'tel'
+            },
+            {
+                bot: `Thanks! What service are you interested in?`,
+                inputType: 'options',
+                html: `<div class="hourly-rate">Our consultation fee is R499 per hour</div>
+                      <div class="form-options">
+                        <div class="form-option" data-value="Business Plan">Business Plan</div>
+                        <div class="form-option" data-value="Financial Projections">Financial Projections</div>
+                        <div class="form-option" data-value="Market Research">Market Research</div>
+                        <div class="form-option" data-value="Other">Other</div>
+                      </div>`
+            },
+            {
+                bot: "Perfect! When would you like to schedule your consultation?",
+                inputType: 'datetime',
+                html: `<div class="date-time-inputs">
+                         <input type="date" id="booking-date" min="${new Date().toISOString().split('T')[0]}">
+                         <input type="time" id="booking-time">
+                       </div>`
+            },
+            {
+                bot: "Almost done! Is there anything specific you'd like us to know before our call?",
+                inputType: 'text'
+            },
+            {
+                bot: "Thank you for your booking! We'll contact you shortly to confirm your appointment.",
+                inputType: 'submit'
+            }
+        ];
+        
+        // Initialize chat
+        function initChat() {
+            chatMessages.innerHTML = '';
+            addBotMessage(conversationSteps[0].bot);
+            chatStep = 0;
+            bookingData = {
+                name: '',
+                email: '',
+                phone: '',
+                service: '',
+                date: '',
+                time: '',
+                message: ''
+            };
+            chatInput.value = '';
+            chatInput.style.display = 'block';
+            sendBtn.style.display = 'flex';
+        }
+        
+        // Toggle chat visibility
+        chatToggle.addEventListener('click', () => {
+            chatContainer.classList.toggle('open');
+            if (chatContainer.classList.contains('open')) {
+                initChat();
+                chatInput.focus();
+            }
+        });
+        
+        closeChat.addEventListener('click', () => {
+            chatContainer.classList.remove('open');
+        });
+        
+        // Add message to chat
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            messageDiv.innerHTML = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return messageDiv;
+        }
+        
+        // Add bot message
+        function addBotMessage(text) {
+            return addMessage(text, false);
+        }
+        
+        // Add user message
+        function addUserMessage(text) {
+            return addMessage(text, true);
+        }
+        
+        // Email validation
+        function validateEmail(email) {
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+        
+        // Process user input and move to next step
+        function processUserInput() {
+            const input = chatInput.value.trim();
+            
+            // Save user input based on current step
+            switch(chatStep) {
+                case 0: // Name
+                    if (!input) {
+                        addBotMessage("Please enter your name to continue.");
+                        return;
+                    }
+                    bookingData.name = input;
+                    addUserMessage(input);
+                    break;
+                case 1: // Email
+                    if (!input) {
+                        addBotMessage("Please enter your email to continue.");
+                        return;
+                    }
+                    if (!validateEmail(input)) {
+                        addBotMessage("Please enter a valid email address.");
+                        return;
+                    }
+                    bookingData.email = input;
+                    addUserMessage(input);
+                    break;
+                case 2: // Phone
+                    if (!input) {
+                        addBotMessage("Please enter your phone number to continue.");
+                        return;
+                    }
+                    bookingData.phone = input;
+                    addUserMessage(input);
+                    break;
+                case 3: // Service (handled by options)
+                    // Changed from return to break to fix the issue
+                    break;
+                case 4: // Date/Time (handled separately)
+                    // Changed from return to break to fix the issue
+                    break;
+                case 5: // Message
+                    bookingData.message = input || "No additional message";
+                    addUserMessage(input || "No additional message");
+                    break;
+            }
+            
+            // Move to next step
+            chatStep++;
+            
+            if (chatStep < conversationSteps.length) {
+                setTimeout(() => {
+                    let nextMessage = conversationSteps[chatStep].bot;
+                    
+                    // Replace placeholders with collected data
+                    nextMessage = nextMessage.replace('{name}', bookingData.name);
+                    
+                    addBotMessage(nextMessage);
+                    
+                    // Handle special input types
+                    if (conversationSteps[chatStep].inputType === 'options') {
+                        // Add service options
+                        chatInput.style.display = 'none';
+                        sendBtn.style.display = 'none';
+                        
+                        const optionsContainer = document.createElement('div');
+                        optionsContainer.innerHTML = conversationSteps[chatStep].html;
+                        chatMessages.appendChild(optionsContainer);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                        
+                        const options = optionsContainer.querySelectorAll('.form-option');
+                        options.forEach(option => {
+                            option.addEventListener('click', () => {
+                                options.forEach(opt => opt.classList.remove('selected'));
+                                option.classList.add('selected');
+                                bookingData.service = option.dataset.value;
+                                
+                                // Automatically proceed after selection
+                                setTimeout(() => {
+                                    addUserMessage(bookingData.service);
+                                    optionsContainer.remove();
+                                    chatInput.style.display = 'block';
+                                    sendBtn.style.display = 'flex';
+                                    processUserInput();
+                                }, 500);
+                            });
+                        });
+                    } 
+                    else if (conversationSteps[chatStep].inputType === 'datetime') {
+                        // Add date/time pickers
+                        chatInput.style.display = 'none';
+                        sendBtn.style.display = 'none';
+                        
+                        const dateTimeContainer = document.createElement('div');
+                        dateTimeContainer.innerHTML = conversationSteps[chatStep].html;
+                        chatMessages.appendChild(dateTimeContainer);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                        
+                        const dateInput = dateTimeContainer.querySelector('#booking-date');
+                        const timeInput = dateTimeContainer.querySelector('#booking-time');
+                        
+                        // Add continue button
+                        const continueBtn = document.createElement('button');
+                        continueBtn.className = 'submit-btn';
+                        continueBtn.textContent = 'Continue';
+                        continueBtn.addEventListener('click', () => {
+                            bookingData.date = dateInput.value;
+                            bookingData.time = timeInput.value;
+                            
+                            if (!bookingData.date || !bookingData.time) {
+                                const errorMsg = addBotMessage("Please select both date and time.");
+                                setTimeout(() => errorMsg.remove(), 3000);
+                                return;
+                            }
+                            
+                            addUserMessage(`${bookingData.date} at ${bookingData.time}`);
+                            dateTimeContainer.remove();
+                            continueBtn.remove();
+                            chatInput.style.display = 'block';
+                            sendBtn.style.display = 'flex';
+                            processUserInput();
+                        });
+                        
+                        chatMessages.appendChild(continueBtn);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
+                    else if (conversationSteps[chatStep].inputType === 'submit') {
+                        // Final step - show thank you message
+                        chatInput.style.display = 'none';
+                        sendBtn.style.display = 'none';
+                        
+                        const thankYou = document.createElement('div');
+                        thankYou.className = 'thank-you';
+                        thankYou.innerHTML = `
+                            <i class="fas fa-check-circle"></i>
+                            <h3>Booking Confirmed!</h3>
+                            <p>Thank you, ${bookingData.name}! We'll contact you at ${bookingData.email} to confirm your consultation.</p>
+                            <p><strong>Service:</strong> ${bookingData.service}</p>
+                            <p><strong>Scheduled:</strong> ${bookingData.date} at ${bookingData.time}</p>
+                            <div class="hourly-rate">Our consultation fee is R499 per hour</div>
+                        `;
+                        chatMessages.appendChild(thankYou);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                        
+                        // Close chat after delay
+                        setTimeout(() => {
+                            chatContainer.classList.remove('open');
+                        }, 8000);
+                    }
+                    else {
+                        // Regular text input
+                        chatInput.value = '';
+                        chatInput.focus();
+                    }
+                }, 800);
+            }
+            
+            chatInput.value = '';
+        }
+        
+        // Send button click
+        sendBtn.addEventListener('click', processUserInput);
+        
+        // Enter key in input
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                processUserInput();
+            }
+        });
+        
+        // Prevent form submission on enter in date/time inputs
+        document.addEventListener('keypress', (e) => {
+            if (e.target.type === 'date' || e.target.type === 'time') {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                }
             }
         });
     </script>
