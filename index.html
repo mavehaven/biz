@@ -96,21 +96,27 @@
             width: 100%;
         }
 
-        .nav-cta {
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 3px;
-            font-weight: 300;
-            transition: all 0.3s;
-            margin-left: 15px;
-            text-decoration: none;
-        }
+       .nav-cta {
+    background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+    color: white;
+    padding: 12px 30px; /* Increased padding for more space */
+    border-radius: 4px;
+    font-weight: 400; /* Slightly bolder */
+    transition: all 0.3s;
+    margin-left: 15px;
+    text-decoration: none;
+    font-size: 1.05rem; /* Slightly larger font */
+    letter-spacing: 0.5px; /* Better letter spacing */
+    display: inline-block; /* Better control */
+    min-width: 130px; /* Minimum width for consistency */
+    text-align: center; /* Center text */
+}
 
-        .nav-cta:hover {
-            transform: translateY(-2px);
-            color: white;
-        }
+.nav-cta:hover {
+    transform: translateY(-3px); /* More pronounced hover effect */
+    box-shadow: 0 5px 15px rgba(220, 20, 60, 0.4); /* Enhanced shadow */
+    color: white;
+}
 
         .hamburger {
             display: none;
