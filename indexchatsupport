@@ -1,0 +1,2836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LumenOS Business Suite</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            overflow-x: hidden;
+            padding-top: 80px;
+            background: #f5f7fa;
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(26, 26, 26, 0.95);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 20px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 0;
+            overflow: hidden;
+        }
+
+        .logo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: transparent;
+        }
+
+        nav {
+    display: flex;
+    align-items: center; /* Aligns nav items vertically */
+}
+.nav-links {
+    display: flex;
+    align-items: center; /* Centers links vertically */
+    list-style: none;
+}
+.nav-links li {
+    margin: 0 15px;
+    display: flex;
+    align-items: center; /* Ensures each list item is vertically centered */
+}
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 300;
+    transition: color 0.3s;
+    position: relative;
+    padding: 12px 0; /* Match button height */
+    display: flex;
+    align-items: center; /* Center link text vertically */
+    height: auto; /* Remove fixed height */
+    line-height: 1; /* Normalize line height */
+}
+.nav-links a:hover {
+    color: #dc143c;
+}
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #dc143c;
+    transition: width 0.3s;
+}
+.nav-links a:hover::after {
+    width: 100%;
+}
+/* FIXED GET STARTED BUTTON */
+.nav-cta {
+    background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+    color: white;
+    padding: 12px 12px;
+    border-radius: 4px;
+    font-weight: 400;
+    transition: all 0.3s;
+    text-decoration: none;
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+    min-width: 130px;
+    text-align: center;
+    display: flex; /* Changed from block to flex */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    box-shadow: 0 4px 10px rgba(220, 20, 60, 0.3);
+    line-height: 1; /* Normalize line height */
+}
+.nav-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(220, 20, 60, 0.4);
+    background: linear-gradient(135deg, #b91c3c 0%, #dc143c 100%);
+}
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            top: 80px;
+            right: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: calc(100vh - 80px);
+            background: rgba(26, 26, 26, 0.98);
+            z-index: 999;
+            transition: right 0.4s ease;
+            padding: 20px;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+        }
+
+        .mobile-nav-links li {
+            margin: 20px 0;
+        }
+
+        .mobile-nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            display: block;
+            padding: 10px;
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
+
+        .mobile-nav-links a:hover {
+            background: rgba(220, 20, 60, 0.2);
+        }
+
+        .mobile-cta {
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 3px;
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        /* Overlay for mobile menu */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(220, 20, 60, 0.05) 50%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(-100px); }
+            50% { transform: translateX(100px); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: -1px;
+            animation: slideUp 1s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero .subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            opacity: 0.8;
+            font-weight: 300;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .hero .stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin: 40px 0;
+            animation: slideUp 1s ease-out 0.4s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 200;
+            display: block;
+            color: #dc143c;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            font-weight: 300;
+        }
+
+        .cta-primary {
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            color: white;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 3px;
+            font-size: 1.2rem;
+            font-weight: 400;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 20px rgba(220, 20, 60, 0.3);
+            transition: all 0.3s ease;
+            animation: slideUp 1s ease-out 0.6s both;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(220, 20, 60, 0.4);
+            background: linear-gradient(135deg, #b91c3c 0%, #dc143c 100%);
+        }
+
+        .price-highlight {
+            font-size: 2rem;
+            margin: 20px 0;
+            font-weight: 300;
+            animation: slideUp 1s ease-out 0.8s both;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            opacity: 0.6;
+            font-size: 1.5rem;
+            color: #c0c0c0;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: #fafafa;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+            font-weight: 300;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 60px;
+            font-weight: 300;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px;
+            border-radius: 2px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: all 0.3s ease;
+            border-top: 3px solid #dc143c;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: #c0c0c0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin: 0 auto 20px;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+            font-weight: 400;
+        }
+
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+         /* Competitive Analysis */
+        .comparison {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 40px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .comparison-table th {
+            background: #1a1a1a;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-weight: 400;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .comparison-table td {
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+            font-weight: 300;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #fafafa;
+        }
+        
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .our-column {
+            background: #dc143c !important;
+            color: white !important;
+            font-weight: 400 !important;
+        }
+
+        .checkmark {
+            color: #1a1a1a;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .crossmark {
+            color: #dc143c;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .partial {
+            color: #c0c0c0;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        /* Benefits Section */
+        .benefits {
+            padding: 80px 0;
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .benefits .section-title {
+            color: white;
+        }
+
+        .benefits .section-subtitle {
+            color: #c0c0c0;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .benefit-number {
+            font-size: 3rem;
+            font-weight: 200;
+            margin-bottom: 10px;
+            color: #dc143c;
+        }
+
+        .benefit-text {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: #c0c0c0;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 0;
+            background: #fafafa;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .testimonial {
+            background: white;
+            padding: 30px;
+            border-radius: 2px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            position: relative;
+            border-left: 4px solid #dc143c;
+        }
+
+        .testimonial::before {
+            content: '"';
+            font-size: 3rem;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: #dc143c;
+            opacity: 0.2;
+            font-weight: 300;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #333;
+            font-weight: 300;
+        }
+
+        .testimonial-author {
+            font-weight: 400;
+            color: #1a1a1a;
+        }
+
+        .testimonial-role {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+
+        /* CTA Section */
+        .final-cta {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .urgency {
+            background: #dc143c;
+            color: white;
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 2px;
+            font-weight: 400;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        /* Floating elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            opacity: 0.05;
+            animation: floatRandom 20s ease-in-out infinite;
+            color: #dc143c;
+            font-size: 2rem;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 20%;
+            right: 10%;
+            animation-delay: 7s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 14s;
+        }
+
+        @keyframes floatRandom {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(15px) rotate(240deg); }
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #dc143c;
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            background: #f8f8f8;
+            transform: rotate(90deg);
+        }
+
+        .modal h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        .modal p {
+            margin-bottom: 20px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .modal-form {
+            margin-top: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus, 
+        .form-group select:focus, 
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #dc143c;
+            box-shadow: 0 0 0 2px rgba(220, 20, 60, 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .modal-btn {
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 20, 60, 0.3);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-header h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+        
+        .form-header p {
+            color: #666;
+            margin-bottom: 0;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: #eee;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: #dc143c;
+            width: 33%;
+            transition: width 0.3s;
+        }
+        
+        .modal-step {
+            display: none;
+        }
+        
+        .modal-step.active {
+            display: block;
+        }
+        
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #dc143c;
+            color: #dc143c;
+        }
+        
+        .btn-outline:hover {
+            background: rgba(220, 20, 60, 0.05);
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ddd;
+            transition: all 0.3s;
+        }
+        
+        .step-dot.active {
+            background: #dc143c;
+            transform: scale(1.2);
+        }
+        
+        .success-message {
+            text-align: center;
+            padding: 40px 0;
+            display: none;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            color: #28a745;
+            margin-bottom: 20px;
+            animation: successScale 0.6s ease;
+        }
+        
+        @keyframes successScale {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        
+        .success-message h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+        
+        .success-message p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .form-price {
+            font-size: 2em;
+            color: #e74c3c;
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        
+        .form-features {
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        .form-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .form-features li:before {
+            content: "✓";
+            color: #27ae60;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .loading {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .success-message {
+            text-align: center;
+            color: #27ae60;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo-placeholder {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .hero .stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .features-grid,
+            .benefits-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-table {
+                font-size: 0.8rem;
+            }
+            
+            .comparison-table th,
+            .comparison-table td {
+                padding: 10px 8px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .modal-content {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 70px 0;
+            }
+            
+            .cta-primary {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+            }
+            
+            .feature-card {
+                padding: 30px 20px;
+            }
+            
+            .modal-content {
+                width: 95%;
+            }
+        }
+        
+        /* Add these styles to your existing CSS */
+
+/* Mobile cards container */
+.mobile-cards {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+}
+
+/* Feature card styling */
+.feature-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+.feature-header {
+    background: #1a1a1a;
+    color: white;
+    padding: 15px;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.feature-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.feature-row:last-child {
+    border-bottom: none;
+}
+
+.feature-name {
+    font-weight: 500;
+    color: #666;
+}
+
+.feature-value {
+    font-weight: 400;
+    text-align: right;
+}
+
+.our-highlight {
+    background-color: rgba(220, 20, 60, 0.08);
+    border-left: 4px solid #dc143c;
+}
+
+/* Update your existing media query */
+@media (max-width: 768px) {
+    .comparison-table {
+        display: none;
+    }
+    
+    .mobile-cards {
+        display: flex;
+    }
+}
+
+/* NEW: Subtle Tooltip Styles */
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .tooltip-container {
+            position: relative;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .tooltip-icon {
+            color: #dc143c;
+            font-size: 14px;
+            opacity: 0.7;
+            transition: all 0.2s ease;
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .tooltip-icon:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        .tooltip-text {
+            visibility: hidden;
+            width: 240px;
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            text-align: left;
+            border-radius: 4px;
+            padding: 12px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 13px;
+            font-weight: 300;
+            line-height: 1.5;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #1a1a1a transparent transparent transparent;
+        }
+        
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 0.95;
+        }
+        
+        @media (max-width: 768px) {
+            .tooltip-text {
+                width: 200px;
+                left: 0;
+                transform: translateX(0);
+            }
+            
+            .tooltip-text::after {
+                left: 20px;
+            }
+        }
+        
+        /* New financial section styles */
+        .financial-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #dc143c;
+        }
+        
+        .financial-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+        
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .timeline-item {
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            color: #dc143c;
+            margin-bottom: 5px;
+        }
+        
+        /* Legal structure field */
+        .legal-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .legal-option {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .legal-option.selected {
+            border-color: #dc143c;
+            background: rgba(220, 20, 60, 0.05);
+        }
+        
+        /* Capex planning */
+        .capex-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        
+        .remove-capex {
+            color: #dc143c;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo-placeholder">
+                <img src="//b9fe070413d9eb020045866da2feb86e.cdn.bubble.io/f1750341223817x792480728047750900/retteyfdye.svg" alt="BizPlanPro Logo">
+            </div>
+        </div>
+        
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#comparison">Comparison</a></li>
+                <li><a href="#benefits">Benefits</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#" class="nav-cta open-modal-btn">Get Started</a></li>
+            </ul>
+            
+            <button class="hamburger">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <ul class="mobile-nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#comparison">Comparison</a></li>
+            <li><a href="#benefits">Benefits</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#" class="mobile-cta open-modal-btn">Get Started</a></li>
+        </ul>
+    </div>
+    
+    <!-- Overlay for mobile menu -->
+    <div class="overlay"></div>
+
+    <!-- Floating Background Elements -->
+    <div class="floating-elements">
+        <div class="floating-element">📊</div>
+        <div class="floating-element">💼</div>
+        <div class="floating-element">🚀</div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Get Your Professional Business Plan in Minutes</h1>
+            <p class="subtitle">Stop spending weeks writing business plans. Our AI-powered generator creates comprehensive, investor-ready business plans tailored for South African businesses.</p>
+            
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">10K+</span>
+                    <span class="stat-label">Plans Generated</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">95%</span>
+                    <span class="stat-label">Success Rate</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">5 Min</span>
+                    <span class="stat-label">Average Time</span>
+                </div>
+            </div>
+
+            <div class="price-highlight">
+                <span class="original-price">R1,500</span> 
+                <strong>Only R200</strong>
+            </div>
+
+            <a href="#" class="cta-primary open-modal-btn">Generate My Business Plan Now</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose Our Business Plan Generator?</h2>
+            <p class="section-subtitle">Everything you need to create a professional, comprehensive business plan</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">SA Market Optimized</h3>
+                    <p class="feature-description">Specifically designed for South African businesses with local market insights, regulations, and industry standards.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Lightning Fast</h3>
+                    <p class="feature-description">Generate a complete 10-section business plan in under 5 minutes. No more weeks of research and writing.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Financial Projections</h3>
+                    <p class="feature-description">Automatic calculation of break-even analysis, 3-year projections, and ROI metrics that investors want to see.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3 class="feature-title">Professional Quality</h3>
+                    <p class="feature-description">Bank and investor-ready documents with professional formatting and comprehensive coverage.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3 class="feature-title">AI-Powered Insights</h3>
+                    <p class="feature-description">Smart recommendations based on your industry, target market, and business model for maximum success.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Secure & Confidential</h3>
+                    <p class="feature-description">Your business information is protected with enterprise-level security and complete confidentiality.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Competitive Analysis -->
+    <section class="comparison" id="comparison">
+        <div class="container">
+            <h2 class="section-title">How We Compare to Alternatives</h2>
+            <p class="section-subtitle">See why thousands choose our solution over expensive consultants and generic templates</p>
+            
+            <!-- Responsive Table Container -->
+            <div class="table-responsive">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th class="our-column">Our Generator</th>
+                            <th>Business Consultant</th>
+                            <th>Generic AI Tools</th>
+                            <th>Canva Templates</th>
+                            <th>DIY Approach</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Feature"><strong>Time to Complete</strong></td>
+                            <td data-label="Our Generator" class="our-column">5 minutes</td>
+                            <td data-label="Business Consultant">2-4 weeks</td>
+                            <td data-label="Generic AI Tools">1-2 hours</td>
+                            <td data-label="Canva Templates">3-5 hours</td>
+                            <td data-label="DIY Approach">2-6 weeks</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>Cost</strong></td>
+                            <td data-label="Our Generator" class="our-column">R200</td>
+                            <td data-label="Business Consultant">R15,000 - R50,000</td>
+                            <td data-label="Generic AI Tools">R500 - R2,000</td>
+                            <td data-label="Canva Templates">R300 - R800</td>
+                            <td data-label="DIY Approach">Free (Time cost)</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>SA Market Focus</strong></td>
+                            <td data-label="Our Generator" class="our-column"><span class="checkmark">✓</span></td>
+                            <td data-label="Business Consultant"><span class="checkmark">✓</span></td>
+                            <td data-label="Generic AI Tools"><span class="crossmark">✗</span></td>
+                            <td data-label="Canva Templates"><span class="crossmark">✗</span></td>
+                            <td data-label="DIY Approach"><span class="partial">△</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>Financial Projections</strong></td>
+                            <td data-label="Our Generator" class="our-column"><span class="checkmark">✓</span></td>
+                            <td data-label="Business Consultant"><span class="checkmark">✓</span></td>
+                            <td data-label="Generic AI Tools"><span class="partial">△</span></td>
+                            <td data-label="Canva Templates"><span class="crossmark">✗</span></td>
+                            <td data-label="DIY Approach"><span class="partial">△</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>Professional Formatting</strong></td>
+                            <td data-label="Our Generator" class="our-column"><span class="checkmark">✓</span></td>
+                            <td data-label="Business Consultant"><span class="checkmark">✓</span></td>
+                            <td data-label="Generic AI Tools"><span class="partial">△</span></td>
+                            <td data-label="Canva Templates"><span class="checkmark">✓</span></td>
+                            <td data-label="DIY Approach"><span class="crossmark">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>Industry Customization</strong></td>
+                            <td data-label="Our Generator" class="our-column"><span class="checkmark">✓</span></td>
+                            <td data-label="Business Consultant"><span class="checkmark">✓</span></td>
+                            <td data-label="Generic AI Tools"><span class="partial">△</span></td>
+                            <td data-label="Canva Templates"><span class="crossmark">✗</span></td>
+                            <td data-label="DIY Approach"><span class="partial">△</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>Instant Download</strong></td>
+                            <td data-label="Our Generator" class="our-column"><span class="checkmark">✓</span></td>
+                            <td data-label="Business Consultant"><span class="crossmark">✗</span></td>
+                            <td data-label="Generic AI Tools"><span class="checkmark">✓</span></td>
+                            <td data-label="Canva Templates"><span class="checkmark">✓</span></td>
+                            <td data-label="DIY Approach"><span class="checkmark">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>Market Analysis</strong></td>
+                            <td data-label="Our Generator" class="our-column"><span class="checkmark">✓</span></td>
+                            <td data-label="Business Consultant"><span class="checkmark">✓</span></td>
+                            <td data-label="Generic AI Tools"><span class="partial">△</span></td>
+                            <td data-label="Canva Templates"><span class="crossmark">✗</span></td>
+                            <td data-label="DIY Approach"><span class="partial">△</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>Risk Analysis</strong></td>
+                            <td data-label="Our Generator" class="our-column"><span class="checkmark">✓</span></td>
+                            <td data-label="Business Consultant"><span class="checkmark">✓</span></td>
+                            <td data-label="Generic AI Tools"><span class="crossmark">✗</span></td>
+                            <td data-label="Canva Templates"><span class="crossmark">✗</span></td>
+                            <td data-label="DIY Approach"><span class="partial">△</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Feature"><strong>Investor Ready</strong></td>
+                            <td data-label="Our Generator" class="our-column"><span class="checkmark">✓</span></td>
+                            <td data-label="Business Consultant"><span class="checkmark">✓</span></td>
+                            <td data-label="Generic AI Tools"><span class="partial">△</span></td>
+                            <td data-label="Canva Templates"><span class="crossmark">✗</span></td>
+                            <td data-label="DIY Approach"><span class="crossmark">✗</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+<!-- Add this right after the </table> closing tag -->
+<div class="mobile-cards">
+    <!-- Cards will be automatically generated here -->
+</div>
+    <!-- Benefits Section -->
+    <section class="benefits" id="benefits">
+        <div class="container">
+            <h2 class="section-title">The Numbers Don't Lie</h2>
+            <p class="section-subtitle">See the immediate impact on your business success</p>
+            
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-number">87%</div>
+                    <div class="benefit-text">Higher funding approval rate with professional business plans</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-number">156%</div>
+                    <div class="benefit-text">Faster business growth with proper planning</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-number">73%</div>
+                    <div class="benefit-text">Reduction in startup costs through better planning</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-number">92%</div>
+                    <div class="benefit-text">Customer satisfaction rate with our service</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Our Customers Say</h2>
+            <p class="section-subtitle">Join thousands of successful South African entrepreneurs</p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <p class="testimonial-text">This saved me weeks of work and thousands in consultant fees. Got approved for my business loan within 10 days!</p>
+                    <div class="testimonial-author">Sarah Mitchell</div>
+                    <div class="testimonial-role">Restaurant Owner, Cape Town</div>
+                </div>
+                
+                <div class="testimonial">
+                    <p class="testimonial-text">The financial projections were spot-on and helped me secure R500k in funding for my tech startup.</p>
+                    <div class="testimonial-author">Thabo Mthembu</div>
+                    <div class="testimonial-role">Tech Entrepreneur, Johannesburg</div>
+                </div>
+                
+                <div class="testimonial">
+                    <p class="testimonial-text">Professional quality that rivals what I paid R20k for with a consultant. Incredible value for money.</p>
+                    <div class="testimonial-author">Lisa van der Merwe</div>
+                    <div class="testimonial-role">Retail Business Owner, Durban</div>
+                </div>
+                
+                <div class="testimonials-grid">
+                <div class="testimonial">
+                    <p class="testimonial-text">The cash flow projections and balance sheet helped me secure R750k in funding. The bank was impressed with the level of detail.</p>
+                    <div class="testimonial-author">David Johnson</div>
+                    <div class="testimonial-role">Manufacturing Business, Pretoria</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta" id="get-started">
+        <div class="container">
+            <div class="urgency">⚡ Limited Time: 87% OFF Regular Price</div>
+            <h2 style="font-size: 2.5rem; margin-bottom: 20px; font-weight: 300;">Ready to Build Your Business Empire?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 30px; font-weight: 300;">Join 10,000+ South African entrepreneurs who've launched successful businesses with our plans</p>
+            
+            <div style="margin: 30px 0;">
+                <span style="font-size: 1.5rem; opacity: 0.6; text-decoration: line-through; color: #c0c0c0;">R1,500</span>
+                <span style="font-size: 3rem; margin-left: 20px; color: #dc143c; font-weight: 200;">R200</span>
+            </div>
+            
+            <a href="#" class="cta-primary open-modal-btn" style="font-size: 1.3rem; padding: 25px 50px;">
+                🚀 Generate My Business Plan Now
+            </a>
+            
+            <p style="margin-top: 20px; opacity: 0.7; font-weight: 300;">
+                ✓ 30-day money-back guarantee &nbsp;&nbsp;
+                ✓ Instant PDF download &nbsp;&nbsp;
+                ✓ Professional quality
+            </p>
+        </div>
+    </section>
+    
+    <!-- Business Plan Generator Modal -->
+      <!-- Business Plan Generator Modal -->
+    <div class="modal" id="business-plan-modal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            
+            <div class="form-header">
+                <h2>Generate Your Business Plan</h2>
+                <p>Complete this simple form to generate your professional business plan</p>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress" id="form-progress"></div>
+            </div>
+            
+            <div class="step-indicator">
+                <div class="step-dot active" data-step="1"></div>
+                <div class="step-dot" data-step="2"></div>
+                <div class="step-dot" data-step="3"></div>
+            </div>
+            
+             <!-- Step 1: Business Information -->
+            <div class="modal-step active" id="step-1">
+                <form class="modal-form">
+                    <div class="form-group">
+                        <label for="businessName">
+                            Business Name 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">The official name of your business</span>
+                            </div>
+                        </label>
+                        <input type="text" id="businessName" placeholder="Enter your business name" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="businessType">
+                                Business Type 
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Select your primary business category</span>
+                                </div>
+                            </label>
+                            <select id="businessType" required>
+                                <option value="">Select...</option>
+                                <option value="Retail">Retail</option>
+                                <option value="Restaurant">Restaurant</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Consulting">Consulting</option>
+                                <option value="Manufacturing">Manufacturing</option>
+                                <option value="Service">Service</option>
+                                <option value="E-commerce">E-commerce</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">
+                                Location 
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">City and province of operation</span>
+                                </div>
+                            </label>
+                            <input type="text" id="location" placeholder="City, Province" required>
+                        </div>
+                    </div>
+
+                    <!-- Legal Structure -->
+                    <div class="form-group">
+                        <label>
+                            Legal Structure 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Select your business registration type</span>
+                            </div>
+                        </label>
+                        <div class="legal-options">
+                            <div class="legal-option" data-value="Pty Ltd">Pty Ltd</div>
+                            <div class="legal-option" data-value="CC">Close Corporation</div>
+                            <div class="legal-option" data-value="Sole Proprietor">Sole Proprietor</div>
+                            <div class="legal-option" data-value="Partnership">Partnership</div>
+                        </div>
+                        <input type="hidden" id="legalStructure" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="missionStatement">
+                            Mission Statement 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Your business's purpose and values</span>
+                            </div>
+                        </label>
+                        <textarea id="missionStatement" required placeholder="Describe your business mission"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="products">
+                            Products & Services 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">What you offer to customers</span>
+                            </div>
+                        </label>
+                        <textarea id="products" required placeholder="Describe your products/services"></textarea>
+                    </div>
+
+                    <div class="form-navigation">
+                        <button type="button" class="modal-btn next-step">Next Step <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Step 2: Market & Financial Info -->
+            <div class="modal-step" id="step-2">
+                <form class="modal-form">
+                    <div class="form-group">
+                        <label for="targetMarket">
+                            Target Market 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Describe your ideal customers</span>
+                            </div>
+                        </label>
+                        <textarea id="targetMarket" required placeholder="Who are your customers?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="marketSize">
+                            Market Size (R) 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Total market value in South Africa</span>
+                            </div>
+                        </label>
+                        <input type="number" id="marketSize" min="0" step="1000" placeholder="Total market size" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="marketShare">
+                            Target Market Share (%) 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Percentage you aim to capture</span>
+                            </div>
+                        </label>
+                        <input type="number" id="marketShare" min="0" max="100" step="1" placeholder="Target market share" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="monthlyRevenue">
+                                Monthly Revenue Target (R) 
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Projected monthly sales</span>
+                                </div>
+                            </label>
+                            <input type="number" id="monthlyRevenue" min="0" step="1000" placeholder="Estimated monthly revenue" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="monthlyExpenses">
+                                Monthly Expenses (R) 
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Total monthly operating costs</span>
+                                </div>
+                            </label>
+                            <input type="number" id="monthlyExpenses" min="0" step="1000" placeholder="Estimated monthly expenses" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="startupCost">
+                                Startup Costs (R) 
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">One-time costs to launch</span>
+                                </div>
+                            </label>
+                            <input type="number" id="startupCost" min="0" step="5000" placeholder="Total startup costs" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fundingNeeded">
+                                Funding Needed (R) 
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Total funding required</span>
+                                </div>
+                            </label>
+                            <input type="number" id="fundingNeeded" min="0" step="5000" placeholder="Funding required" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="growthRate">
+                                Growth Rate (%) 
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Expected annual growth</span>
+                                </div>
+                            </label>
+                            <input type="number" id="growthRate" min="0" max="100" step="1" placeholder="Annual growth rate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="competition">
+                                Competitors
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Main competitors</span>
+                                </div>
+                            </label>
+                            <input type="text" id="competition" placeholder="Competitors in your market">
+                        </div>
+                    </div>
+
+                    <!-- Capital Expenditure Plan -->
+                    <div class="financial-section">
+                        <div class="financial-title">Capital Expenditure Plan</div>
+                        <p>List your major equipment and asset purchases:</p>
+                        
+                        <div id="capex-container">
+                            <div class="capex-item">
+                                <input type="text" placeholder="Item (e.g. Delivery Van)" class="capex-item-name">
+                                <input type="number" placeholder="Cost (R)" min="0" class="capex-item-cost">
+                                <input type="text" placeholder="Timing (e.g. Month 3)" class="capex-item-timing">
+                                <span class="remove-capex"><i class="fas fa-times"></i></span>
+                            </div>
+                        </div>
+                        <button type="button" id="add-capex" class="modal-btn btn-outline" style="margin-top: 10px; width: auto;">
+                            <i class="fas fa-plus"></i> Add Item
+                        </button>
+                    </div>
+
+                    <!-- Debt Repayment Plan -->
+                    <div class="form-group">
+                        <label for="debtRepayment">
+                            Debt Repayment Plan (if applicable)
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">How you'll repay any business loans</span>
+                            </div>
+                        </label>
+                        <textarea id="debtRepayment" placeholder="E.g., 24 monthly installments at R5,000/month"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="competitiveAdvantage">
+                            Competitive Advantage 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">What makes your business unique</span>
+                            </div>
+                        </label>
+                        <textarea id="competitiveAdvantage" required placeholder="Your competitive edge"></textarea>
+                    </div>
+
+                    <div class="form-navigation">
+                        <button type="button" class="modal-btn btn-outline prev-step"><i class="fas fa-arrow-left"></i> Previous</button>
+                        <button type="button" class="modal-btn next-step">Next Step <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Step 3: Final Details -->
+            <div class="modal-step" id="step-3">
+                <form class="modal-form">
+                    <div class="form-group">
+                        <label for="marketingStrategy">
+                            Marketing Strategy 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">How you'll reach customers</span>
+                            </div>
+                        </label>
+                        <textarea id="marketingStrategy" required placeholder="Your marketing approach"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="managementTeam">
+                            Management Team
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Key team members</span>
+                            </div>
+                        </label>
+                        <textarea id="managementTeam" placeholder="Team members and expertise"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="businessGoals">
+                            Business Goals 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Short and long-term goals</span>
+                            </div>
+                        </label>
+                        <textarea id="businessGoals" required placeholder="Your business objectives"></textarea>
+                    </div>
+
+                    <h3 style="margin: 20px 0 15px; color: #1a1a1a; border-bottom: 1px solid #eee; padding-bottom: 10px;">SWOT Analysis</h3>
+                    
+                    <div class="form-group">
+                        <label for="strengths">
+                            Business Strengths 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Internal advantages</span>
+                            </div>
+                        </label>
+                        <textarea id="strengths" placeholder="List your strengths"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="weaknesses">
+                            Business Weaknesses 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Internal disadvantages</span>
+                            </div>
+                        </label>
+                        <textarea id="weaknesses" placeholder="List your weaknesses"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="opportunities">
+                            Business Opportunities 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">External opportunities</span>
+                            </div>
+                        </label>
+                        <textarea id="opportunities" placeholder="Potential opportunities"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="threats">
+                            Business Threats 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">External threats</span>
+                            </div>
+                        </label>
+                        <textarea id="threats" placeholder="Potential threats"></textarea>
+                    </div>
+
+                    <!-- Implementation Timeline -->
+                    <div class="financial-section">
+                        <div class="financial-title">Implementation Timeline</div>
+                        <p>Key milestones for launching and growing your business:</p>
+                        
+                        <div class="timeline-grid" id="timeline-container">
+                            <div class="timeline-item">
+                                <div class="timeline-date">Month 1</div>
+                                <div>Business registration & licensing</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">Month 2</div>
+                                <div>Setup premises & initial hiring</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">Month 3</div>
+                                <div>Launch marketing campaign</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">Month 6</div>
+                                <div>Reach break-even point</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 15px;">
+                            <textarea id="customTimeline" placeholder="Add your custom milestones (e.g., 'Month 4: Launch new product line')" style="width: 100%; min-height: 80px;"></textarea>
+                            <button type="button" id="add-timeline-item" class="modal-btn btn-outline" style="margin-top: 10px; width: auto;">
+                                <i class="fas fa-plus"></i> Add to Timeline
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Exit Strategy -->
+                    <div class="form-group">
+                        <label for="exitStrategy">
+                            Exit Strategy 
+                            <div class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">How investors will realize returns</span>
+                            </div>
+                        </label>
+                        <textarea id="exitStrategy" placeholder="Acquisition, IPO, or ownership transition"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contactEmail">
+                                Your Email 
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">For sending your business plan</span>
+                                </div>
+                            </label>
+                            <input type="email" id="contactEmail" required placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactPhone">
+                                Phone Number
+                                <div class="tooltip-container">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Optional contact information</span>
+                                </div>
+                            </label>
+                            <input type="tel" id="contactPhone" placeholder="Enter your phone number">
+                        </div>
+                    </div>
+
+                    <div class="form-price">R200</div>
+                    <ul class="form-features">
+                        <li>Comprehensive 15-section business plan</li>
+                        <li>Full financial statements and projections</li>
+                        <li>Implementation timeline and exit strategy</li>
+                        <li>Professional PDF format with appendix</li>
+                        <li>Instant download</li>
+                        <li>SA market optimized</li>
+                    </ul>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="modal-btn btn-outline prev-step"><i class="fas fa-arrow-left"></i> Previous</button>
+                        <button type="submit" class="modal-btn generate-btn">
+                            <span id="generate-text">Generate Business Plan</span>
+                            <span id="generate-loading" class="loading"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Success Message -->
+            <div class="success-message" id="success-message">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>✅ Success!</h3>
+                <p>Your comprehensive business plan has been generated and downloaded!</p>
+                <p>The PDF contains all sections including financial projections, SWOT analysis, and growth strategies.</p>
+                <button class="download-btn" id="download-btn">
+                    <i class="fas fa-download"></i> Download Business Plan (PDF)
+                </button>
+                <button class="modal-btn btn-outline" id="another-plan-btn" style="margin-top: 20px;">
+                    Generate Another Plan
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const mobileNav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.overlay');
+        
+        hamburger.addEventListener('click', () => {
+            mobileNav.classList.toggle('active');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : 'auto';
+        });
+        
+        overlay.addEventListener('click', () => {
+            mobileNav.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.mobile-nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+        
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href') !== '#') {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('business-plan-modal');
+        const openModalButtons = document.querySelectorAll('.open-modal-btn');
+        const closeModalButton = document.querySelector('.close-modal');
+        const formSteps = document.querySelectorAll('.modal-step');
+        const stepDots = document.querySelectorAll('.step-dot');
+        const progressBar = document.getElementById('form-progress');
+        const successMessage = document.getElementById('success-message');
+        
+        // Open modal
+        openModalButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        // Close modal
+        closeModalButton.addEventListener('click', () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Navigation between steps
+        let currentStep = 1;
+        
+        function showStep(step) {
+            // Hide all steps
+            formSteps.forEach(formStep => {
+                formStep.classList.remove('active');
+            });
+            
+            // Show the current step
+            document.getElementById(`step-${step}`).classList.add('active');
+            
+            // Update step indicators
+            stepDots.forEach(dot => {
+                dot.classList.remove('active');
+                if (parseInt(dot.dataset.step) === step) {
+                    dot.classList.add('active');
+                }
+            });
+            
+            // Update progress bar
+            const progressPercentage = (step / 3) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+            
+            currentStep = step;
+        }
+        
+        // Next step buttons
+        document.querySelectorAll('.next-step').forEach(button => {
+            button.addEventListener('click', () => {
+                if (currentStep < 3) {
+                    showStep(currentStep + 1);
+                }
+            });
+        });
+        
+        // Previous step buttons
+        document.querySelectorAll('.prev-step').forEach(button => {
+            button.addEventListener('click', () => {
+                if (currentStep > 1) {
+                    showStep(currentStep - 1);
+                }
+            });
+        });
+        
+        // Form submission
+        document.querySelector('.generate-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Show loading state
+            const generateBtn = document.querySelector('.generate-btn');
+            const generateText = document.getElementById('generate-text');
+            const generateLoading = document.getElementById('generate-loading');
+            
+            generateText.style.display = 'none';
+            generateLoading.style.display = 'inline-block';
+            
+            // Collect form data
+            const formData = {
+                businessName: document.getElementById('businessName').value,
+                businessType: document.getElementById('businessType').value,
+                location: document.getElementById('location').value,
+                legalStructure: document.getElementById('legalStructure').value,
+                missionStatement: document.getElementById('missionStatement').value,
+                products: document.getElementById('products').value,
+                targetMarket: document.getElementById('targetMarket').value,
+                monthlyRevenue: document.getElementById('monthlyRevenue').value,
+                monthlyExpenses: document.getElementById('monthlyExpenses').value,
+                startupCost: document.getElementById('startupCost').value,
+                fundingNeeded: document.getElementById('fundingNeeded').value,
+                marketSize: document.getElementById('marketSize').value,
+                marketShare: document.getElementById('marketShare').value,
+                growthRate: document.getElementById('growthRate').value,
+                competition: document.getElementById('competition').value,
+                competitiveAdvantage: document.getElementById('competitiveAdvantage').value,
+                marketingStrategy: document.getElementById('marketingStrategy').value,
+                managementTeam: document.getElementById('managementTeam').value,
+                businessGoals: document.getElementById('businessGoals').value,
+                strengths: document.getElementById('strengths').value,
+                weaknesses: document.getElementById('weaknesses').value,
+                opportunities: document.getElementById('opportunities').value,
+                threats: document.getElementById('threats').value,
+                debtRepayment: document.getElementById('debtRepayment').value,
+                exitStrategy: document.getElementById('exitStrategy').value,
+                contactEmail: document.getElementById('contactEmail').value,
+                contactPhone: document.getElementById('contactPhone').value
+            };
+            
+            // Collect capex items
+            formData.capexItems = [];
+            document.querySelectorAll('.capex-item').forEach(item => {
+                const name = item.querySelector('.capex-item-name').value;
+                const cost = item.querySelector('.capex-item-cost').value;
+                const timing = item.querySelector('.capex-item-timing').value;
+                if (name && cost && timing) {
+                    formData.capexItems.push({name, cost, timing});
+                }
+            });
+            
+            // Collect timeline items
+            formData.timelineItems = [];
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                const date = item.querySelector('.timeline-date').textContent;
+                const description = item.querySelector('div:nth-child(2)').textContent;
+                if (date && description) {
+                    formData.timelineItems.push({date, description});
+                }
+            });
+            
+            // Generate PDF after a short delay
+            setTimeout(() => {
+                generateBusinessPlanPDF(formData);
+                
+                // Hide the form and show success message
+                document.querySelector('.modal-form').style.display = 'none';
+                successMessage.style.display = 'block';
+                
+                // Reset the generate button
+                generateText.style.display = 'inline';
+                generateLoading.style.display = 'none';
+            }, 2000);
+        });
+        
+        // Download button
+        document.getElementById('download-btn').addEventListener('click', function() {
+            // In a real implementation, this would download the generated PDF
+            alert('Business plan downloaded successfully!');
+        });
+        
+        // Generate another plan button
+        document.getElementById('another-plan-btn').addEventListener('click', function() {
+            // Reset the form and show the first step
+            document.querySelectorAll('input, select, textarea').forEach(field => {
+                field.value = '';
+            });
+            
+            // Reset legal structure
+            document.querySelectorAll('.legal-option').forEach(opt => 
+                opt.classList.remove('selected'));
+            document.getElementById('legalStructure').value = '';
+            
+            // Reset capex items
+            document.getElementById('capex-container').innerHTML = `
+                <div class="capex-item">
+                    <input type="text" placeholder="Item (e.g. Delivery Van)" class="capex-item-name">
+                    <input type="number" placeholder="Cost (R)" min="0" class="capex-item-cost">
+                    <input type="text" placeholder="Timing (e.g. Month 3)" class="capex-item-timing">
+                    <span class="remove-capex"><i class="fas fa-times"></i></span>
+                </div>
+            `;
+            
+            // Reset timeline items
+            document.getElementById('timeline-container').innerHTML = `
+                <div class="timeline-item">
+                    <div class="timeline-date">Month 1</div>
+                    <div>Business registration & licensing</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Month 2</div>
+                    <div>Setup premises & initial hiring</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Month 3</div>
+                    <div>Launch marketing campaign</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Month 6</div>
+                    <div>Reach break-even point</div>
+                </div>
+            `;
+            
+            // Reattach event listeners
+            document.querySelectorAll('.remove-capex').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.capex-item').remove();
+                });
+            });
+            
+            successMessage.style.display = 'none';
+            document.querySelector('.modal-form').style.display = 'block';
+            showStep(1);
+        });
+        
+        // Reset form when modal is opened
+        openModalButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Reset form steps
+                showStep(1);
+                
+                // Reset form fields
+                document.querySelectorAll('input, select, textarea').forEach(field => {
+                    field.value = '';
+                });
+                
+                // Reset legal structure
+                document.querySelectorAll('.legal-option').forEach(opt => 
+                    opt.classList.remove('selected'));
+                document.getElementById('legalStructure').value = '';
+                
+                // Reset capex items
+                document.getElementById('capex-container').innerHTML = `
+                    <div class="capex-item">
+                        <input type="text" placeholder="Item (e.g. Delivery Van)" class="capex-item-name">
+                        <input type="number" placeholder="Cost (R)" min="0" class="capex-item-cost">
+                        <input type="text" placeholder="Timing (e.g. Month 3)" class="capex-item-timing">
+                        <span class="remove-capex"><i class="fas fa-times"></i></span>
+                    </div>
+                `;
+                
+                // Reset timeline items
+                document.getElementById('timeline-container').innerHTML = `
+                    <div class="timeline-item">
+                        <div class="timeline-date">Month 1</div>
+                        <div>Business registration & licensing</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Month 2</div>
+                        <div>Setup premises & initial hiring</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Month 3</div>
+                        <div>Launch marketing campaign</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Month 6</div>
+                        <div>Reach break-even point</div>
+                    </div>
+                `;
+                
+                // Reattach event listeners
+                document.querySelectorAll('.remove-capex').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        this.closest('.capex-item').remove();
+                    });
+                });
+                
+                // Hide success message and show form
+                successMessage.style.display = 'none';
+                document.querySelector('.modal-form').style.display = 'block';
+            });
+        });
+        
+        // Enhanced Business Plan PDF Generation
+        function generateBusinessPlanPDF(data) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            let yPosition = 20;
+            const lineHeight = 8;
+            const sectionSpacing = 20;
+            const pageHeight = doc.internal.pageSize.height;
+            const pageWidth = doc.internal.pageSize.width;
+            const margin = 20;
+            const textWidth = pageWidth - (margin * 2);
+            
+            function checkNewPage(requiredSpace = 30) {
+                if (yPosition > pageHeight - requiredSpace) {
+                    doc.addPage();
+                    yPosition = 30;
+                    return true;
+                }
+                return false;
+            }
+            
+            function addSection(title, content, fontSize = 11) {
+                checkNewPage(40);
+                
+                doc.setFontSize(14);
+                doc.setFont(undefined, 'bold');
+                doc.text(title, margin, yPosition);
+                yPosition += 15;
+                
+                if (content) {
+                    doc.setFontSize(fontSize);
+                    doc.setFont(undefined, 'normal');
+                    const splitContent = doc.splitTextToSize(content, textWidth);
+                    
+                    splitContent.forEach(line => {
+                        checkNewPage(20);
+                        doc.text(line, margin, yPosition);
+                        yPosition += lineHeight;
+                    });
+                    
+                    yPosition += sectionSpacing;
+                }
+            }
+            
+            function addFinancialTable(title, rows) {
+                checkNewPage(60);
+                
+                doc.setFontSize(14);
+                doc.setFont(undefined, 'bold');
+                doc.text(title, margin, yPosition);
+                yPosition += 20;
+                
+                const colWidth = (textWidth - 20) / Math.max(rows[0].length, 4);
+                const startX = margin;
+                const rowHeight = 12;
+                
+                rows.forEach((row, index) => {
+                    checkNewPage(25);
+                    
+                    if (index === 0) {
+                        doc.setFontSize(10);
+                        doc.setFont(undefined, 'bold');
+                        doc.setFillColor(240, 240, 240);
+                        doc.rect(startX - 2, yPosition - 8, textWidth + 4, rowHeight, 'F');
+                    } else {
+                        doc.setFontSize(10);
+                        doc.setFont(undefined, 'normal');
+                    }
+                    
+                    row.forEach((cell, cellIndex) => {
+                        const xPos = startX + (cellIndex * colWidth);
+                        const cellText = cell.toString();
+                        
+                        const splitCell = doc.splitTextToSize(cellText, colWidth - 5);
+                        doc.text(splitCell[0], xPos + 2, yPosition);
+                    });
+                    
+                    yPosition += rowHeight;
+                });
+                
+                yPosition += sectionSpacing;
+            }
+            
+            function addBulletPoints(points, indent = 25) {
+                points.forEach(point => {
+                    checkNewPage(15);
+                    doc.text('•', indent, yPosition);
+                    const splitPoint = doc.splitTextToSize(point, textWidth - indent - 10);
+                    splitPoint.forEach((line, index) => {
+                        if (index > 0) {
+                            checkNewPage(15);
+                        }
+                        doc.text(line, indent + 8, yPosition);
+                        if (index < splitPoint.length - 1) {
+                            yPosition += lineHeight;
+                        }
+                    });
+                    yPosition += lineHeight + 2;
+                });
+            }
+            
+            // Calculate financial projections
+            const monthlyRev = Number(data.monthlyRevenue) || 0;
+            const monthlyExp = Number(data.monthlyExpenses) || 0;
+            const growthRate = (Number(data.growthRate) || 10) / 100;
+            const marketSize = Number(data.marketSize) || 0;
+            const marketShare = (Number(data.marketShare) || 5) / 100;
+            
+            // Title Page
+            doc.setFontSize(28);
+            doc.setFont(undefined, 'bold');
+            doc.text('PROFESSIONAL BUSINESS PLAN', pageWidth / 2, 60, { align: 'center' });
+            
+            doc.setFontSize(20);
+            doc.text(data.businessName || 'Your Business Name', pageWidth / 2, 85, { align: 'center' });
+            
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Legal Structure: ${data.legalStructure || 'To be defined'}`, pageWidth / 2, 110, { align: 'center' });
+            doc.text(`Location: ${data.location || 'South Africa'}`, pageWidth / 2, 125, { align: 'center' });
+            doc.text(`Date: ${new Date().toLocaleDateString()}`, pageWidth / 2, 140, { align: 'center' });
+            
+            // Confidentiality notice
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'italic');
+            doc.text('CONFIDENTIAL BUSINESS PLAN', pageWidth / 2, 220, { align: 'center' });
+            doc.text('This document contains confidential and proprietary information.', pageWidth / 2, 235, { align: 'center' });
+            
+            doc.addPage();
+            yPosition = 30;
+            
+            // Table of Contents
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('TABLE OF CONTENTS', margin, yPosition);
+            yPosition += 25;
+            
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'normal');
+            const tocItems = [
+                '1. Executive Summary',
+                '2. Business Description', 
+                '3. Market Analysis',
+                '4. Products & Services',
+                '5. Marketing & Sales Strategy',
+                '6. Management Team',
+                '7. Financial Projections',
+                '8. Cash Flow Forecast',
+                '9. Balance Sheet',
+                '10. Implementation Timeline',
+                '11. Risk Analysis',
+                '12. Funding Requirements',
+                '13. Exit Strategy',
+                '14. Business Goals',
+                '15. Appendix'
+            ];
+            
+            tocItems.forEach(item => {
+                doc.text(item, margin + 5, yPosition);
+                yPosition += 12;
+            });
+            
+            doc.addPage();
+            yPosition = 30;
+            
+            // 1. Executive Summary
+            addSection('1. EXECUTIVE SUMMARY', 
+                `${data.businessName} is a ${data.legalStructure || 'registered'} ${data.businessType.toLowerCase()} business located in ${data.location || 'South Africa'}. 
+                Our mission: "${data.missionStatement || 'To be defined'}". 
+                We offer: ${data.products || 'Products/services to be defined'}.
+                We are seeking R${(Number(data.fundingNeeded) || 0).toLocaleString()} in funding to achieve our business goals.`);
+            
+            // Key Financial Highlights
+            doc.setFont(undefined, 'bold');
+            doc.text('Key Financial Highlights:', margin, yPosition);
+            yPosition += lineHeight + 3;
+            
+            doc.setFont(undefined, 'normal');
+            const financialHighlights = [
+                `Monthly Revenue Target: R${monthlyRev.toLocaleString()}`,
+                `Monthly Operating Expenses: R${monthlyExp.toLocaleString()}`,
+                `Net Monthly Profit: R${(monthlyRev - monthlyExp).toLocaleString()}`,
+                `Funding Required: R${(Number(data.fundingNeeded) || 0).toLocaleString()}`,
+                `Market Opportunity: R${(marketSize * marketShare).toLocaleString()}`
+            ];
+            
+            addBulletPoints(financialHighlights);
+            yPosition += 10;
+            
+            // 2. Business Description
+            addSection('2. BUSINESS DESCRIPTION', 
+                `${data.businessName} specializes in ${data.products || 'products/services'}. 
+                Our competitive advantage: ${data.competitiveAdvantage || 'To be defined'}.`);
+            
+            // 3. Market Analysis
+            doc.addPage();
+            yPosition = 30;
+            
+            addSection('3. MARKET ANALYSIS', 
+                `Our target market: ${data.targetMarket || 'To be defined'}. 
+                Market size: R${marketSize.toLocaleString()} with ${(marketShare * 100).toFixed(1)}% target share. 
+                Annual growth rate: ${(growthRate * 100).toFixed(1)}%.`);
+            
+            // 4. Products & Services
+            addSection('4. PRODUCTS & SERVICES', data.products);
+            
+            // 5. Marketing & Sales Strategy
+            addSection('5. MARKETING & SALES STRATEGY', data.marketingStrategy);
+            
+            // 6. Management Team
+            if (data.managementTeam) {
+                addSection('6. MANAGEMENT TEAM', data.managementTeam);
+            }
+            
+            // 7. Financial Projections
+            doc.addPage();
+            yPosition = 30;
+            
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('7. FINANCIAL PROJECTIONS', margin, yPosition);
+            yPosition += 25;
+            
+            // Startup Costs Table
+            const startupCosts = [
+                ['Funding Requirement', 'Amount (ZAR)'],
+                ['One-time Startup Costs', `R${(Number(data.startupCost) || 0).toLocaleString()}`],
+                ['Working Capital (3 months)', `R${(monthlyExp * 3).toLocaleString()}`],
+                ['Total Funding Required', `R${(Number(data.fundingNeeded) || 0).toLocaleString()}`]
+            ];
+            
+            addFinancialTable('STARTUP COSTS', startupCosts);
+            
+            // Monthly Operating Expenses
+            const monthlyExpenses = [
+                ['Monthly Operating Expenses', 'Amount (ZAR)'],
+                ['Rent & Utilities', `R${Math.round(monthlyExp * 0.2).toLocaleString()}`],
+                ['Marketing & Advertising', `R${Math.round(monthlyExp * 0.15).toLocaleString()}`],
+                ['Insurance & Legal', `R${Math.round(monthlyExp * 0.05).toLocaleString()}`],
+                ['Other Operating Expenses', `R${Math.round(monthlyExp * 0.6).toLocaleString()}`],
+                ['TOTAL MONTHLY EXPENSES', `R${monthlyExp.toLocaleString()}`]
+            ];
+            
+            addFinancialTable('MONTHLY OPERATING EXPENSES', monthlyExpenses);
+            
+            // 3-Year Revenue Projections
+            const year1Revenue = monthlyRev * 12;
+            const year2Revenue = year1Revenue * (1 + growthRate);
+            const year3Revenue = year2Revenue * (1 + growthRate);
+            
+            const year1Expenses = monthlyExp * 12;
+            const year2Expenses = year1Expenses * 1.1;
+            const year3Expenses = year2Expenses * 1.1;
+            
+            const revenueProjections = [
+                ['3-Year Financial Projections', 'Year 1', 'Year 2', 'Year 3'],
+                ['Revenue', `R${year1Revenue.toLocaleString()}`, `R${year2Revenue.toLocaleString()}`, `R${year3Revenue.toLocaleString()}`],
+                ['Operating Expenses', `R${year1Expenses.toLocaleString()}`, `R${year2Expenses.toLocaleString()}`, `R${year3Expenses.toLocaleString()}`],
+                ['Gross Profit', `R${(year1Revenue - year1Expenses).toLocaleString()}`, `R${(year2Revenue - year2Expenses).toLocaleString()}`, `R${(year3Revenue - year3Expenses).toLocaleString()}`],
+                ['Profit Margin %', `${((year1Revenue - year1Expenses) / year1Revenue * 100).toFixed(1)}%`, `${((year2Revenue - year2Expenses) / year2Revenue * 100).toFixed(1)}%`, `${((year3Revenue - year3Expenses) / year3Revenue * 100).toFixed(1)}%`]
+            ];
+            
+            addFinancialTable('REVENUE PROJECTIONS', revenueProjections);
+            
+            // 8. Cash Flow Forecast
+            doc.addPage();
+            yPosition = 30;
+            
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('8. CASH FLOW FORECAST (YEAR 1)', margin, yPosition);
+            yPosition += 20;
+            
+            // Generate monthly cash flow
+            const monthlyCashFlow = [['Month', 'Cash In', 'Cash Out', 'Net Cash Flow', 'Cumulative']];
+            let cumulativeCash = 0;
+            
+            for (let month = 1; month <= 12; month++) {
+                const cashIn = monthlyRev * (1 + (growthRate * month / 12));
+                const cashOut = monthlyExp * (1 + (0.05 * month / 12)); // 5% expense growth
+                const netCash = cashIn - cashOut;
+                cumulativeCash += netCash;
+                
+                monthlyCashFlow.push([
+                    `Month ${month}`,
+                    `R${Math.round(cashIn).toLocaleString()}`,
+                    `R${Math.round(cashOut).toLocaleString()}`,
+                    `R${Math.round(netCash).toLocaleString()}`,
+                    `R${Math.round(cumulativeCash).toLocaleString()}`
+                ]);
+            }
+            
+            addFinancialTable('MONTHLY CASH FLOW', monthlyCashFlow);
+            
+            // 9. Balance Sheet
+            doc.addPage();
+            yPosition = 30;
+            
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('9. BALANCE SHEET (YEAR 1)', margin, yPosition);
+            yPosition += 20;
+            
+            // Simplified balance sheet
+            const currentAssets = monthlyRev * 12 * 0.3; // 30% of annual revenue
+            const fixedAssets = Number(data.startupCost) || 0;
+            const totalAssets = currentAssets + fixedAssets;
+            
+            const currentLiabilities = monthlyExp * 12 * 0.2; // 20% of annual expenses
+            const longTermDebt = (Number(data.fundingNeeded) || 0) * 0.5; // 50% of funding as debt
+            const equity = totalAssets - currentLiabilities - longTermDebt;
+            
+            const balanceSheet = [
+                ['Assets', 'Amount (ZAR)'],
+                ['Current Assets', `R${Math.round(currentAssets).toLocaleString()}`],
+                ['Fixed Assets', `R${Math.round(fixedAssets).toLocaleString()}`],
+                ['Total Assets', `R${Math.round(totalAssets).toLocaleString()}`],
+                ['Liabilities', ''],
+                ['Current Liabilities', `R${Math.round(currentLiabilities).toLocaleString()}`],
+                ['Long-term Debt', `R${Math.round(longTermDebt).toLocaleString()}`],
+                ['Equity', `R${Math.round(equity).toLocaleString()}`],
+                ['Total Liabilities & Equity', `R${Math.round(totalAssets).toLocaleString()}`]
+            ];
+            
+            addFinancialTable('BALANCE SHEET', balanceSheet);
+            
+            // 10. Implementation Timeline
+            doc.addPage();
+            yPosition = 30;
+            
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('10. IMPLEMENTATION TIMELINE', margin, yPosition);
+            yPosition += 20;
+            
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            
+            // Add timeline items
+            data.timelineItems.forEach(item => {
+                checkNewPage(15);
+                doc.setFont(undefined, 'bold');
+                doc.text(`${item.date}:`, margin, yPosition);
+                doc.setFont(undefined, 'normal');
+                doc.text(item.description, margin + 30, yPosition);
+                yPosition += lineHeight + 5;
+            });
+            
+            yPosition += sectionSpacing;
+            
+            // 11. Risk Analysis
+            doc.addPage();
+            yPosition = 30;
+            
+            addSection('11. RISK ANALYSIS', 
+                `Competition: ${data.competition || 'To be defined'}. 
+                Market risks: Economic downturns, changing consumer preferences. 
+                Mitigation strategies: Diversification, continuous market research.`);
+                
+            // Risk Mitigation Table
+            const riskMitigation = [
+                ['Risk', 'Probability', 'Impact', 'Mitigation Strategy'],
+                ['Economic downturn', 'Medium', 'High', 'Diversify revenue streams, maintain cash reserves'],
+                ['New competitors', 'High', 'Medium', 'Continuous innovation, customer loyalty programs'],
+                ['Regulatory changes', 'Low', 'High', 'Regular legal reviews, industry association membership']
+            ];
+            
+            addFinancialTable('RISK MITIGATION PLAN', riskMitigation);
+            
+            // 12. Funding Requirements
+            addSection('12. FUNDING REQUIREMENTS', 
+                `Funding required: R${(Number(data.fundingNeeded) || 0).toLocaleString()}. 
+                Use of funds: ${data.capexItems.length ? 'Capital expenditure, ' : ''}working capital, marketing initiatives.
+                ${data.debtRepayment ? 'Repayment plan: ' + data.debtRepayment : ''}`);
+            
+            // 13. Exit Strategy
+            addSection('13. EXIT STRATEGY', 
+                data.exitStrategy || 'Potential acquisition by industry leader in 5-7 years. Alternatively, prepare for management buyout or IPO.');
+            
+            // 14. Business Goals
+            addSection('14. BUSINESS GOALS', data.businessGoals);
+            
+            // 15. Appendix
+            doc.addPage();
+            yPosition = 30;
+            
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('15. APPENDIX', margin, yPosition);
+            yPosition += 20;
+            
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            const appendixItems = [
+                'Market research data',
+                'Product specifications and images',
+                'Resumes of key team members',
+                'Legal documents and registrations',
+                'Detailed financial assumptions',
+                'Supplier agreements',
+                'Customer contracts',
+                'Capital expenditure details'
+            ];
+            
+            appendixItems.forEach(item => {
+                checkNewPage(15);
+                doc.text('• ' + item, margin, yPosition);
+                yPosition += lineHeight + 2;
+            });
+            
+            // Add capex items if any
+            if (data.capexItems.length > 0) {
+                yPosition += 10;
+                doc.setFont(undefined, 'bold');
+                doc.text('Capital Expenditure Details:', margin, yPosition);
+                yPosition += lineHeight;
+                
+                data.capexItems.forEach(item => {
+                    checkNewPage(15);
+                    doc.setFont(undefined, 'normal');
+                    doc.text(`- ${item.name}: R${item.cost} (${item.timing})`, margin, yPosition);
+                    yPosition += lineHeight;
+                });
+            }
+            
+            // Footer on each page
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setFont(undefined, 'normal');
+                doc.text(`${data.businessName} - Business Plan`, margin, pageHeight - 15);
+                doc.text(`Page ${i} of ${pageCount}`, pageWidth - 50, pageHeight - 15);
+                doc.text('CONFIDENTIAL', pageWidth / 2, pageHeight - 15, { align: 'center' });
+            }
+            
+            // Save the PDF
+            const fileName = `${(data.businessName || 'Business_Plan').replace(/[^a-z0-9]/gi, '_')}_Business_Plan.pdf`;
+            doc.save(fileName);
+            
+            // Set up the download button if it exists
+            const downloadBtn = document.getElementById('download-btn');
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', function() {
+                    doc.save(fileName);
+                });
+            }
+            
+            return doc;
+        }
+        
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all feature cards, testimonials, etc.
+        document.querySelectorAll('.feature-card, .testimonial, .benefit-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+        
+        // Add this script at the bottom of your existing JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const table = document.querySelector('.comparison-table');
+            const mobileContainer = document.querySelector('.mobile-cards');
+            
+            if (table && mobileContainer) {
+                const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent);
+                const rows = Array.from(table.querySelectorAll('tbody tr'));
+                
+                rows.forEach(row => {
+                    const cells = Array.from(row.querySelectorAll('td'));
+                    const featureName = cells[0].textContent;
+                    
+                    const card = document.createElement('div');
+                    card.className = 'feature-card';
+                    
+                    const header = document.createElement('div');
+                    header.className = 'feature-header';
+                    header.textContent = featureName;
+                    card.appendChild(header);
+                    
+                    // Create rows for each solution
+                    for (let i = 1; i < cells.length; i++) {
+                        const rowDiv = document.createElement('div');
+                        rowDiv.className = 'feature-row';
+                        
+                        // Highlight "Our Generator"
+                        if (headers[i] === 'Our Generator') {
+                            rowDiv.classList.add('our-highlight');
+                        }
+                        
+                        const nameSpan = document.createElement('span');
+                        nameSpan.className = 'feature-name';
+                        nameSpan.textContent = headers[i];
+                        
+                        const valueSpan = document.createElement('span');
+                        valueSpan.className = 'feature-value';
+                        valueSpan.innerHTML = cells[i].innerHTML;
+                        
+                        rowDiv.appendChild(nameSpan);
+                        rowDiv.appendChild(valueSpan);
+                        card.appendChild(rowDiv);
+                    }
+                    
+                    mobileContainer.appendChild(card);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
