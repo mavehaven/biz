@@ -1666,6 +1666,54 @@
         .thank-you h3 {
             margin-bottom: 10px;
         }
+        
+        /* NEW: Download PDF button */
+        .download-charts-btn {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            margin: 20px auto;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .download-charts-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+        }
+        
+        .download-charts-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        /* Loading indicator for PDF generation */
+        .pdf-loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #dc143c;
+        }
+        
+        .pdf-loading i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            animation: spin 1.5s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -2471,12 +2519,26 @@
                 <button class="download-btn" id="download-btn">
                     <i class="fas fa-download"></i> Download Business Plan (PDF)
                 </button>
+                <!-- NEW: Download charts button -->
+            <div class="download-charts-container">
+                <button id="downloadChartsBtn" class="download-charts-btn">
+                    <i class="fas fa-file-pdf"></i> Download Charts as PDF
+                </button>
+                <div class="pdf-loading" id="pdfLoading">
+                    <i class="fas fa-spinner"></i>
+                    <p>Generating PDF document...</p>
+                </div>
+            </div>
+        </div>
+                </section>
+
                 <button class="modal-btn btn-outline" id="another-plan-btn" style="margin-top: 20px;">
                     Generate Another Plan
                 </button>
             </div>
         </div>
     </div>
+
     
      <!-- Chat Widget -->
     <div class="chat-widget">
@@ -4080,6 +4142,216 @@ document.addEventListener('keypress', (e) => {
         }
     }
 });
+
+// NEW: Function to download charts as PDF
+        async function downloadChartsAsPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const pdfLoading = document.getElementById('pdfLoading');
+            const downloadBtn = document.getElementById('downloadChartsBtn');
+            
+            // Show loading indicator
+            pdfLoading.style.display = 'block';
+            downloadBtn.disabled = true;
+            
+            try {
+                // Get all chart containers
+                const chartContainers = document.querySelectorAll('.chart-container');
+                
+                // Create PDF document
+                doc.setFontSize(20);
+                doc.setFont(undefined, 'bold');
+                doc.text('Financial Projections Report', 105, 20, null, null, 'center');
+                
+                doc.setFontSize(12);
+                doc.setFont(undefined, 'normal');
+                doc.text(`Generated for ${document.getElementById('businessName')?.value || 'Your Business'}`, 105, 28, null, null, 'center');
+                doc.text(`Date: ${new Date().toLocaleDateString()}`, 105, 34, null, null, 'center');
+                
+                let yPosition = 45; // Starting position after header
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const margin = 15;
+                const contentWidth = pageWidth - (2 * margin);
+                const chartHeight = 80; // Height for each chart in mm
+                
+                // Add each chart to the PDF
+                for (let i = 0; i < chartContainers.length; i++) {
+                    const container = chartContainers[i];
+                    
+                    // Check if we need a new page
+                    if (yPosition + chartHeight > doc.internal.pageSize.getHeight() - 20) {
+                        doc.addPage();
+                        yPosition = 20;
+                    }
+                    
+                    // Add chart title
+                    const title = container.querySelector('.chart-title').textContent;
+                    doc.setFontSize(14);
+                    doc.setFont(undefined, 'bold');
+                    doc.text(title, margin, yPosition);
+                    yPosition += 8;
+                    
+                    // Convert chart to image
+                    const canvas = await html2canvas(container, {
+                        scale: 2, // Higher scale for better quality
+                        logging: false,
+                        useCORS: true
+                    });
+                    
+                    // Add image to PDF
+                    const imgData = canvas.toDataURL('image/jpeg', 0.9);
+                    doc.addImage(imgData, 'JPEG', margin, yPosition, contentWidth, chartHeight);
+                    
+                    yPosition += chartHeight + 10;
+                }
+                
+                // Add page numbers
+                const pageCount = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= pageCount; i++) {
+                    doc.setPage(i);
+                    doc.setFontSize(10);
+                    doc.text(`Page ${i} of ${pageCount}`, pageWidth - 20, doc.internal.pageSize.getHeight() - 10);
+                }
+                
+                // Save the PDF
+                const fileName = `Financial_Charts_${new Date().toISOString().slice(0, 10)}.pdf`;
+                doc.save(fileName);
+                
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('There was an error generating the PDF. Please try again.');
+            } finally {
+                // Hide loading indicator
+                pdfLoading.style.display = 'none';
+                downloadBtn.disabled = false;
+            }
+        }
+        
+        // Add event listener to download button
+        document.getElementById('downloadChartsBtn').addEventListener('click', downloadChartsAsPDF);
+        
+        // Initialize charts when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize charts as in your existing code
+            initDemoCharts();
+        });
+        
+        // Initialize demo charts
+        function initDemoCharts() {
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+                    datasets: [{
+                        label: 'Projected Revenue (R)',
+                        data: [500000, 750000, 1200000, 1800000, 2500000],
+                        borderColor: '#27ae60',
+                        backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+
+            // Profit Chart
+            const profitCtx = document.getElementById('profitChart').getContext('2d');
+            new Chart(profitCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+                    datasets: [{
+                        label: 'Profit Margin (%)',
+                        data: [15, 22, 28, 32, 35],
+                        backgroundColor: '#3498db',
+                        borderColor: '#2980b9',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Profit Margin %'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Expense Chart
+            const expenseCtx = document.getElementById('expenseChart').getContext('2d');
+            new Chart(expenseCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Salaries', 'Marketing', 'Operations', 'Rent', 'Misc'],
+                    datasets: [{
+                        label: 'Expense Breakdown',
+                        data: [35, 25, 20, 15, 5],
+                        backgroundColor: [
+                            '#e74c3c',
+                            '#3498db',
+                            '#2ecc71',
+                            '#f39c12',
+                            '#9b59b6'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+
+            // Market Share Chart
+            const marketCtx = document.getElementById('marketChart').getContext('2d');
+            new Chart(marketCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+                    datasets: [{
+                        label: 'Market Share (%)',
+                        data: [5, 10, 18, 25, 32],
+                        borderColor: '#9b59b6',
+                        backgroundColor: 'rgba(155, 89, 182, 0.2)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#9b59b6',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 40
+                        }
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>
