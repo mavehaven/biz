@@ -3543,6 +3543,64 @@ function initializeYoco() {
         setupCapexListeners();
         setupTimelineListeners();
         
+        function resetForm() {
+    // Reset all form fields
+    document.getElementById('business-plan-modal').querySelectorAll('input, select, textarea').forEach(element => {
+        if (element.type !== 'button' && element.type !== 'submit') {
+            element.value = '';
+        }
+    });
+    
+    // Reset legal structure selection
+    document.querySelectorAll('.legal-option').forEach(option => {
+        option.classList.remove('selected');
+    });
+    
+    // Reset progress indicators
+    currentStep = 1;
+    progressBar.style.width = '33%';
+    
+    // Reset step indicators
+    stepDots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === 0);
+    });
+    
+    // Clear added capex items
+    const capexItems = document.querySelectorAll('.capex-item');
+    if (capexItems.length > 1) {
+        for (let i = capexItems.length - 1; i > 0; i--) {
+            capexItems[i].remove();
+        }
+    }
+    
+    // Clear added timeline items
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    if (timelineItems.length > 4) {
+        for (let i = timelineItems.length - 1; i >= 4; i--) {
+            timelineItems[i].remove();
+        }
+    }
+    
+    // Reset payment status
+    document.getElementById('payment-status').className = 'payment-status payment-processing';
+    document.getElementById('payment-status').innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Awaiting payment';
+    
+    // Show form and hide success message
+    document.querySelector('.modal-form').style.display = 'block';
+    successMessage.style.display = 'none';
+    
+    // Show first step
+    showStep(1);
+    
+    // Reinitialize payment
+    if (yoco) yoco.destroy();
+    yoco = null;
+    initializeYoco();
+}
+
+// FIX: Add event listener to reset button
+document.getElementById('another-plan-btn').addEventListener('click', resetForm);
+        
                 // Chat widget functionality with backend integration
 const chatToggle = document.querySelector('.chat-toggle');
 const chatContainer = document.querySelector('.chat-container');
