@@ -2874,6 +2874,9 @@
                 initializeYoco();
             }
         }
+         var initializeYoco = new YocoSDK({
+    publicKey: 'pk_test_464a83a4rr5mqEM5dc44'
+  });
         
         // Initialize Yoco payment system
         function initializeYoco() {
@@ -2890,6 +2893,17 @@
             
             inline.mount('#card-frame');
         }
+
+        document.getElementById('payment-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const result = await inline.createToken();
+    if (result.error) {
+      alert(result.error.message);
+    } else {
+      console.log('Token:', result.token.id);
+      // Send token.id to your server to complete payment
+    }
+  });
         
         // Next step buttons
         document.querySelectorAll('.next-step').forEach(button => {
