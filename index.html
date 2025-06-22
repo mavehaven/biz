@@ -2876,20 +2876,21 @@
         }
         
         // Initialize Yoco payment system
-        function initializeYoco() {
-            yoco = new YocoSDK({
-                publicKey: 'pk_test_464a83a4rr5mqEM5dc44' // Replace with your Yoco public key
-            });
-            
-            // Mount the inline form
-            const inline = yoco.inline({
-                layout: 'basic',
-                amountInCents: 20000,  // R200
-                currency: 'ZAR'
-            });
-            
-            inline.mount('#card-frame');
-        }
+        // Initialize Yoco properly
+function initializeYoco() {
+    yoco = new YocoSDK({
+        publicKey: 'pk_test_464a83a4rr5mqEM5dc44' // Your public key
+    });
+
+    // Create and mount the inline payment form
+    inline = yoco.inline({
+        layout: 'basic',
+        amountInCents: 20000,  // R200
+        currency: 'ZAR'
+    });
+    
+    inline.mount('#card-frame');
+}
         
         // Next step buttons
         document.querySelectorAll('.next-step').forEach(button => {
@@ -2998,53 +2999,50 @@
             setupTimelineListeners();
         });
         
-        // Form submission with payment processing
-        document.getElementById('payment-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Show loading state
-            const generateBtn = document.getElementById('generate-plan-btn');
-            const generateText = document.getElementById('generate-text');
-            const generateLoading = document.getElementById('generate-loading');
-            const paymentStatus = document.getElementById('payment-status');
-            
-            generateText.style.display = 'none';
-            generateLoading.style.display = 'inline-block';
-            paymentStatus.textContent = "Processing payment...";
-            paymentStatus.className = "payment-status payment-processing";
-            
-            try {
-                // Create token with Yoco
-                const result = await yoco.createToken();
-                
-                if (result.error) {
-                    throw new Error(result.error.message);
-                }
-                
-                // Simulate payment processing (in a real app, you would send token to your server)
-                paymentStatus.textContent = "Payment successful! Generating your plan...";
-                paymentStatus.className = "payment-status payment-success";
-                
-                // Simulate processing delay
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                // Collect form data
-                const formData = collectFormData();
-                
-                // Generate business plan
-                generateBusinessPlanPDF(formData);
-                
-                // Show success message
-                document.querySelector('.modal-form').style.display = 'none';
-                successMessage.style.display = 'block';
-                
-            } catch (error) {
-                paymentStatus.textContent = `Payment failed: ${error.message}`;
-                paymentStatus.className = "payment-status payment-error";
-                generateText.style.display = 'inline';
-                generateLoading.style.display = 'none';
-            }
-        });
+       document.getElementById('payment-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // Show loading state
+    const generateBtn = document.getElementById('generate-plan-btn');
+    const generateText = document.getElementById('generate-text');
+    const generateLoading = document.getElementById('generate-loading');
+    const paymentStatus = document.getElementById('payment-status');
+    
+    generateText.style.display = 'none';
+    generateLoading.style.display = 'inline-block';
+    paymentStatus.textContent = "Processing payment...";
+    paymentStatus.className = "payment-status payment-processing";
+    
+    try {
+        // Create token with the inline instance
+        const result = await inline.createToken();
+        
+        if (result.error) {
+            throw new Error(result.error.message);
+        }
+        
+        // Payment successful
+        paymentStatus.textContent = "Payment successful! Generating your plan...";
+        paymentStatus.className = "payment-status payment-success";
+        
+        // Simulate processing delay
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Collect form data and generate plan
+        const formData = collectFormData();
+        generateBusinessPlanPDF(formData);
+        
+        // Show success message
+        document.querySelector('.modal-form').style.display = 'none';
+        successMessage.style.display = 'block';
+        
+    } catch (error) {
+        paymentStatus.textContent = `Payment failed: ${error.message}`;
+        paymentStatus.className = "payment-status payment-error";
+        generateText.style.display = 'inline';
+        generateLoading.style.display = 'none';
+    }
+});
         
         // Collect form data
         function collectFormData() {
