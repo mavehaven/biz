@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+the add to timeline and capital expenditure plan aren't responsive. provide me a short edit on how I can fix this please <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LumenOS Business Suite</title>
+    <title>Business Plan Generator with Yoco Payment</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
     <style>
         * {
             margin: 0;
@@ -1240,6 +1241,7 @@
             display: flex;
             flex-direction: column;
             flex: 1;
+            min-width: 0; /* Prevents overflow */
         }
         
         .capex-label {
@@ -1263,6 +1265,7 @@
         
         .timeline-input {
             flex: 1;
+            min-width: 120px; /* Prevents wrapping issues */
         }
         
         .timeline-input label {
@@ -1293,6 +1296,89 @@
             font-size: 12px;
             margin-top: 5px;
             display: none;
+        }
+        
+        /* Payment UI Styles */
+        .payment-container {
+            margin: 30px 0;
+            padding: 25px;
+            border: 1px solid #eaeaea;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        
+        .payment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .payment-header h3 {
+            font-size: 1.4rem;
+            margin: 0;
+            color: #1a1a1a;
+        }
+        
+        .payment-logo {
+            width: 50px;
+            margin-right: 15px;
+        }
+        
+        .payment-amount {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #dc143c;
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .payment-status {
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+        
+        .payment-processing {
+            background-color: #e6f7ff;
+            color: #1890ff;
+        }
+        
+        .payment-success {
+            background-color: #f6ffed;
+            color: #52c41a;
+        }
+        
+        .payment-error {
+            background-color: #fff1f0;
+            color: #f5222d;
+        }
+        
+        #card-frame {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            margin: 20px 0;
+        }
+        
+        .payment-disclaimer {
+            font-size: 0.85rem;
+            color: #666;
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .payment-container {
+                padding: 15px;
+            }
+            
+            .payment-amount {
+                font-size: 1.5rem;
+            }
         }
         
          /* Chat Widget Positioning */
@@ -1833,14 +1919,261 @@
                         </tr>
                     </tbody>
                 </table>
+                <!-- Inside the comparison section after the table -->
+<div class="mobile-cards">
+    <div class="feature-card">
+        <div class="feature-header">Time to Complete</div>
+        <div class="feature-row our-highlight">
+            <div class="feature-name">Our Generator</div>
+            <div class="feature-value">5 minutes</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Business Consultant</div>
+            <div class="feature-value">2-4 weeks</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Generic AI Tools</div>
+            <div class="feature-value">1-2 hours</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Canva Templates</div>
+            <div class="feature-value">3-5 hours</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">DIY Approach</div>
+            <div class="feature-value">2-6 weeks</div>
+        </div>
+    </div>
+    
+    <div class="feature-card">
+        <div class="feature-header">Cost</div>
+        <div class="feature-row our-highlight">
+            <div class="feature-name">Our Generator</div>
+            <div class="feature-value">R200</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Business Consultant</div>
+            <div class="feature-value">R15,000 - R50,000</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Generic AI Tools</div>
+            <div class="feature-value">R500 - R2,000</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Canva Templates</div>
+            <div class="feature-value">R300 - R800</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">DIY Approach</div>
+            <div class="feature-value">Free (Time cost)</div>
+        </div>
+    </div>
+    
+    <!-- Add the remaining 8 features here with the same structure -->
+    <!-- SA Market Focus -->
+    <div class="feature-card">
+        <div class="feature-header">SA Market Focus</div>
+        <div class="feature-row our-highlight">
+            <div class="feature-name">Our Generator</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Business Consultant</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Generic AI Tools</div>
+            <div class="feature-value">✗</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Canva Templates</div>
+            <div class="feature-value">✗</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">DIY Approach</div>
+            <div class="feature-value">△</div>
+        </div>
+    </div>
+    
+    <!-- Financial Projections -->
+    <div class="feature-card">
+        <div class="feature-header">Financial Projections</div>
+        <div class="feature-row our-highlight">
+            <div class="feature-name">Our Generator</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Business Consultant</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Generic AI Tools</div>
+            <div class="feature-value">△</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Canva Templates</div>
+            <div class="feature-value">✗</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">DIY Approach</div>
+            <div class="feature-value">△</div>
+        </div>
+    </div>
+    
+    <!-- Professional Formatting -->
+    <div class="feature-card">
+        <div class="feature-header">Professional Formatting</div>
+        <div class="feature-row our-highlight">
+            <div class="feature-name">Our Generator</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Business Consultant</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Generic AI Tools</div>
+            <div class="feature-value">△</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Canva Templates</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">DIY Approach</div>
+            <div class="feature-value">✗</div>
+        </div>
+    </div>
+    
+    <!-- Industry Customization -->
+    <div class="feature-card">
+        <div class="feature-header">Industry Customization</div>
+        <div class="feature-row our-highlight">
+            <div class="feature-name">Our Generator</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Business Consultant</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Generic AI Tools</div>
+            <div class="feature-value">△</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Canva Templates</div>
+            <div class="feature-value">✗</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">DIY Approach</div>
+            <div class="feature-value">△</div>
+        </div>
+    </div>
+    
+    <!-- Instant Download -->
+    <div class="feature-card">
+        <div class="feature-header">Instant Download</div>
+        <div class="feature-row our-highlight">
+            <div class="feature-name">Our Generator</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Business Consultant</div>
+            <div class="feature-value">✗</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Generic AI Tools</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Canva Templates</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">DIY Approach</div>
+            <div class="feature-value">✓</div>
+        </div>
+    </div>
+    
+    <!-- Market Analysis -->
+    <div class="feature-card">
+        <div class="feature-header">Market Analysis</div>
+        <div class="feature-row our-highlight">
+            <div class="feature-name">Our Generator</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Business Consultant</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Generic AI Tools</div>
+            <div class="feature-value">△</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Canva Templates</div>
+            <div class="feature-value">✗</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">DIY Approach</div>
+            <div class="feature-value">△</div>
+        </div>
+    </div>
+    
+    <!-- Risk Analysis -->
+    <div class="feature-card">
+        <div class="feature-header">Risk Analysis</div>
+        <div class="feature-row our-highlight">
+            <div class="feature-name">Our Generator</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Business Consultant</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Generic AI Tools</div>
+            <div class="feature-value">✗</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Canva Templates</div>
+            <div class="feature-value">✗</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">DIY Approach</div>
+            <div class="feature-value">△</div>
+        </div>
+    </div>
+    
+    <!-- Investor Ready -->
+    <div class="feature-card">
+        <div class="feature-header">Investor Ready</div>
+        <div class="feature-row our-highlight">
+            <div class="feature-name">Our Generator</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Business Consultant</div>
+            <div class="feature-value">✓</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Generic AI Tools</div>
+            <div class="feature-value">△</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">Canva Templates</div>
+            <div class="feature-value">✗</div>
+        </div>
+        <div class="feature-row">
+            <div class="feature-name">DIY Approach</div>
+            <div class="feature-value">✗</div>
+        </div>
+    </div>
+</div>
             </div>
         </div>
     </section>
 
-<!-- Add this right after the </table> closing tag -->
-<div class="mobile-cards">
-    <!-- Cards will be automatically generated here -->
-</div>
     <!-- Benefits Section -->
     <section class="benefits" id="benefits">
         <div class="container">
@@ -1946,7 +2279,7 @@
                 <div class="step-dot" data-step="3"></div>
             </div>
             
-             <!-- Step 1: Business Information -->
+            <!-- Step 1: Business Information -->
             <div class="modal-step active" id="step-1">
                 <form class="modal-form">
                     <div class="form-group">
@@ -2201,9 +2534,9 @@
                 </form>
             </div>
             
-            <!-- Step 3: Final Details -->
+            <!-- Step 3: Final Details & Payment -->
             <div class="modal-step" id="step-3">
-                <form class="modal-form">
+                <form class="modal-form" id="payment-form">
                     <div class="form-group">
                         <label for="marketingStrategy">
                             Marketing Strategy 
@@ -2363,22 +2696,32 @@
                         </div>
                     </div>
 
-                    <div class="form-price">R200</div>
-                    <ul class="form-features">
-                        <li>Comprehensive 15-section business plan</li>
-                        <li>Full financial statements and projections</li>
-                        <li>Implementation timeline and exit strategy</li>
-                        <li>Professional PDF format with appendix</li>
-                        <li>Instant download</li>
-                        <li>SA market optimized</li>
-                    </ul>
-                    
-                    <div class="form-navigation">
-                        <button type="button" class="modal-btn btn-outline prev-step"><i class="fas fa-arrow-left"></i> Previous</button>
-                        <button type="submit" class="modal-btn generate-btn">
-                            <span id="generate-text">Generate Business Plan</span>
-                            <span id="generate-loading" class="loading"></span>
-                        </button>
+                    <!-- Payment Section -->
+                    <div class="payment-container">
+                        <div class="payment-header">
+                            <img src="https://www.yoco.com/za/images/logo.svg" alt="Yoco" class="payment-logo">
+                            <h3>Secure Payment</h3>
+                        </div>
+                        
+                        <div class="payment-amount">R200</div>
+                        
+                        <div id="payment-status" class="payment-status payment-processing">
+                            <i class="fas fa-circle-notch fa-spin"></i> Awaiting payment
+                        </div>
+                        
+                        <div id="card-frame"></div>
+                        
+                        <div class="form-navigation">
+                            <button type="button" class="modal-btn btn-outline prev-step"><i class="fas fa-arrow-left"></i> Previous</button>
+                            <button type="submit" class="modal-btn generate-btn" id="generate-plan-btn">
+                                <span id="generate-text">Pay R200 & Generate Plan</span>
+                                <span id="generate-loading" class="loading"></span>
+                            </button>
+                        </div>
+                        
+                        <div class="payment-disclaimer">
+                            <i class="fas fa-lock"></i> Secure payment processed by Yoco. Your card details are never stored on our servers.
+                        </div>
                     </div>
                 </form>
             </div>
@@ -2388,9 +2731,9 @@
                 <div class="success-icon">
                     <i class="fas fa-check-circle"></i>
                 </div>
-                <h3>✅ Success!</h3>
-                <p>Your comprehensive business plan has been generated and downloaded!</p>
-                <p>The PDF contains all sections including financial projections, SWOT analysis, and growth strategies.</p>
+                <h3>✅ Payment Successful!</h3>
+                <p>Your business plan has been generated and downloaded automatically.</p>
+                <p>We've also sent a copy to your email address.</p>
                 <button class="download-btn" id="download-btn">
                     <i class="fas fa-download"></i> Download Business Plan (PDF)
                 </button>
@@ -2400,8 +2743,8 @@
             </div>
         </div>
     </div>
-
-     <!-- Chat Widget -->
+    
+    <!-- Chat Widget -->
     <div class="chat-widget">
         <div class="chat-container">
             <div class="chat-header">
@@ -2501,6 +2844,7 @@
         
         // Navigation between steps
         let currentStep = 1;
+        let yoco = null;
         
         function showStep(step) {
             // Hide all steps
@@ -2524,6 +2868,27 @@
             progressBar.style.width = `${progressPercentage}%`;
             
             currentStep = step;
+            
+            // Initialize Yoco on step 3 if not already done
+            if (step === 3 && !yoco) {
+                initializeYoco();
+            }
+        }
+        
+        // Initialize Yoco payment system
+        function initializeYoco() {
+            yoco = new YocoSDK({
+                publicKey: 'pk_test_xxxxx' // Replace with your Yoco public key
+            });
+            
+            // Mount the inline form
+            const inline = yoco.inline({
+                layout: 'basic',
+                amountInCents: 20000,  // R200
+                currency: 'ZAR'
+            });
+            
+            inline.mount('#card-frame');
         }
         
         // Next step buttons
@@ -2633,20 +2998,57 @@
             setupTimelineListeners();
         });
         
-        // Form submission
-        document.querySelector('.generate-btn').addEventListener('click', (e) => {
+        // Form submission with payment processing
+        document.getElementById('payment-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
             // Show loading state
-            const generateBtn = document.querySelector('.generate-btn');
+            const generateBtn = document.getElementById('generate-plan-btn');
             const generateText = document.getElementById('generate-text');
             const generateLoading = document.getElementById('generate-loading');
+            const paymentStatus = document.getElementById('payment-status');
             
             generateText.style.display = 'none';
             generateLoading.style.display = 'inline-block';
+            paymentStatus.textContent = "Processing payment...";
+            paymentStatus.className = "payment-status payment-processing";
             
-            // Collect form data
-            const formData = {
+            try {
+                // Create token with Yoco
+                const result = await yoco.createToken();
+                
+                if (result.error) {
+                    throw new Error(result.error.message);
+                }
+                
+                // Simulate payment processing (in a real app, you would send token to your server)
+                paymentStatus.textContent = "Payment successful! Generating your plan...";
+                paymentStatus.className = "payment-status payment-success";
+                
+                // Simulate processing delay
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Collect form data
+                const formData = collectFormData();
+                
+                // Generate business plan
+                generateBusinessPlanPDF(formData);
+                
+                // Show success message
+                document.querySelector('.modal-form').style.display = 'none';
+                successMessage.style.display = 'block';
+                
+            } catch (error) {
+                paymentStatus.textContent = `Payment failed: ${error.message}`;
+                paymentStatus.className = "payment-status payment-error";
+                generateText.style.display = 'inline';
+                generateLoading.style.display = 'none';
+            }
+        });
+        
+        // Collect form data
+        function collectFormData() {
+            return {
                 businessName: document.getElementById('businessName').value,
                 businessType: document.getElementById('businessType').value,
                 location: document.getElementById('location').value,
@@ -2675,188 +3077,7 @@
                 contactEmail: document.getElementById('contactEmail').value,
                 contactPhone: document.getElementById('contactPhone').value
             };
-            
-            // Collect capex items
-            formData.capexItems = [];
-            document.querySelectorAll('.capex-item').forEach(item => {
-                const name = item.querySelector('.capex-item-name').value;
-                const cost = item.querySelector('.capex-item-cost').value;
-                const timing = item.querySelector('.capex-item-timing').value;
-                if (name && cost && timing) {
-                    formData.capexItems.push({name, cost, timing});
-                }
-            });
-            
-            // Collect timeline items
-            formData.timelineItems = [];
-            document.querySelectorAll('.timeline-item').forEach(item => {
-                const date = item.querySelector('.timeline-date').textContent;
-                const description = item.querySelector('div:nth-child(2)').textContent;
-                if (date && description) {
-                    formData.timelineItems.push({date, description});
-                }
-            });
-            
-            // Generate PDF after a short delay
-            setTimeout(() => {
-                generateBusinessPlanPDF(formData);
-                
-                // Hide the form and show success message
-                document.querySelector('.modal-form').style.display = 'none';
-                successMessage.style.display = 'block';
-                
-                // Reset the generate button
-                generateText.style.display = 'inline';
-                generateLoading.style.display = 'none';
-            }, 2000);
-        });
-        
-        // Download button
-        document.getElementById('download-btn').addEventListener('click', function() {
-            // In a real implementation, this would download the generated PDF
-            alert('Business plan downloaded successfully!');
-        });
-        
-        // Generate another plan button
-        document.getElementById('another-plan-btn').addEventListener('click', function() {
-            // Reset the form and show the first step
-            document.querySelectorAll('input, select, textarea').forEach(field => {
-                field.value = '';
-            });
-            
-            // Reset legal structure
-            document.querySelectorAll('.legal-option').forEach(opt => 
-                opt.classList.remove('selected'));
-            document.getElementById('legalStructure').value = '';
-            
-            // Reset capex items
-            document.getElementById('capex-container').innerHTML = `
-                <div class="capex-item">
-                    <div class="capex-input-group">
-                        <span class="capex-label">Item Description</span>
-                        <input type="text" placeholder="e.g. Delivery Van" class="capex-item-name">
-                    </div>
-                    <div class="capex-input-group">
-                        <span class="capex-label">Cost (R)</span>
-                        <input type="number" placeholder="Cost" min="0" class="capex-item-cost">
-                    </div>
-                    <div class="capex-input-group">
-                        <span class="capex-label">Timing</span>
-                        <input type="text" placeholder="e.g. Month 3" class="capex-item-timing">
-                    </div>
-                    <span class="remove-capex"><i class="fas fa-times"></i></span>
-                </div>
-            `;
-            
-            // Reset timeline items
-            document.getElementById('timeline-container').innerHTML = `
-                <div class="timeline-item">
-                    <div class="timeline-date">Month 1</div>
-                    <div>Business registration & licensing</div>
-                    <span class="remove-timeline"><i class="fas fa-times"></i></span>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">Month 2</div>
-                    <div>Setup premises & initial hiring</div>
-                    <span class="remove-timeline"><i class="fas fa-times"></i></span>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">Month 3</div>
-                    <div>Launch marketing campaign</div>
-                    <span class="remove-timeline"><i class="fas fa-times"></i></span>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">Month 6</div>
-                    <div>Reach break-even point</div>
-                    <span class="remove-timeline"><i class="fas fa-times"></i></span>
-                </div>
-            `;
-            
-            // Clear timeline inputs
-            document.getElementById('timeline-date').value = '';
-            document.getElementById('timeline-desc').value = '';
-            
-            // Reattach event listeners
-            setupCapexListeners();
-            setupTimelineListeners();
-            
-            successMessage.style.display = 'none';
-            document.querySelector('.modal-form').style.display = 'block';
-            showStep(1);
-        });
-        
-        // Reset form when modal is opened
-        openModalButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Reset form steps
-                showStep(1);
-                
-                // Reset form fields
-                document.querySelectorAll('input, select, textarea').forEach(field => {
-                    field.value = '';
-                });
-                
-                // Reset legal structure
-                document.querySelectorAll('.legal-option').forEach(opt => 
-                    opt.classList.remove('selected'));
-                document.getElementById('legalStructure').value = '';
-                
-                // Reset capex items
-                document.getElementById('capex-container').innerHTML = `
-                    <div class="capex-item">
-                        <div class="capex-input-group">
-                            <span class="capex-label">Item Description</span>
-                            <input type="text" placeholder="e.g. Delivery Van" class="capex-item-name">
-                        </div>
-                        <div class="capex-input-group">
-                            <span class="capex-label">Cost (R)</span>
-                            <input type="number" placeholder="Cost" min="0" class="capex-item-cost">
-                        </div>
-                        <div class="capex-input-group">
-                            <span class="capex-label">Timing</span>
-                            <input type="text" placeholder="e.g. Month 3" class="capex-item-timing">
-                        </div>
-                        <span class="remove-capex"><i class="fas fa-times"></i></span>
-                    </div>
-                `;
-                
-                // Reset timeline items
-                document.getElementById('timeline-container').innerHTML = `
-                    <div class="timeline-item">
-                        <div class="timeline-date">Month 1</div>
-                        <div>Business registration & licensing</div>
-                        <span class="remove-timeline"><i class="fas fa-times"></i></span>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">Month 2</div>
-                        <div>Setup premises & initial hiring</div>
-                        <span class="remove-timeline"><i class="fas fa-times"></i></span>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">Month 3</div>
-                        <div>Launch marketing campaign</div>
-                        <span class="remove-timeline"><i class="fas fa-times"></i></span>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">Month 6</div>
-                        <div>Reach break-even point</div>
-                        <span class="remove-timeline"><i class="fas fa-times"></i></span>
-                    </div>
-                `;
-                
-                // Clear timeline inputs
-                document.getElementById('timeline-date').value = '';
-                document.getElementById('timeline-desc').value = '';
-                
-                // Reattach event listeners
-                setupCapexListeners();
-                setupTimelineListeners();
-                
-                // Hide success message and show form
-                successMessage.style.display = 'none';
-                document.querySelector('.modal-form').style.display = 'block';
-            });
-        });
+        }
         
         // Enhanced Business Plan PDF Generation
         function generateBusinessPlanPDF(data) {
@@ -3198,12 +3419,12 @@
             doc.setFont(undefined, 'normal');
             
             // Add timeline items
-            data.timelineItems.forEach(item => {
+            document.querySelectorAll('.timeline-item').forEach(item => {
                 checkNewPage(15);
                 doc.setFont(undefined, 'bold');
-                doc.text(`${item.date}:`, margin, yPosition);
+                doc.text(`${item.querySelector('.timeline-date').textContent}:`, margin, yPosition);
                 doc.setFont(undefined, 'normal');
-                doc.text(item.description, margin + 30, yPosition);
+                doc.text(item.querySelector('div:nth-child(2)').textContent, margin + 30, yPosition);
                 yPosition += lineHeight + 5;
             });
             
@@ -3231,7 +3452,7 @@
             // 12. Funding Requirements
             addSection('12. FUNDING REQUIREMENTS', 
                 `Funding required: R${(Number(data.fundingNeeded) || 0).toLocaleString()}. 
-                Use of funds: ${data.capexItems.length ? 'Capital expenditure, ' : ''}working capital, marketing initiatives.
+                Use of funds: Capital expenditure, working capital, marketing initiatives.
                 ${data.debtRepayment ? 'Repayment plan: ' + data.debtRepayment : ''}`);
             
             // 13. Exit Strategy
@@ -3268,21 +3489,6 @@
                 doc.text('• ' + item, margin, yPosition);
                 yPosition += lineHeight + 2;
             });
-            
-            // Add capex items if any
-            if (data.capexItems.length > 0) {
-                yPosition += 10;
-                doc.setFont(undefined, 'bold');
-                doc.text('Capital Expenditure Details:', margin, yPosition);
-                yPosition += lineHeight;
-                
-                data.capexItems.forEach(item => {
-                    checkNewPage(15);
-                    doc.setFont(undefined, 'normal');
-                    doc.text(`- ${item.name}: R${item.cost} (${item.timing})`, margin, yPosition);
-                    yPosition += lineHeight;
-                });
-            }
             
             // Footer on each page
             const pageCount = doc.internal.getNumberOfPages();
@@ -3333,60 +3539,11 @@
             observer.observe(el);
         });
         
-        // Add this script at the bottom of your existing JavaScript
-        document.addEventListener('DOMContentLoaded', function() {
-            const table = document.querySelector('.comparison-table');
-            const mobileContainer = document.querySelector('.mobile-cards');
-            
-            if (table && mobileContainer) {
-                const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent);
-                const rows = Array.from(table.querySelectorAll('tbody tr'));
-                
-                rows.forEach(row => {
-                    const cells = Array.from(row.querySelectorAll('td'));
-                    const featureName = cells[0].textContent;
-                    
-                    const card = document.createElement('div');
-                    card.className = 'feature-card';
-                    
-                    const header = document.createElement('div');
-                    header.className = 'feature-header';
-                    header.textContent = featureName;
-                    card.appendChild(header);
-                    
-                    // Create rows for each solution
-                    for (let i = 1; i < cells.length; i++) {
-                        const rowDiv = document.createElement('div');
-                        rowDiv.className = 'feature-row';
-                        
-                        // Highlight "Our Generator"
-                        if (headers[i] === 'Our Generator') {
-                            rowDiv.classList.add('our-highlight');
-                        }
-                        
-                        const nameSpan = document.createElement('span');
-                        nameSpan.className = 'feature-name';
-                        nameSpan.textContent = headers[i];
-                        
-                        const valueSpan = document.createElement('span');
-                        valueSpan.className = 'feature-value';
-                        valueSpan.innerHTML = cells[i].innerHTML;
-                        
-                        rowDiv.appendChild(nameSpan);
-                        rowDiv.appendChild(valueSpan);
-                        card.appendChild(rowDiv);
-                    }
-                    
-                    mobileContainer.appendChild(card);
-                });
-            }
-            
-            // Initialize event listeners
-            setupCapexListeners();
-            setupTimelineListeners();
-        });
+        // Initialize event listeners
+        setupCapexListeners();
+        setupTimelineListeners();
         
-        // Chat widget functionality with backend integration
+                // Chat widget functionality with backend integration
 const chatToggle = document.querySelector('.chat-toggle');
 const chatContainer = document.querySelector('.chat-container');
 const closeChat = document.querySelector('.close-chat');
@@ -3714,6 +3871,7 @@ document.addEventListener('keypress', (e) => {
         }
     }
 });
+        
     </script>
 </body>
 </html>
