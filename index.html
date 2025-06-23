@@ -3929,6 +3929,139 @@ document.addEventListener('keypress', (e) => {
         }
     }
 });
+
+  // AUTO-SAVE FUNCTIONALITY - START
+  
+  // Form data object
+  const formData = {
+    step1: {},
+    step2: {},
+    step3: {},
+    currentStep: 1
+  };
+  
+  // Auto-save status
+  let autoSaveEnabled = true;
+  let unsavedChanges = false;
+  
+  // Initialize the form with saved data
+  function initForm() {
+    const savedData = localStorage.getItem('businessPlanData');
+    if (savedData) {
+      const parsedData = JSON.parse(savedData);
+      
+      // Populate form fields from all steps
+      for (const step in parsedData) {
+        for (const field in parsedData[step]) {
+          const input = document.getElementById(field);
+          if (input) {
+            input.value = parsedData[step][field];
+            
+            // Special handling for legal structure options
+            if (field === 'legalStructure') {
+              document.querySelectorAll('.legal-option').forEach(option => {
+                if (option.dataset.value === parsedData[step][field]) {
+                  option.classList.add('selected');
+                }
+              });
+            }
+          }
+        }
+      }
+      
+      // Restore current step
+      if (parsedData.currentStep) {
+        showStep(parsedData.currentStep);
+      }
+    }
+  }
+  
+  // Save form data to localStorage
+  function saveFormData() {
+    // Collect data from all steps
+    formData.step1 = collectStepData(1);
+    formData.step2 = collectStepData(2);
+    formData.step3 = collectStepData(3);
+    formData.currentStep = currentStep;
+    
+    // Save to localStorage
+    localStorage.setItem('businessPlanData', JSON.stringify(formData));
+    
+    // Reset unsaved changes flag
+    unsavedChanges = false;
+    
+    console.log('Form data saved to localStorage');
+  }
+  
+  // Collect data from a specific step
+  function collectStepData(step) {
+    const stepData = {};
+    const inputs = document.querySelectorAll(`#step-${step} input, #step-${step} select, #step-${step} textarea`);
+    
+    inputs.forEach(input => {
+      // Skip buttons
+      if (input.type === 'button' || input.type === 'submit') return;
+      
+      // Handle legal structure separately
+      if (input.id === 'legalStructure') {
+        const selected = document.querySelector('.legal-option.selected');
+        stepData[input.id] = selected ? selected.dataset.value : '';
+      } else {
+        stepData[input.id] = input.value;
+      }
+    });
+    
+    return stepData;
+  }
+  
+  // Clear saved form data
+  function clearFormData() {
+    localStorage.removeItem('businessPlanData');
+    console.log('Form data cleared');
+  }
+  
+  // Set up auto-save listeners
+  function setupAutoSave() {
+    // Add input listeners to all form fields
+    const formInputs = document.querySelectorAll('input, select, textarea');
+    formInputs.forEach(input => {
+      input.addEventListener('input', () => {
+        unsavedChanges = true;
+        if (autoSaveEnabled) {
+          saveFormData();
+        }
+      });
+    });
+    
+    // Add custom listener for legal structure selection
+    document.querySelectorAll('.legal-option').forEach(option => {
+      option.addEventListener('click', () => {
+        unsavedChanges = true;
+        if (autoSaveEnabled) {
+          saveFormData();
+        }
+      });
+    });
+  }
+  
+  // Initialize when page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    initForm();
+    setupAutoSave();
+    
+    // Save data before page unload
+    window.addEventListener('beforeunload', (e) => {
+      if (unsavedChanges && autoSaveEnabled) {
+        saveFormData();
+      }
+      
+      // Warn user about unsaved changes
+      if (unsavedChanges) {
+        e.preventDefault();
+        e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+      }
+    });
+  });
         
     </script>
 </body>
